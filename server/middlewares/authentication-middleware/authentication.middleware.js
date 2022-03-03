@@ -4,7 +4,6 @@ exports.authTokenCheck = async (req, res, next) => {
   try {
     // const firebaseUser = await getAuth().verifyIdToken(req.headers);
     const verifyToken = await admin.auth().verifyIdToken(req.headers.authtoken);
-    console.log(verifyToken);
     req.user = verifyToken;
     next();
   } catch (error) {
