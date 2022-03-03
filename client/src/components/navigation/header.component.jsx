@@ -26,7 +26,7 @@ const Header = () => {
         </li>
         {loggedInUser ? (
           <li className="nav-item dropdown">
-            <NavDropdown title="User" id="nav-dropdown">
+            <NavDropdown title={loggedInUser.name} id="nav-dropdown">
               <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
               <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
               <NavDropdown.Item eventKey="4.3">

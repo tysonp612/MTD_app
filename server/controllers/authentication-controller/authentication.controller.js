@@ -14,7 +14,11 @@ exports.createOrUpdateUser = async (req, res) => {
       res.status(200).json(user);
     } else {
       //if no user found, create new user with schema
-      const newUser = await new User({ email, name, picture }).save();
+      const newUser = await new User({
+        email,
+        name: email.split("@")[0],
+        picture,
+      }).save();
       console.log("USER CREATED", newUser);
       res.status(200).json(newUser);
     }
