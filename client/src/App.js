@@ -36,10 +36,6 @@ const App = () => {
   });
   //get current user and store to redux user
   useEffect(() => {
-    console.log(
-      process.env.REACT_APP_REGISTER_REDIRECT_URL,
-      process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT_URL
-    );
     return () => unsubscribe();
   }, [unsubscribe]);
   return (

@@ -5,6 +5,7 @@ import {
   logInWithEmailAndPassword,
   logInWithGoogle,
 } from "./../../firebase/firebase.utils";
+import { createOrUpdateUser } from "./../../utils/authentication/authentication";
 import { toast } from "react-toastify";
 
 const Login = ({ history }) => {
@@ -21,16 +22,21 @@ const Login = ({ history }) => {
   const { email, password } = credentials;
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     //0 Check if email and password
     try {
       const user = await logInWithEmailAndPassword(email, password);
-      if (user) {
-        setCredentials({
-          email: "",
-          password: "",
-        });
-        history.push("/");
-      }
+      const idTokenResult = await user.getIdTokenResult();
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => console.log("CREATE OR UPDATE RES", res))
+        .catch();
+      // if (user) {
+      //   setCredentials({
+      //     email: "",
+      //     password: "",
+      //   });
+      //   // history.push("/");
+      // }
     } catch (error) {
       toast.error("Login failed, please try again");
     }

@@ -7,7 +7,7 @@ const fs = require("fs");
 require("dotenv").config();
 
 //import routes
-const authRoutes = require("./routes/authentication/authentication");
+const authRoutes = require("./routes/authentication/authentication.route");
 //1) CREATE APP FROM EXPRESS AND SET UP MONGOOSE CONFIG
 //app
 const app = express();
@@ -31,7 +31,9 @@ app.use(cors());
 // app.use("/api", authRoutes);
 
 //this line below is for calling app.use for all the routes as the app starts, so we don;t have to call each route manually
-fs.readdirSync("./routes").map((r) => app.use(require(`./routes/${r}/${r}`)));
+fs.readdirSync("./routes").map((r) =>
+  app.use(require(`./routes/${r}/${r}.route`))
+);
 
 //3 APP LISTENS TO PORT
 //port
