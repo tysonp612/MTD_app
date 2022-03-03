@@ -10,6 +10,8 @@ import { UserActionTypes } from "./redux/reducers/user/user.types";
 //Firebase
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase.utils";
+//Server
+import { createOrUpdateUser } from "./utils/authentication/authentication";
 //Components
 import Home from "./pages/home/homepage.component";
 import Login from "./pages/login/login.component";
@@ -24,13 +26,28 @@ const App = () => {
   const unsubscribe = onAuthStateChanged(auth, async (user) => {
     if (user) {
       const idTokenResult = await user.getIdTokenResult();
-      dispatch({
-        type: UserActionTypes.LOGGED_IN_USER,
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          console.log(res);
+          dispatch({
+            type: UserActionTypes.LOGGED_IN_USER,
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+        })
+        .catch((error) => console.log(error));
+      // dispatch({
+      //   type: UserActionTypes.LOGGED_IN_USER,
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
       history.push("/");
     }
   });

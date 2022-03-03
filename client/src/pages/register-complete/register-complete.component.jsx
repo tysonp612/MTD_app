@@ -42,11 +42,9 @@ const CompleteRegister = ({ history }) => {
       if (verifiedResult.emailVerified) {
         try {
           const currentUser = auth.currentUser;
-
           toast.success("Signed in successfully");
           //update password to currentUser
           await updatePassword(currentUser, credentials.password);
-          const idTokenResult = await currentUser.getIdTokenResult();
           setCredentials({
             email: "",
             password: "",
