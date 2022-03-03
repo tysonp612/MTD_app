@@ -8,3 +8,11 @@ export const createOrUpdateUser = async (authToken) => {
     { headers: { authToken: authToken } }
   );
 };
+
+export const roleBasedRedirect = (userRole, history) => {
+  if (userRole === "admin") {
+    history.push("/admin/dashboard");
+  } else if (userRole === "subcriber") {
+    history.push("/user/history");
+  }
+};

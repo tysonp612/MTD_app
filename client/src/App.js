@@ -10,8 +10,13 @@ import { UserActionTypes } from "./redux/reducers/user/user.types";
 //Firebase
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase.utils";
-//Server
-import { createOrUpdateUser } from "./utils/authentication/authentication";
+//Server Utils
+import {
+  createOrUpdateUser,
+  roleBasedRedirect,
+} from "./utils/authentication/authentication.utils";
+//Privet Routes
+import { UserRoute } from "./components/routes/user.routes";
 //Components
 import Home from "./pages/home/homepage.component";
 import Login from "./pages/login/login.component";
@@ -19,6 +24,7 @@ import Register from "./pages/register/register.component";
 import CompleteRegister from "./pages/register-complete/register-complete.component";
 import Header from "./components/navigation/header.component";
 import ForgotPassword from "./pages/forgot-password/forgot-password.component";
+import History from "./pages/user/user.history.component";
 import { useHistory } from "react-router-dom";
 const App = () => {
   const dispatch = useDispatch();
@@ -39,16 +45,9 @@ const App = () => {
               _id: res.data._id,
             },
           });
+          roleBasedRedirect(res.data.role, history);
         })
         .catch((error) => console.log(error));
-      // dispatch({
-      //   type: UserActionTypes.LOGGED_IN_USER,
-      //   payload: {
-      //     email: user.email,
-      //     token: idTokenResult.token,
-      //   },
-      // });
-      history.push("/");
     }
   });
   //get current user and store to redux user
@@ -65,6 +64,7 @@ const App = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/register/complete" component={CompleteRegister} />
         <Route exact path="/forgot/password" component={ForgotPassword} />
+        <UserRoute exact path="/user/history" component={History} />
       </Switch>
     </div>
   );

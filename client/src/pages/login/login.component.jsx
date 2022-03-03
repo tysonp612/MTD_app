@@ -5,7 +5,7 @@ import {
   logInWithEmailAndPassword,
   logInWithGoogle,
 } from "./../../firebase/firebase.utils";
-import { createOrUpdateUser } from "./../../utils/authentication/authentication";
+import { createOrUpdateUser } from "../../utils/authentication/authentication.utils";
 import { toast } from "react-toastify";
 
 const Login = ({ history }) => {
@@ -29,13 +29,12 @@ const Login = ({ history }) => {
       // const idTokenResult = await user.getIdTokenResult();
       // const userBE = await createOrUpdateUser(idTokenResult);
       // console.log(userBE);
-      // if (user) {
-      //   setCredentials({
-      //     email: "",
-      //     password: "",
-      //   });
-      //   history.push("/");
-      // }
+      if (user) {
+        setCredentials({
+          email: "",
+          password: "",
+        });
+      }
     } catch (error) {
       toast.error("Login failed, please try again");
     }
