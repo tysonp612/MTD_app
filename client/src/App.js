@@ -22,9 +22,11 @@ import Home from "./pages/home/homepage.component";
 import Login from "./pages/login/login.component";
 import Register from "./pages/register/register.component";
 import CompleteRegister from "./pages/register-complete/register-complete.component";
-import Header from "./components/navigation/header.component";
+import Header from "./components/header/header.component";
 import ForgotPassword from "./pages/forgot-password/forgot-password.component";
 import History from "./pages/user/user.history.component";
+import Password from "./pages/user/user.password.component";
+import Wishlist from "./pages/user/user.wishlist.component";
 import { useHistory } from "react-router-dom";
 const App = () => {
   const dispatch = useDispatch();
@@ -65,6 +67,8 @@ const App = () => {
         <Route exact path="/register/complete" component={CompleteRegister} />
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <UserRoute exact path="/user/history" component={History} />
+        <UserRoute exact path="/user/password" component={Password} />
+        <UserRoute exact path="/user/wishlist" component={Wishlist} />
       </Switch>
     </div>
   );
