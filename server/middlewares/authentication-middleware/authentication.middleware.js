@@ -14,7 +14,7 @@ exports.authTokenCheck = async (req, res, next) => {
 exports.adminCheck = async (req, res, next) => {
   const user = await User.findOne({ email: req.user.email });
   if (user.role === "admin") {
-    res.status(200).json("Admin confirmed");
+    res.status(201).json("Admin confirmed");
     next();
   } else res.status(403).json("Admin resources, access denined");
 };

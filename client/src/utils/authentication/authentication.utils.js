@@ -9,6 +9,14 @@ export const createOrUpdateUser = async (authToken) => {
   );
 };
 
+export const adminCheckResult = async (authToken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/admin-route`,
+    {},
+    { headers: { authToken: authToken } }
+  );
+};
+
 export const roleBasedRedirect = (userRole, history) => {
   if (userRole === "admin") {
     history.push("/admin/dashboard");

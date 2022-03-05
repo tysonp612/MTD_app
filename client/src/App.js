@@ -17,6 +17,7 @@ import {
 } from "./utils/authentication/authentication.utils";
 //Privet Routes
 import { UserRoute } from "./components/routes/user.routes";
+import { AdminRoute } from "./components/routes/admin.routes";
 //Components
 import Home from "./pages/home/homepage.component";
 import Login from "./pages/login/login.component";
@@ -27,6 +28,7 @@ import ForgotPassword from "./pages/forgot-password/forgot-password.component";
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
 import Wishlist from "./pages/user/user.wishlist.component";
+import { AdminDashboard } from "./pages/admin/admin.dashboard.component";
 import { useHistory } from "react-router-dom";
 const App = () => {
   const dispatch = useDispatch();
@@ -47,7 +49,7 @@ const App = () => {
               _id: res.data._id,
             },
           });
-          roleBasedRedirect(res.data.role, history);
+          // roleBasedRedirect(res.data.role, history);
         })
         .catch((error) => console.log(error));
     }
@@ -66,6 +68,7 @@ const App = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/register/complete" component={CompleteRegister} />
         <Route exact path="/forgot/password" component={ForgotPassword} />
+        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <UserRoute exact path="/user/history" component={History} />
         <UserRoute exact path="/user/password" component={Password} />
         <UserRoute exact path="/user/wishlist" component={Wishlist} />
