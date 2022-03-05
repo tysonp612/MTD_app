@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 //Firebase
-import { signOutUser } from "./../../firebase/firebase.utils";
+import { signOutUser } from "../../firebase/firebase.utils";
 //Redux
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { UserActionTypes } from "./../../redux/reducers/user/user.types";
+import { UserActionTypes } from "../../redux/reducers/user/user.types";
 
 const Header = () => {
   const loggedInUser = useSelector((state) => state.user.currentUser);
