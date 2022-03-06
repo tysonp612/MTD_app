@@ -10,5 +10,7 @@ router
   .route("/create-or-update-user")
   .post(authTokenCheck, authController.createOrUpdateUser);
 
-router.route("/admin-route").post(authTokenCheck, adminCheck);
+router
+  .route("/admin-route")
+  .post(authTokenCheck, adminCheck, authController.adminController);
 module.exports = router;

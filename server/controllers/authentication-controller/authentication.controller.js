@@ -26,3 +26,11 @@ exports.createOrUpdateUser = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.adminController = async (req, res) => {
+  try {
+    res.status(200).json(true);
+  } catch (err) {
+    console.log(err);
+  }
+};

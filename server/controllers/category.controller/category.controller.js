@@ -3,7 +3,12 @@ const slugify = require("slugify");
 
 exports.createCategory = async (req, res) => {
   try {
-    console.log(req);
+    const { name } = req.body;
+    const category = await new Category({
+      name: name,
+      slug: slugify(name),
+    }).save();
+    res.status(200).json(category);
   } catch (err) {
     console.log(err);
     res.status(400).send("Create category failed");
@@ -11,29 +16,42 @@ exports.createCategory = async (req, res) => {
 };
 exports.getAllCategory = async (req, res) => {
   try {
-    console.log(req);
+    const categories = await Category.find().sort({ createdAt: -1 });
+    res.status(200).json(categories);
   } catch (err) {
     res.status(400);
   }
 };
 exports.getOneCategory = async (req, res) => {
+  const slug = req.params.slug;
   try {
-    console.log(req);
+    const oneCategory = await Category.findOne({ slug: slug });
+    res.status(200).json(oneCategory);
   } catch (err) {
     res.status(400);
   }
 };
 exports.updateCategory = async (req, res) => {
+  const slug = req.params.slug;
+  const { name } = req.body;
   try {
-    console.log(req);
+    const oneCategory = await Category.findOneAndUpdate(
+      { slug },
+      { name, slug: slugify(name) },
+      { new: true }
+    );
+    res.status(200).json(oneCategory);
   } catch (err) {
-    res.status(400);
+    res.status(400).send("Update category failed");
   }
 };
 exports.deleteCategory = async (req, res) => {
   try {
-    console.log(req);
+    const slug = req.params.slug;
+    const deleteCategory = await Category.findOneAndDelete({ slug });
+    res.status(200).json(null);
   } catch (err) {
-    res.status(400);
+    console.log(err);
+    res.status(400).send("Delete category failed");
   }
 };
