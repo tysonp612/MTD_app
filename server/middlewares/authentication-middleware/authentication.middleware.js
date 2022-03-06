@@ -1,5 +1,5 @@
 const admin = require("../../firebase/index");
-const User = require("./../../models/user");
+const User = require("./../../models/user.schema");
 exports.authTokenCheck = async (req, res, next) => {
   try {
     // const firebaseUser = await getAuth().verifyIdToken(req.headers);

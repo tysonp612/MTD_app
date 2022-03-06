@@ -15,7 +15,7 @@ router.route("/categories").get(categoryController.getAllCategory);
 router.route("/category/:slug").get(categoryController.getOneCategory);
 router
   .route("/category")
-  .create(authTokenCheck, adminCheck, categoryController.createCategory);
+  .post(authTokenCheck, adminCheck, categoryController.createCategory);
 router
   .route("/category/:slug")
   .put(authTokenCheck, adminCheck, categoryController.updateCategory);

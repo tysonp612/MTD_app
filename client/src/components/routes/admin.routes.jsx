@@ -9,7 +9,6 @@ export const AdminRoute = ({ ...rest }) => {
   const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     if (user && user.token) {
-      console.log(user);
       adminCheckResult(user.token)
         .then((admin) => {
           console.log(admin);
