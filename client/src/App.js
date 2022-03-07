@@ -3,7 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; //in node_modules
 //React
 import React, { useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 //Redux
 import { useDispatch } from "react-redux";
 import { UserActionTypes } from "./redux/reducers/user/user.types";
@@ -20,16 +20,20 @@ import { UserRoute } from "./components/routes/user.routes";
 import { AdminRoute } from "./components/routes/admin.routes";
 //Components
 import Home from "./pages/home/homepage.component";
+import Header from "./components/header/header.component";
+//Authentication
 import Login from "./pages/login/login.component";
 import Register from "./pages/register/register.component";
 import CompleteRegister from "./pages/register-complete/register-complete.component";
-import Header from "./components/header/header.component";
 import ForgotPassword from "./pages/forgot-password/forgot-password.component";
+//User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
 import Wishlist from "./pages/user/user.wishlist.component";
+//Admin Pages
 import { AdminDashboard } from "./pages/admin/admin.dashboard.component";
-import { useHistory } from "react-router-dom";
+import { AdminCategory } from "./pages/admin/admin.category.component";
+
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -69,6 +73,7 @@ const App = () => {
         <Route exact path="/register/complete" component={CompleteRegister} />
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+        <AdminRoute exact path="/admin/category" component={AdminCategory} />
         <UserRoute exact path="/user/history" component={History} />
         <UserRoute exact path="/user/password" component={Password} />
         <UserRoute exact path="/user/wishlist" component={Wishlist} />
