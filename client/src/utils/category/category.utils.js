@@ -10,24 +10,23 @@ export const getOneCategory = async (slug) => {
 
 //send token in header
 export const removeCategory = async (slug, authtoken) => {
-  return (
-    await axios.delete(`${process.env.REACT_APP_API}/categories/${slug}`),
-    { headers: { authtoken } }
-  );
+  return await axios.delete(`${process.env.REACT_APP_API}/categories/${slug}`, {
+    headers: { authtoken },
+  });
 };
 
 export const updateCategory = async (slug, authtoken, updateCategory) => {
-  return (
-    await axios.put(`${process.env.REACT_APP_API}/categories/${slug}`),
+  return await axios.put(
+    `${process.env.REACT_APP_API}/categories/${slug}`,
     updateCategory,
     { headers: { authtoken } }
   );
 };
 
-export const createCategory = async (slug, authtoken, createCategory) => {
-  return (
-    await axios.create(`${process.env.REACT_APP_API}/categories/${slug}`),
-    createCategory,
-    { headers: { authtoken } }
+export const createCategory = async (authToken, createCategory) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/category`,
+    { name: createCategory },
+    { headers: { authToken: authToken } }
   );
 };

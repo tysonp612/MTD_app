@@ -7,9 +7,9 @@ import LoadingToRedirect from "./loading-to-redirect/loading-to-redirect";
 export const AdminRoute = ({ ...rest }) => {
   const [ok, setOk] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
-  useEffect(() => {
-    if (user && user.token) {
-      adminCheckResult(user.token)
+  useEffect(async () => {
+    if (user) {
+      await adminCheckResult(user.token)
         .then((admin) => {
           console.log(admin);
           return setOk(true);
