@@ -9,7 +9,17 @@ import {
 } from "./../../utils/category/category.utils";
 export const AdminCategory = () => {
   const [name, setName] = useState("");
+  const [category, setCategory] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
+
+  useEffect(() => {
+    loadCategory();
+  }, []);
+  const loadCategory = async () => {
+    await getCategories()
+      .then((res) => setCategory(res))
+      .catch((err) => console.log(err));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

@@ -11,7 +11,6 @@ export const AdminRoute = ({ ...rest }) => {
     if (user) {
       await adminCheckResult(user.token)
         .then((admin) => {
-          console.log(admin);
           return setOk(true);
         })
         .catch((error) => console.log(error));
