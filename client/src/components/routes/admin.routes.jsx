@@ -15,6 +15,8 @@ export const AdminRoute = ({ ...rest }) => {
           return setOk(true);
         })
         .catch((error) => console.log(error));
+    } else {
+      return setOk(false);
     }
   }, [user]);
 

@@ -49,7 +49,7 @@ const App = () => {
               _id: res.data._id,
             },
           });
-          roleBasedRedirect(res.data.role, history);
+          // roleBasedRedirect(res.data.role, history);
         })
         .catch((error) => console.log(error));
     }

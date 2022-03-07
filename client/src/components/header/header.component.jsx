@@ -16,6 +16,48 @@ const Header = () => {
     signOutUser();
     dispatch({ type: UserActionTypes.LOGOUT, payload: null });
   };
+
+  const redirectDashboard = (loggedInUser) => {
+    if (loggedInUser && loggedInUser.role === "subcriber") {
+      return (
+        <li className="nav-item dropdown">
+          <NavDropdown title={loggedInUser.name} id="nav-dropdown">
+            <NavDropdown.Item eventKey="4.1" href="/user/history">
+              History
+            </NavDropdown.Item>
+            <NavDropdown.Item eventKey="4.2" href="/user/wishlist">
+              Wishlist
+            </NavDropdown.Item>
+            <NavDropdown.Item eventKey="4.3" href="/user/password">
+              Password
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item eventKey="4.4" onClick={handleLogout}>
+              Log Out
+            </NavDropdown.Item>
+          </NavDropdown>
+        </li>
+      );
+    } else if (loggedInUser && loggedInUser.role === "admin") {
+      return (
+        <li className="nav-item dropdown">
+          <NavDropdown title={loggedInUser.name} id="nav-dropdown">
+            <NavDropdown.Item eventKey="4.1" href="/admin/dashboard">
+              Admin
+            </NavDropdown.Item>
+            <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
+            <NavDropdown.Item eventKey="4.3">
+              Something else here
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item eventKey="4.4" onClick={handleLogout}>
+              Log Out
+            </NavDropdown.Item>
+          </NavDropdown>
+        </li>
+      );
+    }
+  };
   return (
     <nav className=" pb-2 pt-2 mb-3 border-bottom d-flex justify-content-between">
       <ul className="nav-pills nav">
@@ -24,23 +66,7 @@ const Header = () => {
             Home
           </Link>
         </li>
-        {loggedInUser ? (
-          <li className="nav-item dropdown">
-            <NavDropdown title={loggedInUser.name} id="nav-dropdown">
-              <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
-              <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item eventKey="4.3">
-                Something else here
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item eventKey="4.4" onClick={handleLogout}>
-                Log Out
-              </NavDropdown.Item>
-            </NavDropdown>
-          </li>
-        ) : (
-          ""
-        )}
+        {redirectDashboard(loggedInUser)}
       </ul>
       {!loggedInUser ? (
         <ul className="nav-pills nav  ">
