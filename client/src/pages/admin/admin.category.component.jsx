@@ -9,15 +9,15 @@ import {
 } from "./../../utils/category/category.utils";
 export const AdminCategory = () => {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState([]);
+  const [categories, setCategories] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
-    loadCategory();
+    loadCategories();
   }, []);
-  const loadCategory = async () => {
+  const loadCategories = async () => {
     await getCategories()
-      .then((res) => setCategory(res))
+      .then((res) => setCategories(res.data))
       .catch((err) => console.log(err));
   };
   const handleSubmit = async (e) => {
@@ -54,6 +54,15 @@ export const AdminCategory = () => {
         <div className="col-md-10">
           <h3>Create Category</h3>
           {categoryForm()}
+          {categories.map((category) => (
+            <div className="alert alert-secondary d-flex flex-row justify-content-between ">
+              <div key={category._id}>{category.name}</div>
+              <div className="d-flex flex-row">
+                <div className="mr-2">Delete</div>
+                <div>Edit</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
