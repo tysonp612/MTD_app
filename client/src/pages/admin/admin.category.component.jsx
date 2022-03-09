@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "./../../components/navigation/admin-navigation.component";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import CategoryUpdate from "./admin.category-update.component";
 import {
   createCategory,
   getCategories,
   removeCategory,
   updateCategory,
 } from "./../../utils/category/category.utils";
+import {
+  UpdateCategoryForm,
+  CreateCategoryForm,
+} from "./../../components/forms/category-form.component";
 export const AdminCategory = () => {
   const [name, setName] = useState("");
   const [input, setInput] = useState("");
@@ -29,6 +31,8 @@ export const AdminCategory = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  //Create
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -40,21 +44,7 @@ export const AdminCategory = () => {
       if (err.response.status === 400) toast.error(err.response.data);
     }
   };
-
-  const handleDelete = async (slug) => {
-    const confirm = window.confirm("Are you sure to delete this category?");
-    if (confirm) {
-      await removeCategory(slug, user.token)
-        .then((res) => {
-          toast.success("Category deleted successfully");
-          loadCategories();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error(err.response.data);
-        });
-    }
-  };
+  //Update
   const handleEdit = (slug) => {
     setSlug(slug);
     setOk(true);
@@ -74,43 +64,22 @@ export const AdminCategory = () => {
         toast.error(err.response.data);
       });
   };
-  const categoryForm = () => {
-    return (
-      <form onSubmit={handleCreate}>
-        <label>Name</label>
-        <input
-          type="text"
-          className="form-control"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        />
-        <button className="btn btn-outline-primary mt-3">Save</button>
-      </form>
-    );
+  //Delete
+  const handleDelete = async (slug) => {
+    const confirm = window.confirm("Are you sure to delete this category?");
+    if (confirm) {
+      await removeCategory(slug, user.token)
+        .then((res) => {
+          toast.success("Category deleted successfully");
+          loadCategories();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.response.data);
+        });
+    }
   };
-  const updateCategoryForm = () => {
-    return (
-      <form onSubmit={handleUpdate}>
-        <label>Update Category</label>
-        <input
-          type="text"
-          className="form-control"
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-        />
-        <button
-          className="btn btn-outline-primary mt-3"
-          disabled={input.length < 2 || input.length > 36 ? true : false}
-        >
-          Update
-        </button>
-      </form>
-    );
-  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -119,9 +88,21 @@ export const AdminCategory = () => {
         </div>
         <div className="col-md-10">
           <h3>Create Category</h3>
-          {categoryForm()}
+          <CreateCategoryForm
+            handleCreate={handleCreate}
+            name={name}
+            setName={setName}
+          />
           <br />
-          {ok ? updateCategoryForm() : ""}
+          {ok ? (
+            <UpdateCategoryForm
+              handleUpdate={handleUpdate}
+              input={input}
+              setInput={setInput}
+            />
+          ) : (
+            ""
+          )}
           <br />
           {categories.map(({ _id, name, slug }) => (
             <div className="alert alert-secondary row" key={_id}>
