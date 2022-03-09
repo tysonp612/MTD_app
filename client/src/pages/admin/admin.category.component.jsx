@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "./../../components/navigation/admin-navigation.component";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   createCategory,
   getCategories,
@@ -9,6 +10,7 @@ import {
 } from "./../../utils/category/category.utils";
 export const AdminCategory = () => {
   const [name, setName] = useState("");
+  const [input, setInput] = useState("");
   const [categories, setCategories] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
 
@@ -17,7 +19,9 @@ export const AdminCategory = () => {
   }, []);
   const loadCategories = async () => {
     await getCategories()
-      .then((res) => setCategories(res.data))
+      .then((res) => {
+        setCategories(res.data);
+      })
       .catch((err) => console.log(err));
   };
   const handleSubmit = async (e) => {
@@ -28,6 +32,13 @@ export const AdminCategory = () => {
     } catch (err) {
       if (err.response.status === 400) toast.error(err.response.data);
     }
+  };
+  const handleDelete = (slug) => {
+    console.log(slug);
+  };
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    console.log(input);
   };
   const categoryForm = () => {
     return (
@@ -54,12 +65,27 @@ export const AdminCategory = () => {
         <div className="col-md-10">
           <h3>Create Category</h3>
           {categoryForm()}
-          {categories.map((category) => (
-            <div className="alert alert-secondary d-flex flex-row justify-content-between ">
-              <div key={category._id}>{category.name}</div>
-              <div className="d-flex flex-row">
-                <div className="mr-2">Delete</div>
-                <div>Edit</div>
+          <br />
+          {categories.map(({ _id, name, slug }) => (
+            <div className="alert alert-secondary row" key={_id}>
+              <div className="col-md-10">{name}</div>
+              <span
+                className="pr-5 col-md-1 text-center btn btn-outline-secondary"
+                onClick={() => handleDelete(slug)}
+              >
+                Delete
+              </span>
+              <span className=" col-md-1 text-center btn btn-outline-secondary">
+                Edit
+              </span>
+              <div>
+                <input type="text" onChange={(e) => setInput(e.target.value)} />
+                <div
+                  className="btn btn-outline-secondary"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </div>
               </div>
             </div>
           ))}
