@@ -10,7 +10,7 @@ export const getOneCategory = async (slug) => {
 
 //send token in header
 export const removeCategory = async (slug, authtoken) => {
-  return await axios.delete(`${process.env.REACT_APP_API}/categories/${slug}`, {
+  return await axios.delete(`${process.env.REACT_APP_API}/category/${slug}`, {
     headers: { authtoken },
   });
 };

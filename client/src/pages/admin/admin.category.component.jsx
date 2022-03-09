@@ -17,6 +17,7 @@ export const AdminCategory = () => {
   useEffect(() => {
     loadCategories();
   }, []);
+
   const loadCategories = async () => {
     await getCategories()
       .then((res) => {
@@ -24,17 +25,29 @@ export const AdminCategory = () => {
       })
       .catch((err) => console.log(err));
   };
-  const handleSubmit = async (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
     try {
       const res = await createCategory(user.token, name);
       if (res) toast.success("Category created successfully");
+      loadCategories();
     } catch (err) {
       if (err.response.status === 400) toast.error(err.response.data);
     }
   };
-  const handleDelete = (slug) => {
-    console.log(slug);
+  const handleDelete = async (slug) => {
+    const confirm = window.confirm("Are you sure to delete this category?");
+    if (confirm) {
+      await removeCategory(slug, user.token)
+        .then((res) => {
+          toast.success("Category deleted successfully");
+          loadCategories();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.response.data);
+        });
+    }
   };
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -42,7 +55,7 @@ export const AdminCategory = () => {
   };
   const categoryForm = () => {
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleCreate}>
         <label>Name</label>
         <input
           type="text"
@@ -79,13 +92,15 @@ export const AdminCategory = () => {
                 Edit
               </span>
               <div>
-                <input type="text" onChange={(e) => setInput(e.target.value)} />
-                <div
-                  className="btn btn-outline-secondary"
-                  onClick={handleUpdate}
-                >
-                  Update
-                </div>
+                <form onSubmit={handleUpdate}>
+                  <input
+                    type="text"
+                    onChange={(e) => setInput(e.target.value)}
+                  />
+                  <button type="text" className="btn btn-outline-secondary">
+                    Update
+                  </button>
+                </form>
               </div>
             </div>
           ))}
