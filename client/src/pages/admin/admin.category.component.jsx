@@ -17,6 +17,7 @@ export const AdminCategory = () => {
   const [input, setInput] = useState("");
   const [slug, setSlug] = useState("");
   const [ok, setOk] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
 
@@ -80,6 +81,13 @@ export const AdminCategory = () => {
     }
   };
 
+  //   const handleSearchBox = (searchInput) => {
+  //     setSearchQuery(searchInput.toLowerCase());
+  //     console.log(searchQuery);
+  //   };
+  //   const searchBoxKeyword = (searchQuery) => {
+  //     return (c) => c.name.includes(searchQuery);
+  //   };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -94,8 +102,17 @@ export const AdminCategory = () => {
             setName={setName}
           />
           <br />
+          Search Category
+          <input
+            type="text"
+            className="form-control"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
+          />
+          <br />
           {ok ? (
             <UpdateCategoryForm
+              slug={slug}
               handleUpdate={handleUpdate}
               input={input}
               setInput={setInput}
@@ -104,23 +121,25 @@ export const AdminCategory = () => {
             ""
           )}
           <br />
-          {categories.map(({ _id, name, slug }) => (
-            <div className="alert alert-secondary row" key={_id}>
-              <div className="col-md-10">{name}</div>
-              <span
-                className="pr-5 col-md-1 text-center btn btn-outline-secondary"
-                onClick={() => handleDelete(slug)}
-              >
-                Delete
-              </span>
-              <span
-                className=" col-md-1 text-center btn btn-outline-secondary"
-                onClick={() => handleEdit(slug)}
-              >
-                Edit
-              </span>
-            </div>
-          ))}
+          {categories
+            .filter((cat) => cat.slug.includes(searchQuery))
+            .map(({ _id, name, slug }) => (
+              <div className="alert alert-secondary row" key={_id}>
+                <div className="col-md-10">{name}</div>
+                <span
+                  className="pr-5 col-md-1 text-center btn btn-outline-secondary"
+                  onClick={() => handleDelete(slug)}
+                >
+                  Delete
+                </span>
+                <span
+                  className=" col-md-1 text-center btn btn-outline-secondary"
+                  onClick={() => handleEdit(slug)}
+                >
+                  Edit
+                </span>
+              </div>
+            ))}
         </div>
       </div>
     </div>

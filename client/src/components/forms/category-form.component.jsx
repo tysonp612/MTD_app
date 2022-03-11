@@ -1,9 +1,11 @@
 import React from "react";
 
-export const UpdateCategoryForm = ({ handleUpdate, input, setInput }) => {
+export const UpdateCategoryForm = ({ slug, handleUpdate, input, setInput }) => {
+  const [first, ...rest] = slug.split("");
+  const newSlug = [first.toUpperCase(), ...rest].join("");
   return (
     <form onSubmit={handleUpdate}>
-      <label>Update Category</label>
+      <label>{`Update ${newSlug} `}</label>
       <input
         type="text"
         className="form-control"
