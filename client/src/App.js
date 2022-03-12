@@ -31,8 +31,9 @@ import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
 import Wishlist from "./pages/user/user.wishlist.component";
 //Admin Pages
-import { AdminDashboard } from "./pages/admin/admin.dashboard.component";
-import { AdminCategory } from "./pages/admin/admin.category.component";
+import { AdminDashboard } from "./pages/admin/admin.dashboard/admin.dashboard.component";
+import { AdminCategory } from "./pages/admin/admin.category/admin.category.component";
+import { AdminSubCategory } from "./pages/admin/admin.sub-category/admin.sub-category.component";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const App = () => {
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/admin/category" component={AdminCategory} />
+        <AdminRoute exact path="/admin/sub" component={AdminSubCategory} />
         <UserRoute exact path="/user/history" component={History} />
         <UserRoute exact path="/user/password" component={Password} />
         <UserRoute exact path="/user/wishlist" component={Wishlist} />

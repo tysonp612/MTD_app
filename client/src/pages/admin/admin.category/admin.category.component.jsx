@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminNav from "./../../components/navigation/admin-navigation.component";
+import AdminNav from "./../../../components/navigation/admin-navigation.component";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
@@ -7,11 +7,11 @@ import {
   getCategories,
   removeCategory,
   updateCategory,
-} from "./../../utils/category/category.utils";
+} from "./../../../utils/category/category.utils";
 import {
   UpdateCategoryForm,
   CreateCategoryForm,
-} from "./../../components/forms/category-form.component";
+} from "./../../../components/forms/category-form.component";
 export const AdminCategory = () => {
   const [name, setName] = useState("");
   const [input, setInput] = useState("");
@@ -80,14 +80,6 @@ export const AdminCategory = () => {
         });
     }
   };
-
-  //   const handleSearchBox = (searchInput) => {
-  //     setSearchQuery(searchInput.toLowerCase());
-  //     console.log(searchQuery);
-  //   };
-  //   const searchBoxKeyword = (searchQuery) => {
-  //     return (c) => c.name.includes(searchQuery);
-  //   };
   return (
     <div className="container-fluid">
       <div className="row">

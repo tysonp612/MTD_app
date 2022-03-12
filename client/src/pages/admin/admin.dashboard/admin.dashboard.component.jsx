@@ -1,5 +1,5 @@
 import React from "react";
-import AdminNav from "./../../components/navigation/admin-navigation.component";
+import AdminNav from "./../../../components/navigation/admin-navigation.component";
 export const AdminDashboard = () => {
   return (
     <div className="container-fluid">
