@@ -21,12 +21,21 @@ export const AdminSubCategory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
+    loadSubCategories();
     loadCategories();
   }, []);
 
+  const loadSubCategories = async () => {
+    await getSubCategories()
+      .then((res) => {
+        setSubCategory(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
   const loadCategories = async () => {
     await getCategories()
       .then((res) => {
@@ -34,13 +43,13 @@ export const AdminSubCategory = () => {
       })
       .catch((err) => console.log(err));
   };
-
   //Create
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
       const res = await createSubCategory(user.token, name, category);
       if (res) toast.success("Sub-category created successfully");
+      loadSubCategories();
       setName("");
     } catch (err) {
       if (err.response.status === 400) toast.error(err.response.data);
@@ -56,7 +65,7 @@ export const AdminSubCategory = () => {
     await updateSubCategory(slug.toLocaleLowerCase(), user.token, input)
       .then((res) => {
         toast.success("Sub-category updated successfully");
-        loadCategories();
+        loadSubCategories();
         setOk(false);
         setSlug("");
         setInput("");
@@ -73,6 +82,7 @@ export const AdminSubCategory = () => {
       await removeSubCategory(slug, user.token)
         .then((res) => {
           toast.success("Sub-category deleted successfully");
+          loadSubCategories();
         })
         .catch((err) => {
           console.log(err);
@@ -80,9 +90,7 @@ export const AdminSubCategory = () => {
         });
     }
   };
-  const handleSub = () => {
-    console.log(category);
-  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -108,8 +116,8 @@ export const AdminSubCategory = () => {
                   );
                 })}
             </select>
-            <button onClick={handleSub}>Click</button>
           </div>
+          <br />
           <CreateCategoryForm
             handleCreate={handleCreate}
             name={name}
@@ -135,8 +143,8 @@ export const AdminSubCategory = () => {
             ""
           )}
           <br />
-          {/* {categories
-            .filter((cat) => cat.slug.includes(searchQuery))
+          {subCategory
+            .filter((sub) => sub.slug.includes(searchQuery))
             .map(({ _id, name, slug }) => (
               <div className="alert alert-secondary row" key={_id}>
                 <div className="col-md-10">{name}</div>
@@ -153,7 +161,7 @@ export const AdminSubCategory = () => {
                   Edit
                 </span>
               </div>
-            ))} */}
+            ))}
         </div>
       </div>
     </div>
