@@ -2,9 +2,10 @@ const SubCategory = require("./../../models/sub-category.schema");
 const slugify = require("slugify");
 exports.createSubCategory = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, parent } = req.body;
     const subCategory = await new SubCategory({
       name: name,
+      parent: parent,
       slug: slugify(name),
     }).save();
     res.status(200).json(subCategory);
