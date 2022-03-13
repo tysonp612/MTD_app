@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   authTokenCheck,
   adminCheck,
-} = require("../../middlewares/authentication-middleware/authentication.middleware");
+} = require("../../middlewares/authentication.middleware/authentication.middleware");
 
 //controller
 const categoryController = require("./../../controllers/category.controller/category.controller");

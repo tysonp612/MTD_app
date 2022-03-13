@@ -3,9 +3,9 @@ const router = express.Router();
 const {
   authTokenCheck,
   adminCheck,
-} = require("./../../middlewares/authentication-middleware/authentication.middleware");
+} = require("./../../middlewares/authentication.middleware/authentication.middleware");
 
-const subCategoryController = require("./../../controllers/sub-category/sub-category.controller");
+const subCategoryController = require("./../../controllers/sub-category.controller/sub-category.controller");
 //routes
 router.route("/sub-categories").get(subCategoryController.getAllSubCategory);
 router
