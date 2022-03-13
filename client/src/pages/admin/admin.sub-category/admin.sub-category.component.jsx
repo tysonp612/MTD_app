@@ -62,7 +62,12 @@ export const AdminSubCategory = () => {
   };
   const handleUpdate = async (e) => {
     e.preventDefault();
-    await updateSubCategory(slug.toLocaleLowerCase(), user.token, input)
+    await updateSubCategory(
+      slug.toLocaleLowerCase(),
+      user.token,
+      input,
+      category
+    )
       .then((res) => {
         toast.success("Sub-category updated successfully");
         loadSubCategories();
@@ -106,7 +111,7 @@ export const AdminSubCategory = () => {
               className="form-control"
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option>PLease select</option>
+              <option></option>
               {categories.length > 0 &&
                 categories.map((c) => {
                   return (
