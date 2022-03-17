@@ -34,6 +34,7 @@ import Wishlist from "./pages/user/user.wishlist.component";
 import { AdminDashboard } from "./pages/admin/admin.dashboard/admin.dashboard.component";
 import { AdminCategory } from "./pages/admin/admin.category/admin.category.component";
 import { AdminSubCategory } from "./pages/admin/admin.sub-category/admin.sub-category.component";
+import { AdminProducts } from "./pages/admin/admin.products/admin.products";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const App = () => {
         <Route exact path="/register/complete" component={CompleteRegister} />
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+        <AdminRoute exact path="/admin/products" component={AdminProducts} />
         <AdminRoute exact path="/admin/category" component={AdminCategory} />
         <AdminRoute exact path="/admin/sub" component={AdminSubCategory} />
         <UserRoute exact path="/user/history" component={History} />
