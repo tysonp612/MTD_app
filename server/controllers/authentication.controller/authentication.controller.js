@@ -1,4 +1,4 @@
-const User = require("./../../models/user.schema");
+const User = require("../../models/user.schema");
 
 exports.createOrUpdateUser = async (req, res) => {
   const { name, email, picture } = req.user;

@@ -1,4 +1,4 @@
-const SubCategory = require("./../../models/sub-category.schema");
+const SubCategory = require("../../models/sub-category.schema");
 const slugify = require("slugify");
 exports.createSubCategory = async (req, res) => {
   try {
