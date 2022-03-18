@@ -44,7 +44,6 @@ const App = () => {
       const idTokenResult = await user.getIdTokenResult();
       createOrUpdateUser(idTokenResult.token)
         .then((res) => {
-          console.log(res);
           dispatch({
             type: UserActionTypes.LOGGED_IN_USER,
             payload: {

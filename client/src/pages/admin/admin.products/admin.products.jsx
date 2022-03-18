@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "./../../../components/navigation/admin-navigation.component";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ProductsActionTypes } from "./../../../redux/reducers/products/products.types";
 import { createProducts } from "./../../../utils/products/products.utils";
 export const AdminProducts = () => {
+  const dispatch = useDispatch();
   const initialValues = {
     title: "",
     description: "",
@@ -19,6 +21,7 @@ export const AdminProducts = () => {
     color: "",
   };
   const [values, setValues] = useState(initialValues);
+
   const {
     title,
     description,
@@ -38,11 +41,17 @@ export const AdminProducts = () => {
     e.preventDefault();
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user.token);
+
     await createProducts(values, user.token)
-      .then((res) => console.log(res))
+      .then((res) => {
+        dispatch({
+          type: ProductsActionTypes.ADD_PRODUCTS,
+          payload: res.data,
+        });
+      })
       .catch((err) => console.log(err));
   };
   return (
@@ -53,7 +62,6 @@ export const AdminProducts = () => {
         </div>
         <div className="col-md-10">
           <h3>Products Page</h3>
-          {JSON.stringify(values)}
           <form onSubmit={handleSubmit}>
             <div className="form-froup">
               <label>Title</label>
@@ -132,6 +140,7 @@ export const AdminProducts = () => {
                 onChange={handleChange}
               />
             </div>
+            <br />
             <button className="btn btn-primary" onClick={handleSubmit}>
               Save
             </button>
