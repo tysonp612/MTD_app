@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "./../../../components/navigation/admin-navigation.component";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { ProductForm } from "./../../../components/forms/product-form.component";
 import {
   createProducts,
   getAllProducts,
@@ -28,20 +29,7 @@ export const AdminProducts = () => {
   const [values, setValues] = useState(initialValues);
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState(false);
-  const {
-    title,
-    description,
-    price,
-    category,
-    categories,
-    subcategory,
-    shipping,
-    quantity,
-    images,
-    colors,
-    brand,
-    color,
-  } = values;
+
   const user = useSelector((state) => state.user.currentUser);
 
   const loadProducts = async () => {
@@ -100,89 +88,11 @@ export const AdminProducts = () => {
           </button>
 
           {newProduct ? (
-            <form onSubmit={handleSubmit}>
-              <div className="form-froup">
-                <label>Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  className="form-control"
-                  value={title}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-froup">
-                <label>Description</label>
-                <input
-                  type="text"
-                  name="description"
-                  className="form-control"
-                  value={description}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-froup">
-                <label>Price</label>
-                <input
-                  type="number"
-                  name="price"
-                  className="form-control"
-                  value={price}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-froup">
-                <label>Shipping</label>
-                <select
-                  name="shipping"
-                  className="form-control"
-                  onChange={handleChange}
-                >
-                  <option>shipping?</option>
-                  <option value="No">No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </div>
-              <div className="form-froup">
-                <label>Quantity</label>
-                <input
-                  type="number"
-                  name="quantity"
-                  className="form-control"
-                  value={quantity}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-froup">
-                <label>Colors</label>
-                <select
-                  name="color"
-                  className="form-control"
-                  onChange={handleChange}
-                >
-                  <option>please select color</option>
-                  {colors.map((cl) => (
-                    <option value={cl} key={cl}>
-                      {cl}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-froup">
-                <label>Brand</label>
-                <input
-                  type="text"
-                  name="brand"
-                  className="form-control"
-                  value={brand}
-                  onChange={handleChange}
-                />
-              </div>
-              <br />
-              <button className="btn btn-primary" onClick={handleSubmit}>
-                Save
-              </button>
-            </form>
+            <ProductForm
+              values={values}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+            />
           ) : (
             ""
           )}
