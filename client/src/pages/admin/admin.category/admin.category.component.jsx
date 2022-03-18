@@ -101,7 +101,6 @@ export const AdminCategory = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value.toLocaleLowerCase())}
           />
-          <br />
           {ok ? (
             <UpdateCategoryForm
               slug={slug}
