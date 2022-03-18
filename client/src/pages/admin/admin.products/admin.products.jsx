@@ -7,9 +7,11 @@ import {
   createProducts,
   getAllProducts,
 } from "./../../../utils/products/products.utils";
+import { getCategories } from "./../../../utils/category/category.utils";
 export const AdminProducts = () => {
   useEffect(() => {
     loadProducts();
+    loadCategories();
   }, []);
 
   const initialValues = {
@@ -28,6 +30,7 @@ export const AdminProducts = () => {
   };
   const [values, setValues] = useState(initialValues);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [newProduct, setNewProduct] = useState(false);
 
   const user = useSelector((state) => state.user.currentUser);
@@ -40,11 +43,20 @@ export const AdminProducts = () => {
       })
       .catch((err) => console.log(err));
   };
+  const loadCategories = async () => {
+    await getCategories().then((res) =>
+      setValues({ ...values, categories: res.data })
+    );
+  };
   const handleChange = (e) => {
     e.preventDefault();
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const handleCatChange = (e) => {
+    e.preventDefault();
+    setValues({ ...values, category: e.target.value });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,10 +82,8 @@ export const AdminProducts = () => {
           <div className="container-fluid">
             {products.map((product) => {
               return (
-                <div className="row">
-                  <div className="col border" key={product._id}>
-                    {product.title}
-                  </div>
+                <div className="row" key={product._id}>
+                  <div className="col border">{product.title}</div>
                 </div>
               );
             })}
@@ -92,6 +102,7 @@ export const AdminProducts = () => {
               values={values}
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              handleCatChange={handleCatChange}
             />
           ) : (
             ""

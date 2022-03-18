@@ -1,6 +1,11 @@
 import React from "react";
 
-export const ProductForm = ({ values, handleChange, handleSubmit }) => {
+export const ProductForm = ({
+  values,
+  handleChange,
+  handleSubmit,
+  handleCatChange,
+}) => {
   const {
     title,
     description,
@@ -15,6 +20,7 @@ export const ProductForm = ({ values, handleChange, handleSubmit }) => {
     brand,
     color,
   } = values;
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-froup">
@@ -89,6 +95,31 @@ export const ProductForm = ({ values, handleChange, handleSubmit }) => {
           value={brand}
           onChange={handleChange}
         />
+      </div>
+      <div className="form-froup">
+        <label>Categories</label>
+        <select
+          name="categories"
+          className="form-control"
+          onChange={handleCatChange}
+        >
+          <option></option>
+          {categories.map((c) => {
+            return (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
+            );
+          })}
+          {/* {categories.length > 0 &&
+            categories.map((c) => {
+              return (
+                <option key={c._id} value={c._id}>
+                  {c.name}
+                </option>
+              );
+            })} */}
+        </select>
       </div>
       <br />
       <button className="btn btn-primary" onClick={handleSubmit}>
