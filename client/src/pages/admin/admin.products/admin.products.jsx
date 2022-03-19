@@ -3,6 +3,7 @@ import AdminNav from "./../../../components/navigation/admin-navigation.componen
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { ProductForm } from "./../../../components/forms/product-form.component";
+import { FileUploadForm } from "./../../../components/forms/fileupload-form.component";
 import {
   createProducts,
   getAllProducts,
@@ -111,15 +112,18 @@ export const AdminProducts = () => {
           </button>
 
           {newProduct ? (
-            <ProductForm
-              values={values}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              handleCatChange={handleCatChange}
-              subcategories={subcategories}
-              showSubcategories={showSubcategories}
-              handleSubChange={handleSubChange}
-            />
+            <div>
+              <ProductForm
+                values={values}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                handleCatChange={handleCatChange}
+                subcategories={subcategories}
+                showSubcategories={showSubcategories}
+                handleSubChange={handleSubChange}
+              />
+              <FileUploadForm />
+            </div>
           ) : (
             ""
           )}
