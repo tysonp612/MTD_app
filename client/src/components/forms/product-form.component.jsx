@@ -15,15 +15,11 @@ export const ProductForm = ({
     title,
     description,
     price,
-    category,
     categories,
-    subcategory,
-    shipping,
     quantity,
     images,
     colors,
     brand,
-    color,
   } = values;
 
   return (

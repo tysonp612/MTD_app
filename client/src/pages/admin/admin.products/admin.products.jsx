@@ -76,6 +76,7 @@ export const AdminProducts = () => {
       .then((res) => {
         toast.success("Product created successfully");
         loadProducts();
+        setValues(initialValues);
       })
       .catch((err) => {
         console.log(err);
