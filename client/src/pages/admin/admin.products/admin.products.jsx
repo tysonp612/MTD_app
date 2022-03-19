@@ -66,6 +66,9 @@ export const AdminProducts = () => {
       })
       .catch((err) => console.log(err));
   };
+  const handleSubChange = (e) => {
+    setValues({ ...values, subcategory: e });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -114,6 +117,7 @@ export const AdminProducts = () => {
               handleCatChange={handleCatChange}
               subcategories={subcategories}
               showSubcategories={showSubcategories}
+              handleSubChange={handleSubChange}
             />
           ) : (
             ""

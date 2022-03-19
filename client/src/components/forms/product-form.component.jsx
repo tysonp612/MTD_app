@@ -1,5 +1,7 @@
 import React from "react";
-
+import { Select } from "antd";
+import "antd/dist/antd.css";
+const { Option } = Select;
 export const ProductForm = ({
   values,
   handleChange,
@@ -7,6 +9,7 @@ export const ProductForm = ({
   handleCatChange,
   subcategories,
   showSubcategories,
+  handleSubChange,
 }) => {
   const {
     title,
@@ -25,7 +28,7 @@ export const ProductForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Title</label>
         <input
           type="text"
@@ -35,7 +38,7 @@ export const ProductForm = ({
           onChange={handleChange}
         />
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Description</label>
         <input
           type="text"
@@ -45,7 +48,7 @@ export const ProductForm = ({
           onChange={handleChange}
         />
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Price</label>
         <input
           type="number"
@@ -55,7 +58,7 @@ export const ProductForm = ({
           onChange={handleChange}
         />
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Shipping</label>
         <select
           name="shipping"
@@ -67,7 +70,7 @@ export const ProductForm = ({
           <option value="Yes">Yes</option>
         </select>
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Quantity</label>
         <input
           type="number"
@@ -77,7 +80,7 @@ export const ProductForm = ({
           onChange={handleChange}
         />
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Colors</label>
         <select name="color" className="form-control" onChange={handleChange}>
           <option>please select color</option>
@@ -88,7 +91,7 @@ export const ProductForm = ({
           ))}
         </select>
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Brand</label>
         <input
           type="text"
@@ -98,7 +101,7 @@ export const ProductForm = ({
           onChange={handleChange}
         />
       </div>
-      <div className="form-froup">
+      <div className="form-group">
         <label>Categories</label>
         <select
           name="categories"
@@ -115,23 +118,26 @@ export const ProductForm = ({
           })}
         </select>
       </div>
+      <br />
       {showSubcategories ? (
-        <div className="form-froup">
-          <label>Sub Categories</label>
-          <select
+        <div className="form-group">
+          <label className="form-label">Sub Categories</label>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
             name="subcategory"
-            className="form-control"
-            onChange={handleChange}
+            placeholder="Please select"
+            onChange={handleSubChange}
           >
-            <option></option>
             {subcategories.map((sub) => {
               return (
-                <option key={sub._id} value={sub._id}>
+                <Option key={sub._id} value={sub._id}>
                   {sub.name}
-                </option>
+                </Option>
               );
             })}
-          </select>
+          </Select>
         </div>
       ) : (
         ""
