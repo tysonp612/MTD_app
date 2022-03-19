@@ -5,6 +5,8 @@ export const ProductForm = ({
   handleChange,
   handleSubmit,
   handleCatChange,
+  subcategories,
+  showSubcategories,
 }) => {
   const {
     title,
@@ -103,7 +105,7 @@ export const ProductForm = ({
           className="form-control"
           onChange={handleCatChange}
         >
-          <option></option>
+          <option value=""></option>
           {categories.map((c) => {
             return (
               <option key={c._id} value={c._id}>
@@ -111,16 +113,29 @@ export const ProductForm = ({
               </option>
             );
           })}
-          {/* {categories.length > 0 &&
-            categories.map((c) => {
-              return (
-                <option key={c._id} value={c._id}>
-                  {c.name}
-                </option>
-              );
-            })} */}
         </select>
       </div>
+      {showSubcategories ? (
+        <div className="form-froup">
+          <label>Sub Categories</label>
+          <select
+            name="subcategory"
+            className="form-control"
+            onChange={handleChange}
+          >
+            <option></option>
+            {subcategories.map((sub) => {
+              return (
+                <option key={sub._id} value={sub._id}>
+                  {sub.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      ) : (
+        ""
+      )}
       <br />
       <button className="btn btn-primary" onClick={handleSubmit}>
         Save

@@ -22,5 +22,7 @@ router
 router
   .route("/category/:slug")
   .delete(authTokenCheck, adminCheck, categoryController.deleteCategory);
-
+router
+  .route("/category/subcategory/:id")
+  .get(categoryController.getSubFromCategoryId);
 module.exports = router;

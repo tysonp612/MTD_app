@@ -7,7 +7,10 @@ import {
   createProducts,
   getAllProducts,
 } from "./../../../utils/products/products.utils";
-import { getCategories } from "./../../../utils/category/category.utils";
+import {
+  getCategories,
+  getSubFromCategory,
+} from "./../../../utils/category/category.utils";
 export const AdminProducts = () => {
   useEffect(() => {
     loadProducts();
@@ -30,9 +33,9 @@ export const AdminProducts = () => {
   };
   const [values, setValues] = useState(initialValues);
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [newProduct, setNewProduct] = useState(false);
-
+  const [subcategories, setSubcategories] = useState([]);
+  const [showSubcategories, setShowSubcategories] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
 
   const loadProducts = async () => {
@@ -49,13 +52,19 @@ export const AdminProducts = () => {
     );
   };
   const handleChange = (e) => {
-    e.preventDefault();
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleCatChange = (e) => {
-    e.preventDefault();
+  const handleCatChange = async (e) => {
     setValues({ ...values, category: e.target.value });
+    await getSubFromCategory(e.target.value)
+      .then((res) => {
+        setSubcategories(res.data);
+        res.data.length > 0
+          ? setShowSubcategories(true)
+          : setShowSubcategories(false);
+      })
+      .catch((err) => console.log(err));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,6 +112,8 @@ export const AdminProducts = () => {
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               handleCatChange={handleCatChange}
+              subcategories={subcategories}
+              showSubcategories={showSubcategories}
             />
           ) : (
             ""

@@ -1,4 +1,5 @@
 const Category = require("./../../models/category.schema");
+const SubCategory = require("./../../models/sub-category.schema");
 const slugify = require("slugify");
 
 exports.createCategory = async (req, res) => {
@@ -53,5 +54,17 @@ exports.deleteCategory = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).send("Delete category failed");
+  }
+};
+exports.getSubFromCategoryId = async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const subCategories = await SubCategory.find({ parent: req.params.id });
+    res.status(200).json(subCategories);
+  } catch (err) {
+    console.log(err);
+    res
+      .status(400)
+      .send("Could not find subcategory matches with provided category");
   }
 };
