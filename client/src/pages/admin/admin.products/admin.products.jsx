@@ -4,17 +4,13 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { ProductForm } from "./../../../components/forms/product-form.component";
 import { FileUploadForm } from "./../../../components/forms/fileupload-form.component";
-import {
-  createProducts,
-  getAllProducts,
-} from "./../../../utils/products/products.utils";
+import { createProducts } from "./../../../utils/products/products.utils";
 import {
   getCategories,
   getSubFromCategory,
 } from "./../../../utils/category/category.utils";
 export const AdminProducts = () => {
   useEffect(() => {
-    loadProducts();
     loadCategories();
   }, []);
 
@@ -34,19 +30,10 @@ export const AdminProducts = () => {
   };
   const [values, setValues] = useState(initialValues);
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState(false);
   const [subcategories, setSubcategories] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
 
-  const loadProducts = async () => {
-    await getAllProducts()
-      .then((res) => {
-        console.log(res);
-        setProducts(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
   const loadCategories = async () => {
     await getCategories().then((res) =>
       setValues({ ...values, categories: res.data })
@@ -76,7 +63,6 @@ export const AdminProducts = () => {
     await createProducts(values, user.token)
       .then((res) => {
         toast.success("Product created successfully");
-        loadProducts();
         setValues(initialValues);
       })
       .catch((err) => {
@@ -92,41 +78,18 @@ export const AdminProducts = () => {
         </div>
         <div className="col-md-10">
           <h3>Products Page</h3>
-
-          <div className="container-fluid">
-            {products.map((product) => {
-              return (
-                <div className="row" key={product._id}>
-                  <div className="col border">{product.title}</div>
-                </div>
-              );
-            })}
+          <div>
+            <FileUploadForm values={values} setValues={setValues} />
+            <ProductForm
+              values={values}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleCatChange={handleCatChange}
+              subcategories={subcategories}
+              showSubcategories={showSubcategories}
+              handleSubChange={handleSubChange}
+            />
           </div>
-
-          <br />
-          <button
-            className="btn btn-primary mb-3"
-            onClick={(e) => setNewProduct(true)}
-          >
-            Create a new product
-          </button>
-
-          {newProduct ? (
-            <div>
-              <FileUploadForm values={values} setValues={setValues} />
-              <ProductForm
-                values={values}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-                handleCatChange={handleCatChange}
-                subcategories={subcategories}
-                showSubcategories={showSubcategories}
-                handleSubChange={handleSubChange}
-              />
-            </div>
-          ) : (
-            ""
-          )}
         </div>
       </div>
     </div>

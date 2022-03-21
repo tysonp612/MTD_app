@@ -14,7 +14,11 @@ exports.createProduct = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().sort({ createdAt: -1 });
+    const products = await Product.find()
+      .limit(+req.params.count)
+      .populate("category")
+      .populate("subcategory")
+      .sort({ createdAt: -1 });
     res.status(200).json(products);
   } catch (err) {
     console.log(err);

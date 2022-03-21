@@ -11,5 +11,5 @@ const {
 router
   .route("/product")
   .post(authTokenCheck, adminCheck, productController.createProduct);
-router.route("/products").get(productController.getAllProducts);
+router.route("/products/:count").get(productController.getAllProducts);
 module.exports = router;
