@@ -122,7 +122,7 @@ export const AdminProducts = () => {
                 showSubcategories={showSubcategories}
                 handleSubChange={handleSubChange}
               />
-              <FileUploadForm />
+              <FileUploadForm values={values} setValues={setValues} />
             </div>
           ) : (
             ""
