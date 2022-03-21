@@ -1,7 +1,12 @@
 import React from "react";
+import { Avatar, Badge } from "antd";
+import "antd/dist/antd.css";
 import { useSelector } from "react-redux";
 import Resizer from "react-image-file-resizer";
-import { uploadFiles } from "./../../utils/file-upload/file-upload.utils";
+import {
+  uploadFiles,
+  removeFiles,
+} from "./../../utils/file-upload/file-upload.utils";
 // import Resizer from "react-image-file-resizer";
 
 export const FileUploadForm = ({ values, setValues }) => {
@@ -30,11 +35,36 @@ export const FileUploadForm = ({ values, setValues }) => {
         ),
       "base64"
     );
-    console.log(values.images);
-    console.log(allUploadedFiles);
+  };
+  const fileRemove = async (id) => {
+    const filteredImages = values.images.filter((image) => {
+      reutrn;
+    });
+    await removeFiles(id, user.token).then((res) => {});
   };
   return (
     <div>
+      <div>
+        {values.images.map((image) => {
+          return (
+            <Badge
+              count="X"
+              key={image.public_id}
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                console.log(image.public_id);
+              }}
+            >
+              <Avatar
+                src={image.url}
+                size={100}
+                shape="square"
+                className="m-2"
+              />
+            </Badge>
+          );
+        })}
+      </div>
       <label className="btn btn-primary">
         Choose File
         <input

@@ -113,6 +113,7 @@ export const AdminProducts = () => {
 
           {newProduct ? (
             <div>
+              <FileUploadForm values={values} setValues={setValues} />
               <ProductForm
                 values={values}
                 handleChange={handleChange}
@@ -122,7 +123,6 @@ export const AdminProducts = () => {
                 showSubcategories={showSubcategories}
                 handleSubChange={handleSubChange}
               />
-              <FileUploadForm values={values} setValues={setValues} />
             </div>
           ) : (
             ""
