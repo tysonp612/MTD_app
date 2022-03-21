@@ -37,10 +37,14 @@ export const FileUploadForm = ({ values, setValues }) => {
     );
   };
   const fileRemove = async (id) => {
-    const filteredImages = values.images.filter((image) => {
-      reutrn;
-    });
-    await removeFiles(id, user.token).then((res) => {});
+    await removeFiles(id, user.token)
+      .then((res) => {
+        const filteredImages = values.images.filter((image) => {
+          return image.public_id !== id;
+        });
+        setValues({ ...values, images: filteredImages });
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div>
@@ -52,7 +56,7 @@ export const FileUploadForm = ({ values, setValues }) => {
               key={image.public_id}
               style={{ cursor: "pointer" }}
               onClick={() => {
-                console.log(image.public_id);
+                fileRemove(image.public_id);
               }}
             >
               <Avatar

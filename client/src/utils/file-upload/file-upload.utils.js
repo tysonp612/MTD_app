@@ -10,7 +10,7 @@ export const uploadFiles = async (uri, authToken) => {
 
 export const removeFiles = async (id, authToken) => {
   return await axios.post(
-    `${process.env.REACT_APP_API}/removeimages}`,
+    `${process.env.REACT_APP_API}/removeimages`,
     {
       public_id: id,
     },

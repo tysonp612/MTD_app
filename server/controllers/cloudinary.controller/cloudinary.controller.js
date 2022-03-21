@@ -22,8 +22,11 @@ exports.uploadImages = async (req, res) => {
 };
 exports.removeImages = async (req, res) => {
   let image_id = req.body.public_id;
-  cloudinary.uploader.destroy(image_id, (err, result) => {
-    if (err) return res.json({ sucess: false, err });
+  console.log(image_id);
+  try {
+    await cloudinary.uploader.destroy(image_id);
     res.status(200).send("image deleted");
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
