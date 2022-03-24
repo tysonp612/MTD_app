@@ -15,4 +15,8 @@ router.route("/products/:count").get(productController.getAllProducts);
 router
   .route("/product/:slug")
   .delete(authTokenCheck, adminCheck, productController.deleteProduct);
+
+router
+  .route("/product/:slug")
+  .get(authTokenCheck, adminCheck, productController.getOneProduct);
 module.exports = router;

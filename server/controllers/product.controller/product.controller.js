@@ -25,6 +25,19 @@ exports.getAllProducts = async (req, res) => {
     res.status(404).send("No product found");
   }
 };
+
+exports.getOneProduct = async (req, res) => {
+  try {
+    const slug = req.params.slug;
+    const product = await Product.findOne({ slug: slug })
+      .populate("category")
+      .populate("subcategory");
+    res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send("No product found");
+  }
+};
 exports.deleteProduct = async (req, res) => {
   try {
     const slug = req.params.slug;

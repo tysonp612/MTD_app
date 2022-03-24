@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import AdminNav from "./../../../components/navigation/admin-navigation.component";
+import AdminNav from "../../../components/navigation/admin-navigation.component";
 import AdminProductCard from "../../../components/card/admin.product-card.component";
 import {
   getAllProductsByCount,
   deleteProduct,
-} from "./../../../utils/products/products.utils";
+} from "../../../utils/products/products.utils";
 
 export const AdminShowProduct = () => {
   const [products, setProducts] = useState([]);
