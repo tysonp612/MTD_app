@@ -35,7 +35,8 @@ import { AdminDashboard } from "./pages/admin/admin.dashboard/admin.dashboard.co
 import { AdminCategory } from "./pages/admin/admin.category/admin.category.component";
 import { AdminSubCategory } from "./pages/admin/admin.sub-category/admin.sub-category.component";
 import { AdminProducts } from "./pages/admin/admin.products/admin.products";
-import { AdminShowProduct } from "./pages/admin/admin.showproducts/admin.showproducts";
+import { AdminShowProduct } from "./pages/admin/admin.products/admin.showproducts";
+import { ProductUpdate } from "./pages/admin/admin.products/admin.product-update";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -82,6 +83,11 @@ const App = () => {
           exact
           path="/admin/showproducts"
           component={AdminShowProduct}
+        />
+        <AdminRoute
+          exact
+          path="/admin/product/:slug"
+          component={ProductUpdate}
         />
         <AdminRoute exact path="/admin/category" component={AdminCategory} />
         <AdminRoute exact path="/admin/sub" component={AdminSubCategory} />

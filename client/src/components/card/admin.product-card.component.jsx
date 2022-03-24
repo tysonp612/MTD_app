@@ -3,7 +3,7 @@ import { Card } from "antd";
 import "antd/dist/antd.css";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
+import { Link } from "react-router-dom";
 const { Meta } = Card;
 
 const AdminProductCard = ({ product, handleProductDelete }) => {
@@ -18,6 +18,7 @@ const AdminProductCard = ({ product, handleProductDelete }) => {
     shipping,
     color,
     brand,
+    slug,
   } = product;
 
   return (
@@ -30,10 +31,12 @@ const AdminProductCard = ({ product, handleProductDelete }) => {
         />
       }
       actions={[
-        <EditOutlined className="text-warning" />,
+        <Link to={`/admin/product/${slug}`}>
+          <EditOutlined className="text-warning" />
+        </Link>,
         <DeleteOutlined
           className="text-danger"
-          onClick={() => handleProductDelete(title)}
+          onClick={() => handleProductDelete(slug)}
         />,
       ]}
     >

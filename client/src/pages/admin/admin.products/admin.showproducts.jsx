@@ -6,7 +6,6 @@ import {
   getAllProductsByCount,
   deleteProduct,
 } from "./../../../utils/products/products.utils";
-import slugify from "slugify";
 
 export const AdminShowProduct = () => {
   const [products, setProducts] = useState([]);
@@ -23,11 +22,13 @@ export const AdminShowProduct = () => {
       })
       .catch((err) => console.log(err));
   };
-  const handleProductDelete = async (title) => {
-    const slug = slugify(title).toLocaleLowerCase();
-    await deleteProduct(slug, user.token)
-      .then(() => loadProducts())
-      .catch((err) => console.log(err));
+  const handleProductDelete = async (slug) => {
+    const deleteConfirm = window.confirm(`Are you sure to delete ${slug}`);
+    if (deleteConfirm) {
+      await deleteProduct(slug, user.token)
+        .then(() => loadProducts())
+        .catch((err) => console.log(err));
+    }
   };
   return (
     <div className="container-fluid">
