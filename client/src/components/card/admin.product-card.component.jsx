@@ -3,9 +3,10 @@ import { Card } from "antd";
 import "antd/dist/antd.css";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+
 const { Meta } = Card;
 
-const AdminProductCard = ({ product }) => {
+const AdminProductCard = ({ product, handleProductDelete }) => {
   const {
     title,
     description,
@@ -30,7 +31,10 @@ const AdminProductCard = ({ product }) => {
       }
       actions={[
         <EditOutlined className="text-warning" />,
-        <DeleteOutlined className="text-danger" />,
+        <DeleteOutlined
+          className="text-danger"
+          onClick={() => handleProductDelete(title)}
+        />,
       ]}
     >
       <Meta

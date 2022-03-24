@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import AdminNav from "./../../../components/navigation/admin-navigation.component";
 import AdminProductCard from "../../../components/card/admin.product-card.component";
-import { getAllProductsByCount } from "./../../../utils/products/products.utils";
+import {
+  getAllProductsByCount,
+  deleteProduct,
+} from "./../../../utils/products/products.utils";
+import slugify from "slugify";
 
 export const AdminShowProduct = () => {
   const [products, setProducts] = useState([]);
+  const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     loadProducts();
   }, []);
@@ -15,6 +21,12 @@ export const AdminShowProduct = () => {
         setProducts(res.data);
         console.log(products);
       })
+      .catch((err) => console.log(err));
+  };
+  const handleProductDelete = async (title) => {
+    const slug = slugify(title).toLocaleLowerCase();
+    await deleteProduct(slug, user.token)
+      .then(() => loadProducts())
       .catch((err) => console.log(err));
   };
   return (
@@ -29,7 +41,10 @@ export const AdminShowProduct = () => {
             {products.map((product) => {
               return (
                 <div className="col-md-4 pb-3" key={product._id}>
-                  <AdminProductCard product={product} />
+                  <AdminProductCard
+                    product={product}
+                    handleProductDelete={handleProductDelete}
+                  />
                 </div>
               );
             })}
