@@ -8,7 +8,11 @@ export const createProducts = async (values, authToken) => {
     headers: { authToken },
   });
 };
-
+export const getOneProduct = async (slug, authToken) => {
+  return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`, {
+    headers: { authToken },
+  });
+};
 export const deleteProduct = async (slug, authToken) => {
   return await axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
     headers: { authToken },
