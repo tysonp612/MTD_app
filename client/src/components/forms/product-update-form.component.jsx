@@ -113,8 +113,8 @@ export const ProductUpdateForm = ({
           name="categories"
           className="form-control"
           onChange={handleCatChange}
+          value={category._id}
         >
-          <option value={category._id}>{category.name}</option>
           {categories.map((c) => {
             return (
               <option key={c._id} value={c._id}>
