@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { ProductUpdateForm } from "./../../../components/forms/product-update-form.component";
 import { FileUploadForm } from "./../../../components/forms/fileupload-form.component";
 import {
-  createProducts,
   getOneProduct,
+  updateProduct,
 } from "./../../../utils/products/products.utils";
 import {
   getCategories,
@@ -36,7 +36,6 @@ export const ProductUpdate = (props) => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [arraySubcategory, setArraySubcategory] = useState();
-  const [showSubcategories, setShowSubcategories] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
 
   const loadProduct = async () => {
@@ -67,10 +66,6 @@ export const ProductUpdate = (props) => {
     await getSubFromCategory(e.target.value)
       .then((res) => {
         setSubcategories(res.data);
-
-        res.data.length > 0
-          ? setShowSubcategories(true)
-          : setShowSubcategories(false);
       })
       .catch((err) => console.log(err));
   };
@@ -81,10 +76,11 @@ export const ProductUpdate = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await createProducts(values, user.token)
+    await updateProduct(slug, user.token, values)
       .then((res) => {
         toast.success("Product created successfully");
         setValues(initialValues);
+        loadProduct();
       })
       .catch((err) => {
         console.log(err);
@@ -106,7 +102,6 @@ export const ProductUpdate = (props) => {
             handleSubmit={handleSubmit}
             handleCatChange={handleCatChange}
             subcategories={subcategories}
-            showSubcategories={showSubcategories}
             handleSubChange={handleSubChange}
             setArraySubcategory={setArraySubcategory}
             arraySubcategory={arraySubcategory}

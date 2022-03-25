@@ -109,7 +109,9 @@ export const AdminSubCategory = () => {
             <select
               name="category"
               className="form-control"
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
             >
               <option></option>
               {categories.length > 0 &&

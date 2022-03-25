@@ -38,6 +38,23 @@ exports.getOneProduct = async (req, res) => {
     res.status(404).send("No product found");
   }
 };
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const slug = req.params.slug;
+    const product = await Product.findOneAndUpdate(
+      { slug: slug },
+      req.body.values,
+      {
+        new: true,
+      }
+    );
+    res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send("Update failed");
+  }
+};
 exports.deleteProduct = async (req, res) => {
   try {
     const slug = req.params.slug;

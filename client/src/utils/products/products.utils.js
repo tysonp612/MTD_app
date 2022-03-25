@@ -13,6 +13,15 @@ export const getOneProduct = async (slug, authToken) => {
     headers: { authToken },
   });
 };
+export const updateProduct = async (slug, authToken, values) => {
+  return await axios.put(
+    `${process.env.REACT_APP_API}/product/${slug}`,
+    { values },
+    {
+      headers: { authToken },
+    }
+  );
+};
 export const deleteProduct = async (slug, authToken) => {
   return await axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
     headers: { authToken },
