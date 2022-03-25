@@ -29,15 +29,15 @@ export const AdminProducts = () => {
     color: "",
   };
   const [values, setValues] = useState(initialValues);
-  const [products, setProducts] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
 
   const loadCategories = async () => {
-    await getCategories().then((res) =>
-      setValues({ ...values, categories: res.data })
-    );
+    await getCategories().then((res) => {
+      console.log(res.data);
+      setValues({ ...values, categories: res.data });
+    });
   };
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

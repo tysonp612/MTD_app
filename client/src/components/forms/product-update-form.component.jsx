@@ -2,7 +2,7 @@ import React from "react";
 import { Select } from "antd";
 import "antd/dist/antd.css";
 const { Option } = Select;
-export const ProductForm = ({
+export const ProductUpdateForm = ({
   values,
   handleChange,
   handleSubmit,
@@ -10,14 +10,18 @@ export const ProductForm = ({
   subcategories,
   showSubcategories,
   handleSubChange,
+  categories,
 }) => {
   const {
     title,
+    category,
+    subcategory,
     description,
     price,
-    categories,
     quantity,
+    shipping,
     colors,
+    color,
     brand,
   } = values;
 
@@ -58,6 +62,7 @@ export const ProductForm = ({
         <select
           name="shipping"
           className="form-control"
+          value={shipping}
           onChange={handleChange}
         >
           <option>shipping?</option>
@@ -77,7 +82,12 @@ export const ProductForm = ({
       </div>
       <div className="form-group">
         <label>Colors</label>
-        <select name="color" className="form-control" onChange={handleChange}>
+        <select
+          value={color}
+          name="color"
+          className="form-control"
+          onChange={handleChange}
+        >
           <option>please select color</option>
           {colors.map((cl) => (
             <option value={cl} key={cl}>
@@ -103,7 +113,7 @@ export const ProductForm = ({
           className="form-control"
           onChange={handleCatChange}
         >
-          <option>please select category</option>
+          <option value={category._id}>{category.name}</option>
           {categories.map((c) => {
             return (
               <option key={c._id} value={c._id}>
