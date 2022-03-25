@@ -35,6 +35,7 @@ export const ProductUpdate = (props) => {
   const [values, setValues] = useState(initialValues);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [arraySubcategory, setArraySubcategory] = useState();
   const [showSubcategories, setShowSubcategories] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
 
@@ -42,6 +43,12 @@ export const ProductUpdate = (props) => {
     await getOneProduct(slug, user.token)
       .then((res) => {
         setValues({ ...values, ...res.data });
+        getSubFromCategory(res.data.category._id).then((res) => {
+          setSubcategories(res.data);
+        });
+        let array = [];
+        res.data.subcategory.forEach((sub) => array.push(sub._id));
+        setArraySubcategory(array);
       })
       .catch((err) => console.log(err));
   };
@@ -51,7 +58,7 @@ export const ProductUpdate = (props) => {
     });
   };
   const handleChange = (e) => {
-    console.log(categories);
+    console.log(values);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -68,7 +75,8 @@ export const ProductUpdate = (props) => {
       .catch((err) => console.log(err));
   };
   const handleSubChange = (e) => {
-    setValues({ ...values, subcategory: e });
+    setArraySubcategory(e);
+    setValues({ ...values, subcategory: arraySubcategory });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,6 +108,8 @@ export const ProductUpdate = (props) => {
             subcategories={subcategories}
             showSubcategories={showSubcategories}
             handleSubChange={handleSubChange}
+            setArraySubcategory={setArraySubcategory}
+            arraySubcategory={arraySubcategory}
           />
         </div>
       </div>

@@ -35,7 +35,6 @@ export const AdminProducts = () => {
 
   const loadCategories = async () => {
     await getCategories().then((res) => {
-      console.log(res.data);
       setValues({ ...values, categories: res.data });
     });
   };

@@ -8,7 +8,8 @@ export const ProductUpdateForm = ({
   handleSubmit,
   handleCatChange,
   subcategories,
-  showSubcategories,
+  setArraySubcategory,
+  arraySubcategory,
   handleSubChange,
   categories,
 }) => {
@@ -124,29 +125,28 @@ export const ProductUpdateForm = ({
         </select>
       </div>
       <br />
-      {showSubcategories ? (
-        <div className="form-group">
-          <label className="form-label">Sub Categories</label>
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: "100%" }}
-            name="subcategory"
-            placeholder="Please select"
-            onChange={handleSubChange}
-          >
-            {subcategories.map((sub) => {
-              return (
-                <Option key={sub._id} value={sub._id}>
-                  {sub.name}
-                </Option>
-              );
-            })}
-          </Select>
-        </div>
-      ) : (
-        ""
-      )}
+
+      <div className="form-group">
+        <label className="form-label">Sub Categories</label>
+        <Select
+          mode="multiple"
+          allowClear
+          style={{ width: "100%" }}
+          name="subcategory"
+          value={arraySubcategory}
+          placeholder="Please select"
+          onChange={handleSubChange}
+        >
+          {subcategories.map((sub) => {
+            return (
+              <Option key={sub._id} value={sub._id}>
+                {sub.name}
+              </Option>
+            );
+          })}
+        </Select>
+      </div>
+
       <br />
       <button className="btn btn-primary" onClick={handleSubmit}>
         Save
