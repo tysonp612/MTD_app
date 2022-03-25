@@ -95,6 +95,7 @@ export const ProductUpdate = (props) => {
         </div>
         <div className="col-md-10">
           <h3>Products Update Page</h3>
+          <FileUploadForm values={values} setValues={setValues} />
           <ProductUpdateForm
             values={values}
             handleChange={handleChange}
