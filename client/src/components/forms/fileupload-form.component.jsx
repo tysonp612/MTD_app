@@ -28,7 +28,6 @@ export const FileUploadForm = ({ values, setValues }) => {
               .then((res) => {
                 allUploadedFiles.push(res.data);
                 setValues({ ...values, images: allUploadedFiles });
-                console.log(values.images);
               })
               .catch((err) => console.log(err));
           }

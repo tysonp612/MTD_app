@@ -8,7 +8,6 @@ export const ProductUpdateForm = ({
   handleSubmit,
   handleCatChange,
   subcategories,
-  setArraySubcategory,
   arraySubcategory,
   handleSubChange,
   categories,
@@ -16,7 +15,6 @@ export const ProductUpdateForm = ({
   const {
     title,
     category,
-    subcategory,
     description,
     price,
     quantity,

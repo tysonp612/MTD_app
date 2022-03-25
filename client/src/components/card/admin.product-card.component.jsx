@@ -7,19 +7,7 @@ import { Link } from "react-router-dom";
 const { Meta } = Card;
 
 const AdminProductCard = ({ product, handleProductDelete }) => {
-  const {
-    title,
-    description,
-    price,
-    category,
-    subcategory,
-    quantity,
-    images,
-    shipping,
-    color,
-    brand,
-    slug,
-  } = product;
+  const { title, description, images, slug } = product;
 
   return (
     <Card

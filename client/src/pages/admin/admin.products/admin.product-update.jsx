@@ -104,7 +104,6 @@ export const ProductUpdate = (props) => {
             handleCatChange={handleCatChange}
             subcategories={subcategories}
             handleSubChange={handleSubChange}
-            setArraySubcategory={setArraySubcategory}
             arraySubcategory={arraySubcategory}
           />
         </div>
