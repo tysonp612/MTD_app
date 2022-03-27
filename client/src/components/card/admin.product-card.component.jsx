@@ -1,6 +1,5 @@
 import React from "react";
 import { Card } from "antd";
-
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
