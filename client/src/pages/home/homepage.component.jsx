@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllProductsByCount } from "./../../utils/products/products.utils";
 import { ProductCard } from "./../../components/card/regular.product-card.component";
+import Jumbotron from "./../../components/jumbotron/jumbotron.component";
 const Home = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -15,15 +16,8 @@ const Home = () => {
   };
   return (
     <div>
-      <div className="jumbotron jumbotron-fluid">
-        <div className="container">
-          <h4>All Product</h4>
-
-          <p className="lead">
-            This is a modified jumbotron that occupies the entire horizontal
-            space of its parent.
-          </p>
-        </div>
+      <div className="jumbotron text-primary h1 font-weight-bold text-center p-5">
+        <Jumbotron text={["New Arrivals", "Best Sellers", "Latest Product"]} />
       </div>
       <div className="container">
         <div className="row">
