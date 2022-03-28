@@ -21,4 +21,5 @@ router
 router
   .route("/product/:slug")
   .get(authTokenCheck, adminCheck, productController.getOneProduct);
+router.route("/products").post(productController.getSortedProducts);
 module.exports = router;

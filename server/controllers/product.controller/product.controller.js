@@ -25,7 +25,19 @@ exports.getAllProducts = async (req, res) => {
     res.status(404).send("No product found");
   }
 };
-
+exports.getSortedProducts = async (req, res) => {
+  try {
+    const { sortBy, order, limit } = req.body;
+    const products = await Product.find()
+      .populate("category")
+      .populate("subcategory")
+      .sort({ sortBy: order })
+      .limit(limit);
+    res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+  }
+};
 exports.getOneProduct = async (req, res) => {
   try {
     const slug = req.params.slug;
