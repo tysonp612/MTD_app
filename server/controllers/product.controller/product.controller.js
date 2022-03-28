@@ -26,17 +26,32 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 exports.getSortedProducts = async (req, res) => {
+  //WITHOUT PAGINATION
+  // try {
+  //   const { sortBy, order, limit } = req.body;
+  //   const products = await Product.find()
+  //     .populate("category")
+  //     .populate("subcategory")
+  //     .sort([[sortBy, order]])
+  //     .limit(limit);
+  //   res.status(200).json(products);
+  // } catch (err) {
+  //   console.log(err);
+  // }
+
+  //WITH PAGINATION
   try {
-    const { sortBy, order, limit } = req.body;
+    const currentPage = page || 1;
+    const documentPerPage = 3;
+    const { sortBy, order, page } = req.body;
     const products = await Product.find()
+      .skip((currentPage - 1) * documentPerPage)
       .populate("category")
       .populate("subcategory")
       .sort([[sortBy, order]])
-      .limit(limit);
+      .limit(documentPerPage);
     res.status(200).json(products);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 exports.getOneProduct = async (req, res) => {
   try {
@@ -65,6 +80,14 @@ exports.updateProduct = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(404).send("Update failed");
+  }
+};
+exports.productsCount = async (req, res) => {
+  try {
+    let total = await Product.find().estimatedDocumentCount();
+    res.status(200).json(total);
+  } catch (err) {
+    console.log(err);
   }
 };
 exports.deleteProduct = async (req, res) => {
