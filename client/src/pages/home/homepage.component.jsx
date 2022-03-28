@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { getAllProductsByCount } from "./../../utils/products/products.utils";
-import { ProductCard } from "./../../components/card/regular.product-card.component";
-import { LoadingCard } from "./../../components/card/loading-card.component";
+
+import { NewArrivals } from "./../../components/homepage/homepage-newarrivals.component";
+import { BestSellers } from "./../../components/homepage/homepage-bestsellers.component";
 import Jumbotron from "./../../components/jumbotron/jumbotron.component";
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    loadProducts();
-  }, []);
-  const loadProducts = async () => {
-    setLoading(true);
-    await getAllProductsByCount(9)
-      .then((res) => {
-        setProducts(res.data);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
-  };
   return (
     <div>
-      <div className="jumbotron text-primary h1 font-weight-bold text-center p-5">
+      <div className="jumbotron text-primary h1 font-weight-bold text-center p-5 display-3">
         <Jumbotron text={["New Arrivals", "Best Sellers", "Latest Product"]} />
       </div>
-      <div className="container">
+      <h4 className="text-center p-3 mt-5 mb-5 display-5 jumbotron">
+        New Arrivals
+      </h4>
+      <NewArrivals />
+      <h4 className="text-center p-3 mt-5 mb-5 display-5 jumbotron">
+        Best Sellers
+      </h4>
+      <BestSellers />
+      {/* <div className="container">
         {loading ? (
           <LoadingCard count={9} />
         ) : (
@@ -37,7 +31,7 @@ const Home = () => {
             })}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

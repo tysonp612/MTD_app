@@ -8,6 +8,13 @@ export const createProducts = async (values, authToken) => {
     headers: { authToken },
   });
 };
+export const getSortedProducts = async (sortBy, order, limit) => {
+  return await axios.post(`${process.env.REACT_APP_API}/products`, {
+    sortBy,
+    order,
+    limit,
+  });
+};
 export const getOneProduct = async (slug, authToken) => {
   return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`, {
     headers: { authToken },

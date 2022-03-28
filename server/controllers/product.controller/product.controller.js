@@ -31,7 +31,7 @@ exports.getSortedProducts = async (req, res) => {
     const products = await Product.find()
       .populate("category")
       .populate("subcategory")
-      .sort({ sortBy: order })
+      .sort([[sortBy, order]])
       .limit(limit);
     res.status(200).json(products);
   } catch (err) {
