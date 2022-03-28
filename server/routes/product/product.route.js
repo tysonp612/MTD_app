@@ -19,9 +19,7 @@ router
 router
   .route("/product/:slug")
   .put(authTokenCheck, adminCheck, productController.updateProduct);
-router
-  .route("/product/:slug")
-  .get(authTokenCheck, adminCheck, productController.getOneProduct);
+router.route("/product/:slug").get(productController.getOneProduct);
 router.route("/products").post(productController.getSortedProducts);
 
 module.exports = router;

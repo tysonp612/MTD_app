@@ -19,10 +19,8 @@ export const getSortedProducts = async (sortBy, order, page) => {
     page,
   });
 };
-export const getOneProduct = async (slug, authToken) => {
-  return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`, {
-    headers: { authToken },
-  });
+export const getOneProduct = async (slug) => {
+  return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`);
 };
 export const updateProduct = async (slug, authToken, values) => {
   return await axios.put(
