@@ -10,7 +10,7 @@ export const BestSellers = () => {
   }, []);
   const loadProducts = async () => {
     setLoading(true);
-    await getSortedProducts("sold", "desc", 3)
+    await getSortedProducts("sold", "desc", 1)
       .then((res) => {
         setProducts(res.data);
         setLoading(false);

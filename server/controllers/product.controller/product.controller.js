@@ -41,9 +41,9 @@ exports.getSortedProducts = async (req, res) => {
 
   //WITH PAGINATION
   try {
+    const { sortBy, order, page } = req.body;
     const currentPage = page || 1;
     const documentPerPage = 3;
-    const { sortBy, order, page } = req.body;
     const products = await Product.find()
       .skip((currentPage - 1) * documentPerPage)
       .populate("category")
@@ -51,7 +51,9 @@ exports.getSortedProducts = async (req, res) => {
       .sort([[sortBy, order]])
       .limit(documentPerPage);
     res.status(200).json(products);
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 exports.getOneProduct = async (req, res) => {
   try {

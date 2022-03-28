@@ -1,19 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { getSortedProducts } from "./../../utils/products/products.utils";
+import {
+  productsCount,
+  getSortedProducts,
+} from "./../../utils/products/products.utils";
 import { LoadingCard } from "./../card/loading-card.component";
 import { ProductCard } from "./../card/regular.product-card.component";
+import { Pagination } from "antd";
 export const NewArrivals = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [productsQuantity, setProductsQuantity] = useState(0);
   useEffect(() => {
+    loadProductsCount();
     loadProducts();
-  }, []);
+  }, [page]);
   const loadProducts = async () => {
     setLoading(true);
-    await getSortedProducts("createdAt", "desc", 3)
+    await getSortedProducts("createdAt", "desc", page)
       .then((res) => {
         setProducts(res.data);
         setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+  const loadProductsCount = async () => {
+    await productsCount()
+      .then((res) => {
+        console.log(res.data);
+        setProductsQuantity(res.data);
       })
       .catch((err) => console.log(err));
   };
@@ -30,6 +45,15 @@ export const NewArrivals = () => {
               </div>
             );
           })}
+          <Pagination
+            className="text-center pt-3"
+            current={page}
+            total={Math.round((productsQuantity / 3) * 10)}
+            onChange={(value) => {
+              console.log(value);
+              setPage(value);
+            }}
+          />
         </div>
       )}
     </div>

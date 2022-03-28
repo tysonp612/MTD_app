@@ -1,5 +1,9 @@
 import axios from "axios";
 
+export const productsCount = async () => {
+  return await axios.get(`${process.env.REACT_APP_API}/products/total`);
+};
+
 export const getAllProductsByCount = async (count) => {
   return await axios.get(`${process.env.REACT_APP_API}/products/${count}`);
 };
@@ -8,11 +12,11 @@ export const createProducts = async (values, authToken) => {
     headers: { authToken },
   });
 };
-export const getSortedProducts = async (sortBy, order, limit) => {
+export const getSortedProducts = async (sortBy, order, page) => {
   return await axios.post(`${process.env.REACT_APP_API}/products`, {
     sortBy,
     order,
-    limit,
+    page,
   });
 };
 export const getOneProduct = async (slug, authToken) => {
