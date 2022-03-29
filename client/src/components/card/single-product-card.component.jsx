@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "antd";
 import { Link } from "react-router-dom";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 
@@ -11,12 +12,18 @@ export const SingleProduct = ({ product }) => {
   return (
     <>
       <div className="col-md-7">
-        <Carousel showArrows={true} infiniteLoop>
-          {images &&
-            images.map((images) => {
+        {images && images.length ? (
+          <Carousel showArrows={true} infiniteLoop>
+            {images.map((images) => {
               return <img src={images.url} key={images.public_id} />;
             })}
-        </Carousel>
+          </Carousel>
+        ) : (
+          <img
+            src={techdevices}
+            style={{ height: "600px", width: "100%", objectFit: "contain" }}
+          />
+        )}
       </div>
       <div className="col-md-5">
         <Card
