@@ -1,4 +1,5 @@
 const Product = require("./../../models/product.schema");
+const User = require("./../../models/user.schema");
 const slugify = require("slugify");
 
 exports.createProduct = async (req, res) => {
@@ -100,5 +101,36 @@ exports.deleteProduct = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).send("Delete product failed");
+  }
+};
+exports.productStarRating = async (req, res) => {
+  try {
+    const id = req.params.productId;
+    const product = await Product.findById(id);
+    const user = await User.findOne({ email: req.user.email });
+    const { star } = req.body;
+    //Who is updating?
+    //because ratings is an array, we will first find if there is any rating object inside that array which have the postedBy matches the user.id
+    let ratingObject = product.ratings.find(
+      (obj) => obj.postedBy.toString() === user._id.toString()
+    );
+    if (!ratingObject) {
+      let ratingAdded = await Product.findByIdAndUpdate(
+        id,
+        { $push: { ratings: { star: star, postedBy: user._id } } },
+        { new: true }
+      );
+      res.status(200).json(ratingAdded);
+    } else {
+      let newRating = await Product.findByIdAndUpdate(
+        { id },
+        { $set: { ratingObject: { star: star } } },
+        { new: true }
+      );
+      res.status(200).json(newRating);
+    }
+    //Check if currently logged in user have already added rating to this product
+  } catch (err) {
+    console.log(err);
   }
 };
