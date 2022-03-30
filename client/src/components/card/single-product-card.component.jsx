@@ -5,10 +5,10 @@ import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { ProductInfoCard } from "./../card/product-info-card.component";
 
-const { Meta } = Card;
 export const SingleProduct = ({ product }) => {
-  const { title, description, images, slug } = product;
+  const { images } = product;
   return (
     <>
       <div className="col-md-7">
@@ -39,7 +39,7 @@ export const SingleProduct = ({ product }) => {
             </Link>,
           ]}
         >
-          <Meta title={title} description={description} />
+          <ProductInfoCard product={product} />
         </Card>
       </div>
     </>

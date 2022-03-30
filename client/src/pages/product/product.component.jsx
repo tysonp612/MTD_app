@@ -4,7 +4,7 @@ import { SingleProduct } from "./../../components/card/single-product-card.compo
 export const ProductPage = ({ match }) => {
   const [product, setProduct] = useState({});
   const { slug } = match.params;
-  const { title } = product;
+
   useEffect(() => {
     loadProduct();
   }, []);

@@ -39,6 +39,7 @@ export const NewArrivals = () => {
       ) : (
         <div className="row">
           {products.map((product) => {
+            console.log(products);
             return (
               <div className="col-md-4" key={product._id}>
                 <ProductCard product={product} />
