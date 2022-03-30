@@ -22,7 +22,7 @@ export const ProductPage = ({ match }) => {
       <div className="row pt-4">
         <SingleProduct product={product} />
       </div>
-      <div className="row">
+      <div className="row mt-5 text-center">
         <div>Related Products</div>
       </div>
     </div>
