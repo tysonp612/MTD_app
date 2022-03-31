@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, Tabs, Modal } from "antd";
-import { Link } from "react-router-dom";
+import { Card, Tabs } from "antd";
+import { Link, useHistory, useParams } from "react-router-dom";
 import {
   HeartOutlined,
   ShoppingCartOutlined,
@@ -10,55 +10,45 @@ import {
 import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { ModalComponent } from "./../../components/modal/modal.component";
 import { ProductInfoCard } from "./../card/product-info-card.component";
 import StarRatings from "react-star-ratings";
 const { TabPane } = Tabs;
 export const SingleProduct = ({ product }) => {
   const [star, setStar] = useState(1);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const { images, title, description } = product;
   const user = useSelector((state) => state.user.currentUser);
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const history = useHistory();
+  const param = useParams();
   const showUserRatingModal = () => {
     if (user) {
       return (
         <>
-          <div onClick={showModal}>
-            <StarOutlined className="text-danger" />
-            <br />
-            Rate this product
-          </div>
-
-          <Modal
-            title="Basic Modal"
-            visible={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-          >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </Modal>
+          <ModalComponent
+            button={<StarOutlined className="text-danger" />}
+            title="Leave a rating"
+            rating={
+              <StarRatings
+                rating={star}
+                starRatedColor="blue"
+                changeRating={(e) => setStar(e)}
+                numberOfStars={5}
+                starHoverColor="blue"
+                name="rating"
+              />
+            }
+          />
         </>
       );
     } else {
       return (
         <>
-          <Link to="/login">
-            <StarOutlined className="text-danger" />
-            <br />
-            Log in to leave a rating
-          </Link>
+          <StarOutlined
+            className="text-danger"
+            onClick={history.push(`/login`)}
+          />
+          <br />
+          Log in to leave a rating
         </>
       );
     }
@@ -95,11 +85,7 @@ export const SingleProduct = ({ product }) => {
             starRatedColor="red"
             numberOfStars={5}
             name="rating"
-            isSelectable={true}
-            changeRating={(e) => {
-              setStar(e);
-              console.log(star);
-            }}
+            isSelectable={false}
           />
         </div>
 
