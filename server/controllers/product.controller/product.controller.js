@@ -109,12 +109,14 @@ exports.productStarRating = async (req, res) => {
     const product = await Product.findById(id);
     const user = await User.findOne({ email: req.user.email });
     const { star } = req.body;
+    console.log("User", user._id.valueOf().toString());
     //Who is updating?
     //because ratings is an array, we will first find if there is any rating object inside that array which have the postedBy matches the user.id
     let ratingObject = product.ratings.find(
-      (obj) => obj.postedBy.toString() === user._id.toString()
+      (obj) =>
+        obj.postedBy.valueOf().toString() === user._id.valueOf().toString()
     );
-    if (!ratingObject) {
+    if (ratingObject === undefined) {
       let ratingAdded = await Product.findByIdAndUpdate(
         id,
         { $push: { ratings: { star: star, postedBy: user._id } } },
@@ -122,10 +124,11 @@ exports.productStarRating = async (req, res) => {
       );
       res.status(200).json(ratingAdded);
     } else {
-      let newRating = await Product.findByIdAndUpdate(
-        { id },
-        { $set: { ratingObject: { star: star } } },
-        { new: true }
+      let newRating = await Product.updateOne(
+        { id, "ratings.postedBy": user._id },
+        {
+          $set: { "ratings.$.star": star },
+        }
       );
       res.status(200).json(newRating);
     }

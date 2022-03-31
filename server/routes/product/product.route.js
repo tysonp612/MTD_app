@@ -22,7 +22,7 @@ router
 router.route("/product/:slug").get(productController.getOneProduct);
 router.route("/products").post(productController.getSortedProducts);
 router
-  .route("/product/start/:productId")
+  .route("/product/star/:productId")
   .put(authTokenCheck, productController.productStarRating);
 
 module.exports = router;
