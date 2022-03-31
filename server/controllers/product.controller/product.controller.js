@@ -116,6 +116,7 @@ exports.productStarRating = async (req, res) => {
       (obj) =>
         obj.postedBy.valueOf().toString() === user._id.valueOf().toString()
     );
+
     if (ratingObject === undefined) {
       let ratingAdded = await Product.findByIdAndUpdate(
         id,
@@ -125,10 +126,12 @@ exports.productStarRating = async (req, res) => {
       res.status(200).json(ratingAdded);
     } else {
       let newRating = await Product.updateOne(
-        { id, "ratings.postedBy": user._id },
+        { _id: id, "ratings.postedBy": user._id },
+        // { ratings: { $elemMatch: ratingObject } },
         {
           $set: { "ratings.$.star": star },
-        }
+        },
+        { new: true }
       );
       res.status(200).json(newRating);
     }

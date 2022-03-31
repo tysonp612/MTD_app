@@ -9,6 +9,9 @@ const {
 
 //routes
 router
+  .route("/product/star/:productId")
+  .put(authTokenCheck, productController.productStarRating);
+router
   .route("/product")
   .post(authTokenCheck, adminCheck, productController.createProduct);
 router.route("/products/total").get(productController.productsCount);
@@ -21,8 +24,5 @@ router
   .put(authTokenCheck, adminCheck, productController.updateProduct);
 router.route("/product/:slug").get(productController.getOneProduct);
 router.route("/products").post(productController.getSortedProducts);
-router
-  .route("/product/star/:productId")
-  .put(authTokenCheck, productController.productStarRating);
 
 module.exports = router;

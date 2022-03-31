@@ -1,5 +1,16 @@
 import axios from "axios";
 
+export const updateStarRating = async (productId, authToken, star) => {
+  return await axios.put(
+    `${process.env.REACT_APP_API}/product/star/${productId}`,
+    {
+      star,
+    },
+    {
+      headers: { authToken },
+    }
+  );
+};
 export const productsCount = async () => {
   return await axios.get(`${process.env.REACT_APP_API}/products/total`);
 };

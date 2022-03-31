@@ -12,14 +12,22 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from "react-responsive-carousel";
 import { ModalComponent } from "./../../components/modal/modal.component";
 import { ProductInfoCard } from "./../card/product-info-card.component";
+import { updateStarRating } from "./../../utils/products/products.utils";
 import StarRatings from "react-star-ratings";
 const { TabPane } = Tabs;
 export const SingleProduct = ({ product }) => {
-  const [star, setStar] = useState(1);
-  const { images, title, description } = product;
+  const [star, setStar] = useState();
+  const { _id, ratings, images, title, description } = product;
   const user = useSelector((state) => state.user.currentUser);
   const history = useHistory();
   const param = useParams();
+
+  const handleStarRating = async (e) => {
+    setStar(e);
+    await updateStarRating(_id, user.token, e)
+      .then(console.log("Star Updated or Created"))
+      .catch((err) => console.log(err));
+  };
   const showUserRatingModal = () => {
     if (user) {
       return (
@@ -32,7 +40,7 @@ export const SingleProduct = ({ product }) => {
               <StarRatings
                 rating={star}
                 starRatedColor="blue"
-                changeRating={(e) => setStar(e)}
+                changeRating={(e) => handleStarRating(e)}
                 numberOfStars={5}
                 starHoverColor="blue"
                 name="rating"
