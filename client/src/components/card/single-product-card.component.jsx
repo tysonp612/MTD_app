@@ -1,14 +1,68 @@
-import React from "react";
-import { Card, Tabs } from "antd";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Card, Tabs, Modal } from "antd";
 import { Link } from "react-router-dom";
-import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  ShoppingCartOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
 import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import { ProductInfoCard } from "./../card/product-info-card.component";
+import StarRatings from "react-star-ratings";
 const { TabPane } = Tabs;
 export const SingleProduct = ({ product }) => {
+  const [star, setStar] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { images, title, description } = product;
+  const user = useSelector((state) => state.user.currentUser);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+  const showUserRatingModal = () => {
+    if (user) {
+      return (
+        <>
+          <div onClick={showModal}>
+            <StarOutlined className="text-danger" />
+            <br />
+            Rate this product
+          </div>
+
+          <Modal
+            title="Basic Modal"
+            visible={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Link to="/login">
+            <StarOutlined className="text-danger" />
+            <br />
+            Log in to leave a rating
+          </Link>
+        </>
+      );
+    }
+  };
   return (
     <>
       <div className="col-md-7">
@@ -34,6 +88,21 @@ export const SingleProduct = ({ product }) => {
         </Tabs>
       </div>
       <div className="col-md-5">
+        <h1>{title}</h1>
+        <div className="pb-4 ">
+          <StarRatings
+            rating={star}
+            starRatedColor="red"
+            numberOfStars={5}
+            name="rating"
+            isSelectable={true}
+            changeRating={(e) => {
+              setStar(e);
+              console.log(star);
+            }}
+          />
+        </div>
+
         <Card
           actions={[
             <>
@@ -45,6 +114,7 @@ export const SingleProduct = ({ product }) => {
               <br />
               Add to Wishlist
             </Link>,
+            showUserRatingModal(),
           ]}
         >
           <ProductInfoCard product={product} />

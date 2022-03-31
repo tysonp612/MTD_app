@@ -109,7 +109,7 @@ exports.productStarRating = async (req, res) => {
     const product = await Product.findById(id);
     const user = await User.findOne({ email: req.user.email });
     const { star } = req.body;
-    console.log("User", user._id.valueOf().toString());
+
     //Who is updating?
     //because ratings is an array, we will first find if there is any rating object inside that array which have the postedBy matches the user.id
     let ratingObject = product.ratings.find(
