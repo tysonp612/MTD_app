@@ -27,7 +27,6 @@ export const NewArrivals = () => {
   const loadProductsCount = async () => {
     await productsCount()
       .then((res) => {
-        console.log(res.data);
         setProductsQuantity(res.data);
       })
       .catch((err) => console.log(err));
@@ -39,7 +38,6 @@ export const NewArrivals = () => {
       ) : (
         <div className="row">
           {products.map((product) => {
-            console.log(products);
             return (
               <div className="col-md-4" key={product._id}>
                 <ProductCard product={product} />
@@ -51,7 +49,6 @@ export const NewArrivals = () => {
             current={page}
             total={Math.round((productsQuantity / 3) * 10)}
             onChange={(value) => {
-              console.log(value);
               setPage(value);
             }}
           />

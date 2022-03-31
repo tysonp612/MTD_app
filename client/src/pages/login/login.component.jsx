@@ -5,14 +5,18 @@ import {
   logInWithEmailAndPassword,
   logInWithGoogle,
 } from "./../../firebase/firebase.utils";
-import { createOrUpdateUser } from "../../utils/authentication/authentication.utils";
 import { toast } from "react-toastify";
 
 const Login = ({ history }) => {
   const stateUser = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     if (stateUser) {
-      history.push("/");
+      let intended = history.location.state;
+      if (intended) {
+        history.push(intended.from);
+      } else {
+        history.push("/");
+      }
     }
   });
   const [credentials, setCredentials] = useState({

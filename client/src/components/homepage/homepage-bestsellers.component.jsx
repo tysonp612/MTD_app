@@ -27,7 +27,6 @@ export const BestSellers = () => {
   const loadProductsCount = async () => {
     await productsCount()
       .then((res) => {
-        console.log(res.data);
         setProductsQuantity(res.data);
       })
       .catch((err) => console.log(err));

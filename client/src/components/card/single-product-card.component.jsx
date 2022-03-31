@@ -27,6 +27,7 @@ export const SingleProduct = ({ product }) => {
           <ModalComponent
             button={<StarOutlined className="text-danger" />}
             title="Leave a rating"
+            user={user}
             rating={
               <StarRatings
                 rating={star}
@@ -42,16 +43,20 @@ export const SingleProduct = ({ product }) => {
       );
     } else {
       return (
-        <>
-          <StarOutlined
-            className="text-danger"
-            onClick={history.push(`/login`)}
-          />
+        <div onClick={(e) => handleHistory(e)}>
+          <StarOutlined className="text-danger" />
           <br />
           Log in to leave a rating
-        </>
+        </div>
       );
     }
+  };
+  const handleHistory = (e) => {
+    e.preventDefault();
+    history.push({
+      pathname: "/login",
+      state: { from: `/product/${param.slug}` },
+    });
   };
   return (
     <>

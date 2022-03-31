@@ -12,7 +12,6 @@ export const ProductPage = ({ match }) => {
   const loadProduct = async () => {
     await getOneProduct(slug)
       .then((res) => {
-        console.log(res.data);
         setProduct(res.data);
       })
       .catch((err) => console.log(err));
