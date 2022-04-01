@@ -26,12 +26,21 @@ export const SingleProduct = ({ product }) => {
   const history = useHistory();
   const param = useParams();
 
+  useEffect(() => {
+    if (product.ratings && user) {
+      const existingRating = product.ratings.find(
+        (rating) => rating.postedBy.toString() === user._id.toString()
+      );
+      if (existingRating) setStar(existingRating.star);
+    }
+  });
   const handleStarRating = async (e) => {
     setStar(e);
     await updateStarRating(_id, user.token, e)
       .then()
       .catch((err) => console.log(err));
   };
+
   const showUserRatingModal = () => {
     if (user) {
       return (
