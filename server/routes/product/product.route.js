@@ -26,6 +26,6 @@ router.route("/product/:slug").get(productController.getOneProduct);
 router.route("/products").post(productController.getSortedProducts);
 router
   .route("/products/related/:slug")
-  .get(productController.getRelatedProducts);
+  .post(productController.getRelatedProducts);
 
 module.exports = router;

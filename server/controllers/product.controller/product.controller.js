@@ -27,17 +27,21 @@ exports.getAllProducts = async (req, res) => {
     res.status(404).send("No product found");
   }
 };
-
+//Note this
 exports.getRelatedProducts = async (req, res) => {
   try {
-    const categorySlug = req.body.category;
+    const categoryId = req.body.categoryId;
+    console.log(categoryId);
     const { slug } = req.params;
-    const allRelatedProducts = await Product.find({ category: categorySlug });
+    const allRelatedProducts = await Product.find({ category: categoryId })
+      .populate("category")
+      .populate("subcategory")
+      .limit(5);
     const relatedProducts = allRelatedProducts.filter(
       (product) => product.slug !== slug
     );
 
-    res.json(relatedProducts);
+    res.status(200).json(relatedProducts);
   } catch (err) {
     console.log(err);
   }

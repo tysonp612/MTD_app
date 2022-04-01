@@ -47,3 +47,12 @@ export const deleteProduct = async (slug, authToken) => {
     headers: { authToken },
   });
 };
+
+export const getRelatedProducts = async (slug, categoryId) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/products/related/${slug}`,
+    {
+      categoryId,
+    }
+  );
+};
