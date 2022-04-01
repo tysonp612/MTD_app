@@ -1,5 +1,6 @@
 const Product = require("./../../models/product.schema");
 const User = require("./../../models/user.schema");
+const Category = require("./../../models/category.schema");
 const slugify = require("slugify");
 
 exports.createProduct = async (req, res) => {
@@ -24,6 +25,21 @@ exports.getAllProducts = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(404).send("No product found");
+  }
+};
+
+exports.getRelatedProducts = async (req, res) => {
+  try {
+    const categorySlug = req.body.category;
+    const { slug } = req.params;
+    const allRelatedProducts = await Product.find({ category: categorySlug });
+    const relatedProducts = allRelatedProducts.filter(
+      (product) => product.slug !== slug
+    );
+
+    res.json(relatedProducts);
+  } catch (err) {
+    console.log(err);
   }
 };
 exports.getSortedProducts = async (req, res) => {

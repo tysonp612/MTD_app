@@ -16,6 +16,7 @@ export const ProductPage = ({ match }) => {
     await getOneProduct(slug)
       .then((res) => {
         setProduct(res.data);
+        console.log(res.data.category._id);
       })
       .catch((err) => console.log(err));
   };
