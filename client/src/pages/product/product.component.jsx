@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getOneProduct } from "./../../utils/products/products.utils";
 import { SingleProduct } from "./../../components/card/single-product-card.component";
+
 export const ProductPage = ({ match }) => {
   const [product, setProduct] = useState({});
   const { slug } = match.params;
@@ -16,6 +17,7 @@ export const ProductPage = ({ match }) => {
       })
       .catch((err) => console.log(err));
   };
+
   return (
     <div className="container-fluid">
       <div className="row pt-4">

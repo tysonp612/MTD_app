@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Card, Tabs } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
@@ -10,11 +10,15 @@ import {
 import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+
 import { ModalComponent } from "./../../components/modal/modal.component";
 import { ProductInfoCard } from "./../card/product-info-card.component";
+import { ShowAvarage } from "./../../utils/products/rating.utils";
 import { updateStarRating } from "./../../utils/products/products.utils";
 import StarRatings from "react-star-ratings";
+
 const { TabPane } = Tabs;
+
 export const SingleProduct = ({ product }) => {
   const [star, setStar] = useState();
   const { _id, ratings, images, title, description } = product;
@@ -25,7 +29,7 @@ export const SingleProduct = ({ product }) => {
   const handleStarRating = async (e) => {
     setStar(e);
     await updateStarRating(_id, user.token, e)
-      .then(console.log("Star Updated or Created"))
+      .then()
       .catch((err) => console.log(err));
   };
   const showUserRatingModal = () => {
@@ -92,15 +96,11 @@ export const SingleProduct = ({ product }) => {
       </div>
       <div className="col-md-5">
         <h1>{title}</h1>
-        <div className="pb-4 ">
-          <StarRatings
-            rating={star}
-            starRatedColor="red"
-            numberOfStars={5}
-            name="rating"
-            isSelectable={false}
-          />
-        </div>
+        {product && product.ratings && product.ratings.length ? (
+          <ShowAvarage className="pb-4 " product={product} />
+        ) : (
+          <div className="text-center pb-3">No ratings yet</div>
+        )}
 
         <Card
           actions={[

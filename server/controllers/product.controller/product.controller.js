@@ -123,17 +123,25 @@ exports.productStarRating = async (req, res) => {
         { $push: { ratings: { star: star, postedBy: user._id } } },
         { new: true }
       );
-      res.status(200).json(ratingAdded);
+      res.status(200);
     } else {
       let newRating = await Product.updateOne(
         { _id: id, "ratings.postedBy": user._id },
         // { ratings: { $elemMatch: ratingObject } },
+        //And I also tried out just modify the `existingRatingObject` and re-save the product record. It seems to work as well.
+
+        // if (rating) {
+        // // Update user's rating
+        //  rating.star = star;
+        //  product = await product.save({ validateBeforeSave: true });
+        //  res.status(200).json({product});
+        // ......
         {
           $set: { "ratings.$.star": star },
         },
         { new: true }
       );
-      res.status(200).json(newRating);
+      res.status(200);
     }
     //Check if currently logged in user have already added rating to this product
   } catch (err) {
