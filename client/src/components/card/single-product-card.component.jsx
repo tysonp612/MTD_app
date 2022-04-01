@@ -27,16 +27,16 @@ export const SingleProduct = ({ product }) => {
   const param = useParams();
 
   useEffect(() => {
-    if (product.ratings && user) {
-      const existingRating = product.ratings.find(
+    if (ratings && user) {
+      const existingRating = ratings.find(
         (rating) => rating.postedBy.toString() === user._id.toString()
       );
-      if (existingRating) setStar(existingRating.star);
+      existingRating && setStar(existingRating.star);
     }
   });
-  const handleStarRating = async (e) => {
-    setStar(e);
-    await updateStarRating(_id, user.token, e)
+  const handleStarRating = async (newRating) => {
+    setStar(newRating);
+    await updateStarRating(_id, user.token, newRating)
       .then()
       .catch((err) => console.log(err));
   };
@@ -53,7 +53,7 @@ export const SingleProduct = ({ product }) => {
               <StarRatings
                 rating={star}
                 starRatedColor="blue"
-                changeRating={(e) => handleStarRating(e)}
+                changeRating={handleStarRating}
                 numberOfStars={5}
                 starHoverColor="blue"
                 name="rating"
