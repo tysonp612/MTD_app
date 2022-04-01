@@ -6,7 +6,7 @@ import {
 import { LoadingCard } from "./../card/loading-card.component";
 import { ProductCard } from "./../card/regular.product-card.component";
 import { Pagination } from "antd";
-import { ShowAverage } from "./../rating/average-rating.component";
+
 export const BestSellers = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,6 @@ export const BestSellers = () => {
           {products.map((product) => {
             return (
               <div className="col-md-4" key={product._id}>
-                <ShowAverage product={product} />
                 <ProductCard product={product} />
               </div>
             );
