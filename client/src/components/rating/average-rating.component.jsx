@@ -1,6 +1,6 @@
 import React from "react";
 import StarRatings from "react-star-ratings";
-export const ShowAvarage = ({ product }) => {
+export const ShowAverage = ({ product }) => {
   const handleStarRatings = (product) => {
     if (product && product.ratings) {
       let ratingsArray = product.ratings;
@@ -13,7 +13,14 @@ export const ShowAvarage = ({ product }) => {
       let result = totalReduced / length;
       return (
         <div className="text-center pt-1 pb-3">
-          <StarRatings rating={result} starRatedColor="red" />
+          <StarRatings
+            starDimension="25px"
+            starSpacing="2px"
+            rating={result}
+            starRatedColor="red"
+            editing={false}
+          />
+          ({product.ratings.length})
         </div>
       );
     }

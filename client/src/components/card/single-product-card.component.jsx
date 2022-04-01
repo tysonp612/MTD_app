@@ -13,33 +13,17 @@ import { Carousel } from "react-responsive-carousel";
 
 import { ModalComponent } from "./../../components/modal/modal.component";
 import { ProductInfoCard } from "./../card/product-info-card.component";
-import { ShowAvarage } from "./../../utils/products/rating.utils";
-import { updateStarRating } from "./../../utils/products/products.utils";
+import { ShowAverage } from "./../rating/average-rating.component";
+
 import StarRatings from "react-star-ratings";
 
 const { TabPane } = Tabs;
 
-export const SingleProduct = ({ product }) => {
-  const [star, setStar] = useState();
-  const { _id, ratings, images, title, description } = product;
+export const SingleProduct = ({ star, handleStarRating, product }) => {
+  const { images, title, description } = product;
   const user = useSelector((state) => state.user.currentUser);
   const history = useHistory();
   const param = useParams();
-
-  useEffect(() => {
-    if (ratings && user) {
-      const existingRating = ratings.find(
-        (rating) => rating.postedBy.toString() === user._id.toString()
-      );
-      existingRating && setStar(existingRating.star);
-    }
-  });
-  const handleStarRating = async (newRating) => {
-    setStar(newRating);
-    await updateStarRating(_id, user.token, newRating)
-      .then()
-      .catch((err) => console.log(err));
-  };
 
   const showUserRatingModal = () => {
     if (user) {
@@ -53,7 +37,7 @@ export const SingleProduct = ({ product }) => {
               <StarRatings
                 rating={star}
                 starRatedColor="blue"
-                changeRating={handleStarRating}
+                changeRating={(e) => handleStarRating(e)}
                 numberOfStars={5}
                 starHoverColor="blue"
                 name="rating"
@@ -106,7 +90,7 @@ export const SingleProduct = ({ product }) => {
       <div className="col-md-5">
         <h1>{title}</h1>
         {product && product.ratings && product.ratings.length ? (
-          <ShowAvarage className="pb-4 " product={product} />
+          <ShowAverage className="pb-4 " product={product} />
         ) : (
           <div className="text-center pb-3">No ratings yet</div>
         )}
