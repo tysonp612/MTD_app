@@ -4,13 +4,19 @@ import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { ShowAverage } from "./../rating/average-rating.component";
 import { Link } from "react-router-dom";
+
 export const ProductCard = ({ product }) => {
-  const { title, description, images, slug } = product;
+  const { title, description, images, slug, ratings } = product;
 
   const { Meta } = Card;
   return (
     <>
-      <ShowAverage product={product} />
+      {ratings && ratings.length ? (
+        <ShowAverage product={product} />
+      ) : (
+        <div className="text-center pb-3">No rating yet</div>
+      )}
+
       <Card
         cover={
           <img

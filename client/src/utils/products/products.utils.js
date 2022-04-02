@@ -14,6 +14,14 @@ export const updateStarRating = async (productId, authToken, star) => {
 export const productsCount = async () => {
   return await axios.get(`${process.env.REACT_APP_API}/products/total`);
 };
+export const relatedProductsCount = async (categoryId) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/products/related/total`,
+    {
+      categoryId,
+    }
+  );
+};
 
 export const getAllProductsByCount = async (count) => {
   return await axios.get(`${process.env.REACT_APP_API}/products/${count}`);
@@ -48,11 +56,12 @@ export const deleteProduct = async (slug, authToken) => {
   });
 };
 
-export const getRelatedProducts = async (slug, categoryId) => {
+export const getRelatedProducts = async (slug, categoryId, page) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/products/related/${slug}`,
     {
       categoryId,
+      page,
     }
   );
 };

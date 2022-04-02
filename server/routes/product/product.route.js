@@ -15,7 +15,11 @@ router
   .route("/product")
   .post(authTokenCheck, adminCheck, productController.createProduct);
 router.route("/products/total").get(productController.productsCount);
+router
+  .route("/products/related/total")
+  .post(productController.productsCountRelated);
 router.route("/products/:count").get(productController.getAllProducts);
+
 router
   .route("/product/:slug")
   .delete(authTokenCheck, adminCheck, productController.deleteProduct);

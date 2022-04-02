@@ -30,18 +30,34 @@ exports.getAllProducts = async (req, res) => {
 //Note this
 exports.getRelatedProducts = async (req, res) => {
   try {
-    const categoryId = req.body.categoryId;
-    console.log(categoryId);
+    const { page, categoryId } = req.body;
+    const currentPage = page || 1;
+    const documentPerPage = 3;
     const { slug } = req.params;
+
     const allRelatedProducts = await Product.find({ category: categoryId })
+      .skip((currentPage - 1) * documentPerPage)
       .populate("category")
       .populate("subcategory")
-      .limit(5);
+      .limit(documentPerPage);
+
     const relatedProducts = allRelatedProducts.filter(
       (product) => product.slug !== slug
     );
 
     res.status(200).json(relatedProducts);
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.productsCountRelated = async (req, res) => {
+  try {
+    const { categoryId } = req.body;
+    let totalProducts = await Product.find({
+      category: categoryId,
+    });
+    let productQuantity = totalProducts.length;
+    res.status(200).json(productQuantity - 1);
   } catch (err) {
     console.log(err);
   }
@@ -113,6 +129,7 @@ exports.productsCount = async (req, res) => {
     console.log(err);
   }
 };
+
 exports.deleteProduct = async (req, res) => {
   try {
     const slug = req.params.slug;

@@ -88,7 +88,7 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
         </Tabs>
       </div>
       <div className="col-md-5">
-        <h1>{title}</h1>
+        <h2 className="text-center">{title}</h2>
         {product && product.ratings && product.ratings.length ? (
           <ShowAverage className="pb-4 " product={product} />
         ) : (

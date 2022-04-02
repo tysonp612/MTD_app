@@ -12,9 +12,9 @@ export const ShowAverage = ({ product }) => {
       }, 0);
       let result = totalReduced / length;
       return (
-        <div className="text-center pt-1 pb-3">
+        <div className="text-center pb-3">
           <StarRatings
-            starDimension="25px"
+            starDimension="20px"
             starSpacing="2px"
             rating={result}
             starRatedColor="red"
