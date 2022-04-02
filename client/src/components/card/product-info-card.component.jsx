@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const ProductInfoCard = ({ product }) => {
   const {
@@ -19,16 +20,24 @@ export const ProductInfoCard = ({ product }) => {
       </li>
       <li className="list-group-items pb-4 d-flex">
         <div className="flex-grow-1">Category:</div>
-        {category ? <span>{category.name}</span> : ""}
+        {category ? (
+          <Link to={`/category/${category.slug}`}>{category.name}</Link>
+        ) : (
+          ""
+        )}
       </li>
       <li className="list-group-items pb-4 d-flex ">
         <div className="flex-grow-1">Sub Category</div>
         {subcategory
           ? subcategory.map((sub) => {
               return (
-                <span className="p-2" key={sub._id}>
+                <Link
+                  to={`/sub-category/${sub.slug}`}
+                  className="p-2"
+                  key={sub._id}
+                >
                   {sub.name}
-                </span>
+                </Link>
               );
             })
           : ""}

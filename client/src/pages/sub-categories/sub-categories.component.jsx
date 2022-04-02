@@ -19,8 +19,7 @@ export const SubCategoriesPage = () => {
       {products && products.length ? (
         <div className="row ">
           <div className="text-center p-3 mt-5 mb-5 display-6 jumbotron">
-            {products.length} Products in "{products[0].category.name}"
-            Sub-category
+            {products.length} Products in "{slug}" Sub-category
           </div>
           {products.map((product) => {
             return (
