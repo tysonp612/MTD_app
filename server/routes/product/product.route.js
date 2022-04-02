@@ -22,6 +22,9 @@ router
 router
   .route("/products/from-category/:slug")
   .get(productController.getAllProductFromCategory);
+router
+  .route("/products/from-subcategory/:slug")
+  .get(productController.getAllProductFromSubCategory);
 router.route("/products/:count").get(productController.getAllProducts);
 
 router

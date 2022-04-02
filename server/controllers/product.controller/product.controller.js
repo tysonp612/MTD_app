@@ -1,6 +1,7 @@
 const Product = require("./../../models/product.schema");
 const User = require("./../../models/user.schema");
 const Category = require("./../../models/category.schema");
+const SubCategory = require("./../../models/sub-category.schema");
 const slugify = require("slugify");
 
 exports.createProduct = async (req, res) => {
@@ -20,6 +21,20 @@ exports.getAllProductFromCategory = async (req, res) => {
     const categoryObj = await Category.find({ slug });
     const categoryId = categoryObj[0]._id;
     const products = await Product.find({ category: categoryId })
+      .populate("category")
+      .populate("subcategory");
+    res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send("No product found");
+  }
+};
+exports.getAllProductFromSubCategory = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const subCategoryObj = await SubCategory.find({ slug });
+    const subCategoryId = subCategoryObj[0]._id;
+    const products = await Product.find({ subcategory: subCategoryId })
       .populate("category")
       .populate("subcategory");
     res.status(200).json(products);

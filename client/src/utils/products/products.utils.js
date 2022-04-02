@@ -71,3 +71,8 @@ export const getProductFromCategory = async (slug) => {
     `${process.env.REACT_APP_API}/products/from-category/${slug}`
   );
 };
+export const getProductFromSubCategory = async (slug) => {
+  return await axios.get(
+    `${process.env.REACT_APP_API}/products/from-subcategory/${slug}`
+  );
+};

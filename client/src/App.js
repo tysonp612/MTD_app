@@ -11,10 +11,7 @@ import { UserActionTypes } from "./redux/reducers/user/user.types";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase.utils";
 //Server Utils
-import {
-  createOrUpdateUser,
-  roleBasedRedirect,
-} from "./utils/authentication/authentication.utils";
+import { createOrUpdateUser } from "./utils/authentication/authentication.utils";
 //Privet Routes
 import { UserRoute } from "./components/routes/user.routes";
 import { AdminRoute } from "./components/routes/admin.routes";
@@ -29,6 +26,7 @@ import ForgotPassword from "./pages/forgot-password/forgot-password.component";
 //Pages
 import { ProductPage } from "./pages/product/product.component";
 import { CategoriesPage } from "./pages/categories/categories.component";
+import { SubCategoriesPage } from "./pages/sub-categories/sub-categories.component";
 //User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
@@ -82,6 +80,7 @@ const App = () => {
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <Route exact path="/product/:slug" component={ProductPage} />
         <Route exact path="/category/:slug" component={CategoriesPage} />
+        <Route exact path="/sub-category/:slug" component={SubCategoriesPage} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/admin/products" component={AdminProducts} />
         <AdminRoute
