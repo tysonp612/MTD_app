@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { HomePageCategory } from "./../../components/homepage/homepage-category.component";
 import { NewArrivals } from "./../../components/homepage/homepage-newarrivals.component";
 import { BestSellers } from "./../../components/homepage/homepage-bestsellers.component";
 import Jumbotron from "./../../components/jumbotron/jumbotron.component";
@@ -17,21 +17,10 @@ const Home = () => {
         Best Sellers
       </h4>
       <BestSellers />
-      {/* <div className="container">
-        {loading ? (
-          <LoadingCard count={9} />
-        ) : (
-          <div className="row">
-            {products.map((product) => {
-              return (
-                <div className="col-md-4" key={product._id}>
-                  <ProductCard product={product} />
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div> */}
+      <h4 className="text-center p-3 mt-5 mb-5 display-5 jumbotron">
+        Category
+      </h4>
+      <HomePageCategory />
     </div>
   );
 };
