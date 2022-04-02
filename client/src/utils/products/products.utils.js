@@ -65,3 +65,9 @@ export const getRelatedProducts = async (slug, categoryId, page) => {
     }
   );
 };
+
+export const getProductFromCategory = async (slug) => {
+  return await axios.get(
+    `${process.env.REACT_APP_API}/products/from-category/${slug}`
+  );
+};

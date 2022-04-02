@@ -19,7 +19,9 @@ exports.getAllProductFromCategory = async (req, res) => {
     const { slug } = req.params;
     const categoryObj = await Category.find({ slug });
     const categoryId = categoryObj[0]._id;
-    const products = await Product.find({ category: categoryId });
+    const products = await Product.find({ category: categoryId })
+      .populate("category")
+      .populate("subcategory");
     res.status(200).json(products);
   } catch (err) {
     console.log(err);
