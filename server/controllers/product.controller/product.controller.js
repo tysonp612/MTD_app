@@ -14,6 +14,18 @@ exports.createProduct = async (req, res) => {
   }
 };
 
+exports.getAllProductFromCategory = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const categoryObj = await Category.find({ slug });
+    const categoryId = categoryObj[0]._id;
+    const products = await Product.find({ category: categoryId });
+    res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send("No product found");
+  }
+};
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find()

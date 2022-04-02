@@ -28,6 +28,7 @@ import CompleteRegister from "./pages/register-complete/register-complete.compon
 import ForgotPassword from "./pages/forgot-password/forgot-password.component";
 //Pages
 import { ProductPage } from "./pages/product/product.component";
+import { CategoriesPage } from "./pages/categories/categories.component";
 //User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
@@ -80,6 +81,7 @@ const App = () => {
         <Route exact path="/register/complete" component={CompleteRegister} />
         <Route exact path="/forgot/password" component={ForgotPassword} />
         <Route exact path="/product/:slug" component={ProductPage} />
+        <Route exact path="/category/:slug" component={CategoriesPage} />
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/admin/products" component={AdminProducts} />
         <AdminRoute

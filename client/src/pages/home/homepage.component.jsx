@@ -18,7 +18,7 @@ const Home = () => {
       </h4>
       <BestSellers />
       <h4 className="text-center p-3 mt-5 mb-5 display-5 jumbotron">
-        Category
+        Categories
       </h4>
       <HomePageCategory />
     </div>

@@ -18,6 +18,10 @@ router.route("/products/total").get(productController.productsCount);
 router
   .route("/products/related/total")
   .post(productController.productsCountRelated);
+
+router
+  .route("/products/from-category/:slug")
+  .get(productController.getAllProductFromCategory);
 router.route("/products/:count").get(productController.getAllProducts);
 
 router

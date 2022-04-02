@@ -20,7 +20,7 @@ export const HomePageCategory = () => {
             <button
               key={cat._id}
               className="btn btn-secondary pt-3 pb-3 m-2 col-md-3 w-10"
-              onClick={() => history.push(`/categories/${cat.slug}`)}
+              onClick={() => history.push(`/category/${cat.slug}`)}
             >
               {cat.name}
             </button>
