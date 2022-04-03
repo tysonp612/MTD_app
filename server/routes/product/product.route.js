@@ -38,5 +38,8 @@ router.route("/products").post(productController.getSortedProducts);
 router
   .route("/products/related/:slug")
   .post(productController.getRelatedProducts);
-
+//search
+router
+  .route("/products/search/filters")
+  .post(productController.getProductsByFilters);
 module.exports = router;

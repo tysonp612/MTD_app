@@ -214,3 +214,23 @@ exports.productStarRating = async (req, res) => {
     console.log(err);
   }
 };
+//SEARCH/FILTER
+const handleQuery = async (req, res, query) => {
+  try {
+    const products = await Product.find({ $text: { $search: query } })
+      .populate("category", "_id name")
+      .populate("subcategory", "_id name")
+      .populate("ratings.postedBy", "_id name");
+    res.status(200).json(products);
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.getProductsByFilters = async (req, res) => {
+  const { query } = req.body;
+  console.log(query);
+  if (query) {
+    console.log("query", query);
+    await handleQuery(req, res, query);
+  }
+};
