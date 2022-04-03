@@ -76,3 +76,12 @@ export const getProductFromSubCategory = async (slug) => {
     `${process.env.REACT_APP_API}/products/from-subcategory/${slug}`
   );
 };
+
+export const getProductsFromQuery = async (query) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/products/search/filters`,
+    {
+      query,
+    }
+  );
+};

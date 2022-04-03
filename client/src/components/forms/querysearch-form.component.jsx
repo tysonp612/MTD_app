@@ -1,17 +1,23 @@
-import React, { useState } from "react";
-
+import React from "react";
+import { SearchQueryActionTypes } from "./../../redux/reducers/search-query/search-query.types";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 export const QuerySearchForm = () => {
-  const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const query = useSelector((state) => state.query.query);
+  const history = useHistory();
   const handleInput = (e) => {
-    setQuery(e.target.value);
-    console.log(test);
+    dispatch({
+      type: SearchQueryActionTypes.SEARCH_QUERY,
+      payload: e.target.value,
+    });
   };
-  const handleChange = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(query);
+    history.push(`/shop?${query}`);
   };
   return (
-    <form onSubmit={(e) => handleChange(e)}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <input
         placeholder="Search product"
         className="form-control"
