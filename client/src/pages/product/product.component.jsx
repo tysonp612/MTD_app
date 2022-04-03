@@ -45,7 +45,6 @@ export const ProductPage = ({ match }) => {
       await getRelatedProducts(slug, product.category._id, page)
         .then((res) => {
           setRelatedProducts(res.data);
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     }

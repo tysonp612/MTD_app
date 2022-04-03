@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 //Firebase
 import { signOutUser } from "../../firebase/firebase.utils";
+//Components
+import { QuerySearchForm } from "./../../components/forms/querysearch-form.component";
 //Redux
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -59,31 +61,42 @@ const Header = () => {
     }
   };
   return (
-    <nav className=" pb-2 pt-2 mb-3 border-bottom d-flex justify-content-between">
-      <ul className="nav-pills nav">
-        <li className="nav-item">
+    <nav className="p-3 border-bottom row">
+      <ul className="col-md-6 nav-pills nav ">
+        <li className="nav-item ">
           <Link to="/" className="nav-link">
             Home
           </Link>
         </li>
-        {redirectDashboard(loggedInUser)}
+        <li className="nav-item">
+          <Link to="/shop" className="nav-link">
+            Shop
+          </Link>
+        </li>
       </ul>
-      {!loggedInUser ? (
-        <ul className="nav-pills nav  ">
-          <li className="nav-item">
-            <Link to="/register" className="nav-link">
-              Register
-            </Link>
-          </li>
-          <li className="nav-item ">
-            <Link to="/login" className="nav-link">
-              Login
-            </Link>
-          </li>
-        </ul>
-      ) : (
-        ""
-      )}
+      <ul className="col-md-6 nav-pills nav d-flex justify-content-end ">
+        {redirectDashboard(loggedInUser)}
+
+        {!loggedInUser ? (
+          <div>
+            <li className="nav-item">
+              <Link to="/register" className="nav-link">
+                Register
+              </Link>
+            </li>
+            <li className="nav-item ">
+              <Link to="/login" className="nav-link">
+                Login
+              </Link>
+            </li>
+          </div>
+        ) : (
+          ""
+        )}
+        <li className="nav-item">
+          <QuerySearchForm />
+        </li>
+      </ul>
     </nav>
   );
 };
