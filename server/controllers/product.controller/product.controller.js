@@ -43,9 +43,14 @@ exports.getAllProductFromSubCategory = async (req, res) => {
     res.status(404).send("No product found");
   }
 };
-exports.getAllProducts = async (req, res) => {
+exports.getAllProductsWithPagination = async (req, res) => {
   try {
+    const { page } = req.body;
+    const currentPage = page || 1;
+    const documentPerPage = +req.params.count;
+
     const products = await Product.find()
+      .skip((currentPage - 1) * documentPerPage)
       .limit(+req.params.count)
       .populate("category")
       .populate("subcategory")

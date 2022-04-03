@@ -25,7 +25,9 @@ router
 router
   .route("/products/from-subcategory/:slug")
   .get(productController.getAllProductFromSubCategory);
-router.route("/products/:count").get(productController.getAllProducts);
+router
+  .route("/products/:count")
+  .post(productController.getAllProductsWithPagination);
 
 router
   .route("/product/:slug")

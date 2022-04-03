@@ -78,7 +78,7 @@ const Header = () => {
         {redirectDashboard(loggedInUser)}
 
         {!loggedInUser ? (
-          <div>
+          <div className="d-flex">
             <li className="nav-item">
               <Link to="/register" className="nav-link">
                 Register

@@ -27,3 +27,17 @@ export const QuerySearchForm = () => {
     </form>
   );
 };
+
+//Note
+//Note why use redux instead of useState
+// When using history.push() in Search component, why are we using "?"
+
+// history.push(`/shop?${text}`);
+// Can we not pass the string like we normally do with a slash (/)
+
+// history.push(`/shop/${text}`);
+// and then grab the param out of the URL?
+
+// That's the standard way of pushing queries to url using ?
+
+// If you use / that will be treated as different url
