@@ -27,6 +27,7 @@ import ForgotPassword from "./pages/forgot-password/forgot-password.component";
 import { ProductPage } from "./pages/product/product.component";
 import { CategoriesPage } from "./pages/categories/categories.component";
 import { SubCategoriesPage } from "./pages/sub-categories/sub-categories.component";
+import { ShopPage } from "./pages/shop/shop.component";
 //User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
@@ -81,6 +82,8 @@ const App = () => {
         <Route exact path="/product/:slug" component={ProductPage} />
         <Route exact path="/category/:slug" component={CategoriesPage} />
         <Route exact path="/sub-category/:slug" component={SubCategoriesPage} />
+        <Route exact path="/shop" component={ShopPage} />
+
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/admin/products" component={AdminProducts} />
         <AdminRoute
