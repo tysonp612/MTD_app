@@ -1,10 +1,9 @@
 import React from "react";
 import { SearchQueryActionTypes } from "./../../redux/reducers/search-query/search-query.types";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 export const QuerySearchForm = () => {
   const dispatch = useDispatch();
-  const query = useSelector((state) => state.query.query);
   const history = useHistory();
   const handleInput = (e) => {
     dispatch({
