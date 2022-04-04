@@ -97,19 +97,6 @@ exports.productsCountRelated = async (req, res) => {
   }
 };
 exports.getSortedProducts = async (req, res) => {
-  //WITHOUT PAGINATION
-  // try {
-  //   const { sortBy, order, limit } = req.body;
-  //   const products = await Product.find()
-  //     .populate("category")
-  //     .populate("subcategory")
-  //     .sort([[sortBy, order]])
-  //     .limit(limit);
-  //   res.status(200).json(products);
-  // } catch (err) {
-  //   console.log(err);
-  // }
-
   //WITH PAGINATION
   try {
     const { sortBy, order, page } = req.body;

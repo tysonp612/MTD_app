@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Card, Tabs } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
