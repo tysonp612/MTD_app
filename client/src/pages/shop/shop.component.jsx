@@ -9,18 +9,29 @@ import { Pagination } from "antd";
 
 export const ShopPage = () => {
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [productsQuantity, setProductsQuantity] = useState(0);
   const query = useSelector((state) => state.query.query);
 
   const docPerPages = 9;
   useEffect(() => {
-    loadProducts();
+    loadProductsByCount();
     loadProductsCount();
+    loadAllProducts();
   }, [page, query]);
-  const loadProducts = () => {
+  const loadProductsByCount = () => {
     getAllProductsByCount(docPerPages, page)
-      .then((res) => setProducts(res.data))
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const loadAllProducts = () => {
+    getAllProductsByCount()
+      .then((res) => {
+        setAllProducts(res.data);
+      })
       .catch((err) => console.log(err));
   };
   const loadProductsCount = () => {
@@ -30,9 +41,9 @@ export const ShopPage = () => {
       })
       .catch((err) => console.log(err));
   };
-  const renderProductFromQuery = (products) => {
+  const renderProductFromQuery = () => {
     if (query) {
-      const queryProdudct = products.filter(
+      const queryProdudct = allProducts.filter(
         (prod) =>
           prod.title.toLowerCase().includes(query.toLowerCase()) ||
           prod.description.toLowerCase().includes(query.toLowerCase())
@@ -62,7 +73,6 @@ export const ShopPage = () => {
               setPage(value);
             }}
           />
-          ;
         </>
       );
 
@@ -73,7 +83,7 @@ export const ShopPage = () => {
     <div className="row">
       <div className="col-md-3">SEARCH/FILTER</div>
       <div className="col-md-9 row pt-4">
-        {products ? renderProductFromQuery(products) : "Loading"}
+        {products && allProducts ? renderProductFromQuery() : "Loading"}
       </div>
     </div>
   );
