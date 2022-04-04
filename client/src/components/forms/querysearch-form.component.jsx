@@ -14,7 +14,7 @@ export const QuerySearchForm = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push(`/shop?${query}`);
+    history.push(`/shop`);
   };
   return (
     <form onSubmit={(e) => handleSubmit(e)}>

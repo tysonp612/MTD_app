@@ -32,24 +32,19 @@ export const ShopPage = () => {
   };
   const renderProductFromQuery = (products) => {
     if (query) {
-      const queryProd = products.filter(
+      const queryProdudct = products.filter(
         (prod) =>
           prod.title.toLowerCase().includes(query.toLowerCase()) ||
           prod.description.toLowerCase().includes(query.toLowerCase())
       );
-      console.log(queryProd);
-      if (queryProd) {
-        return queryProd.map((prod) => (
+      if (queryProdudct.length) {
+        return queryProdudct.map((product) => (
           <div className="col-md-4">
-            <ProductCard product={prod} />
+            <ProductCard product={product} />
           </div>
         ));
       } else {
-        return (
-          <div className="col-md-4">
-            <p>No Product found</p>
-          </div>
-        );
+        return <div className="text-center">No Product found</div>;
       }
     } else {
       const result = (
@@ -78,8 +73,7 @@ export const ShopPage = () => {
     <div className="row">
       <div className="col-md-3">SEARCH/FILTER</div>
       <div className="col-md-9 row pt-4">
-        {products ? renderProductFromQuery(products) : ""}
-        <div></div>
+        {products ? renderProductFromQuery(products) : "Loading"}
       </div>
     </div>
   );
