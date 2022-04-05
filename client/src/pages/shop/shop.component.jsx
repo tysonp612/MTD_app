@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { ProductCard } from "./../../components/card/regular.product-card.component";
+import { SliderComponent } from "./../../components/slider/slider.component";
 import {
   getAllProductsByCount,
   productsCount,
@@ -13,7 +14,11 @@ export const ShopPage = () => {
   const [page, setPage] = useState(1);
   const [productsQuantity, setProductsQuantity] = useState(0);
   const query = useSelector((state) => state.query.query);
-
+  const input = {
+    min: 0,
+    max: 5000,
+    defaultValue: [0, 0],
+  };
   const docPerPages = 9;
   useEffect(() => {
     loadProductsByCount();
@@ -81,7 +86,10 @@ export const ShopPage = () => {
   };
   return (
     <div className="row">
-      <div className="col-md-3">SEARCH/FILTER</div>
+      <div className="col-md-3">
+        SEARCH/FILTER
+        <SliderComponent input={input} />
+      </div>
       <div className="col-md-9 row pt-4">
         {products && allProducts ? renderProductFromQuery() : "Loading"}
       </div>

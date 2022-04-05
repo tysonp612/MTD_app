@@ -61,8 +61,6 @@ const App = () => {
           // roleBasedRedirect(res.data.role, history);
         })
         .catch((error) => console.log(error));
-    } else {
-      history.push("/");
     }
   });
   //get current user and store to redux user
