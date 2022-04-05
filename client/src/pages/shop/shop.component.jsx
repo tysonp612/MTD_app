@@ -46,6 +46,19 @@ export const ShopPage = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  const renderProductFromSlider = (value) => {
+    if (allProducts) {
+      const filteredProducts = allProducts.filter((prod) => {
+        return prod.price < value[1] && prod.price > value[0];
+      });
+      return filteredProducts.map((product) => (
+        <div className="col-md-4">
+          <ProductCard product={product} />
+        </div>
+      ));
+    }
+  };
   const renderProductFromQuery = () => {
     if (query) {
       const queryProdudct = allProducts.filter(
@@ -88,7 +101,10 @@ export const ShopPage = () => {
     <div className="row">
       <div className="col-md-3">
         SEARCH/FILTER
-        <SliderComponent input={input} />
+        <SliderComponent
+          input={input}
+          renderProductFromSlider={renderProductFromSlider}
+        />
       </div>
       <div className="col-md-9 row pt-4">
         {products && allProducts ? renderProductFromQuery() : "Loading"}

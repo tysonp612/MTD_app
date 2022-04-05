@@ -186,7 +186,6 @@ exports.productStarRating = async (req, res) => {
       let newRating = await Product.updateOne(
         { _id: id, "ratings.postedBy": user._id },
         // { ratings: { $elemMatch: ratingObject } },
-        //And I also tried out just modify the `existingRatingObject` and re-save the product record. It seems to work as well.
 
         // if (rating) {
         // // Update user's rating
