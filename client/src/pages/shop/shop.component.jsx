@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
 import { ProductCard } from "./../../components/card/regular.product-card.component";
 import { SliderComponent } from "./../../components/slider/slider.component";
 import {
@@ -9,22 +10,29 @@ import {
 import { Pagination } from "antd";
 
 export const ShopPage = () => {
-  const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [ok, SetOk] = useState(false);
   const [productsQuantity, setProductsQuantity] = useState(0);
+  const [products, setProducts] = useState([]);
   const query = useSelector((state) => state.query.query);
+  // const products = useSelector((state) => state.products.currentProducts);
   const input = {
     min: 0,
     max: 5000,
     defaultValue: [0, 0],
   };
+  const dispatch = useDispatch();
   const docPerPages = 9;
+  useEffect(() => {
+    renderQueryProduct();
+  }, [query]);
   useEffect(() => {
     loadProductsByCount();
     loadProductsCount();
     loadAllProducts();
-  }, [page, query]);
+  }, [page]);
+  //METHOD
   const loadProductsByCount = () => {
     getAllProductsByCount(docPerPages, page)
       .then((res) => {
@@ -47,19 +55,25 @@ export const ShopPage = () => {
       .catch((err) => console.log(err));
   };
 
-  const renderProductFromSlider = (value) => {
-    if (allProducts) {
-      const filteredProducts = allProducts.filter((prod) => {
-        return prod.price < value[1] && prod.price > value[0];
-      });
-      return filteredProducts.map((product) => (
-        <div className="col-md-4">
-          <ProductCard product={product} />
-        </div>
-      ));
-    }
+  const renderFormat = (products) => {
+    const render = products.map((product) => (
+      <div className="col-md-4" key={product._id}>
+        <ProductCard product={product} />
+      </div>
+    ));
+    return render;
   };
-  const renderProductFromQuery = () => {
+  // const renderProductFromSlider = (valueFromSlider) => {
+  //   if (true) {
+  //     const filteredProducts = allProducts.filter((prod) => {
+  //       return (
+  //         prod.price < valueFromSlider[1] && prod.price > valueFromSlider[0]
+  //       );
+  //     });
+  //     return renderFormat(filteredProducts);
+  //   }
+  // };
+  const renderQueryProduct = () => {
     if (query) {
       const queryProdudct = allProducts.filter(
         (prod) =>
@@ -67,35 +81,28 @@ export const ShopPage = () => {
           prod.description.toLowerCase().includes(query.toLowerCase())
       );
       if (queryProdudct.length) {
-        return queryProdudct.map((product) => (
-          <div className="col-md-4">
-            <ProductCard product={product} />
-          </div>
-        ));
+        return setProducts(queryProdudct);
       } else {
         return <div className="text-center">No Product found</div>;
       }
-    } else {
-      const result = (
-        <>
-          {products.map((product) => (
-            <div key={product._id} className="col-md-4">
-              <ProductCard product={product} />
-            </div>
-          ))}
-          <Pagination
-            className="text-center pt-3"
-            current={page}
-            total={Math.round((productsQuantity / docPerPages) * 10)}
-            onChange={(value) => {
-              setPage(value);
-            }}
-          />
-        </>
-      );
-
-      return result;
     }
+    // }  else {
+    //   const result = (
+    //     <>
+    //       {renderFormat(products)};
+    //       <Pagination
+    //         className="text-center pt-3"
+    //         current={page}
+    //         total={Math.round((productsQuantity / docPerPages) * 10)}
+    //         onChange={(value) => {
+    //           setPage(value);
+    //         }}
+    //       />
+    //     </>
+    //   );
+
+    //   return result;
+    // }
   };
   return (
     <div className="row">
@@ -103,11 +110,17 @@ export const ShopPage = () => {
         SEARCH/FILTER
         <SliderComponent
           input={input}
-          renderProductFromSlider={renderProductFromSlider}
+          // renderProductFromSlider={renderProductFromSlider}
         />
       </div>
       <div className="col-md-9 row pt-4">
-        {products && allProducts ? renderProductFromQuery() : "Loading"}
+        {products && allProducts
+          ? products.map((product) => (
+              <div className="col-md-4" key={product._id}>
+                <ProductCard product={product} />
+              </div>
+            ))
+          : "Loading"}
       </div>
     </div>
   );
