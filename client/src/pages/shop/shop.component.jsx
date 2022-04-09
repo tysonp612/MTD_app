@@ -12,9 +12,10 @@ import { Pagination } from "antd";
 export const ShopPage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(1);
-
+  const [showPagination, setShowPagination] = useState(true);
   const [productsQuantity, setProductsQuantity] = useState(0);
   const [products, setProducts] = useState([]);
+  const [defaultProducts, setDefaultProducts] = useState([]);
   const query = useSelector((state) => state.query.query);
 
   const input = {
@@ -43,7 +44,11 @@ export const ShopPage = () => {
           prod.title.toLowerCase().includes(query.toLowerCase()) ||
           prod.description.toLowerCase().includes(query.toLowerCase())
       );
+      setShowPagination(false);
       return setProducts(queryProducts);
+    } else {
+      setShowPagination(true);
+      return setProducts(defaultProducts);
     }
   };
   const renderProductFromSlider = (value) => {
@@ -51,6 +56,7 @@ export const ShopPage = () => {
       const silderProducts = allProducts.filter(
         (prod) => prod.price > value[0] && prod.price < value[1]
       );
+      setShowPagination(false);
       return setProducts(silderProducts);
     }
   };
@@ -58,6 +64,7 @@ export const ShopPage = () => {
     getAllProductsByCount(docPerPages, page)
       .then((res) => {
         setProducts(res.data);
+        setDefaultProducts(res.data);
       })
       .catch((err) => console.log(err));
   };
@@ -93,7 +100,7 @@ export const ShopPage = () => {
               </div>
             ))
           : "No product found"}
-        {products.length && products.length >= 9 ? (
+        {products.length && showPagination ? (
           <Pagination
             className="text-center pt-3"
             current={page}
