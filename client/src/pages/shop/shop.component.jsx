@@ -28,21 +28,30 @@ export const ShopPage = () => {
     renderQueryProduct();
   }, [query]);
   useEffect(() => {
+    renderProductFromSlider();
+  }, [input]);
+  useEffect(() => {
     loadAllProducts();
     loadProductsCount();
-  }, []);
-  useEffect(() => {
     loadProductsByCount();
   }, [page]);
   //METHOD
   const renderQueryProduct = () => {
     if (query) {
-      const queryProdudct = allProducts.filter(
+      const queryProducts = allProducts.filter(
         (prod) =>
           prod.title.toLowerCase().includes(query.toLowerCase()) ||
           prod.description.toLowerCase().includes(query.toLowerCase())
       );
-      return setProducts(queryProdudct);
+      return setProducts(queryProducts);
+    }
+  };
+  const renderProductFromSlider = (value) => {
+    if (value) {
+      const silderProducts = allProducts.filter(
+        (prod) => prod.price > value[0] && prod.price < value[1]
+      );
+      return setProducts(silderProducts);
     }
   };
   const loadProductsByCount = () => {
@@ -73,28 +82,28 @@ export const ShopPage = () => {
         SEARCH/FILTER
         <SliderComponent
           input={input}
-          // renderProductFromSlider={renderProductFromSlider}
+          renderProductFromSlider={renderProductFromSlider}
         />
       </div>
       <div className="col-md-9 row pt-4">
-        {products.length ? (
-          <>
-            {products.map((product) => (
+        {products.length
+          ? products.map((product) => (
               <div className="col-md-4" key={product._id}>
                 <ProductCard product={product} />
               </div>
-            ))}
-            <Pagination
-              className="text-center pt-3"
-              current={page}
-              total={Math.round((productsQuantity / docPerPages) * 10)}
-              onChange={(value) => {
-                setPage(value);
-              }}
-            />
-          </>
+            ))
+          : "No product found"}
+        {products.length && products.length >= 9 ? (
+          <Pagination
+            className="text-center pt-3"
+            current={page}
+            total={Math.round((productsQuantity / docPerPages) * 10)}
+            onChange={(value) => {
+              setPage(value);
+            }}
+          />
         ) : (
-          "No product found"
+          ""
         )}
       </div>
     </div>
