@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
 import { ProductCard } from "./../../components/card/regular.product-card.component";
 import { SliderComponent } from "./../../components/slider/slider.component";
+// import { MenuShop } from "./../../components/menu/menu.component";
 import {
   getAllProductsByCount,
   productsCount,
 } from "./../../utils/products/products.utils";
-import { Pagination } from "antd";
-
+import { Pagination, Menu } from "antd";
+import { DollarOutlined } from "@ant-design/icons";
+const { SubMenu } = Menu;
 export const ShopPage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -85,12 +87,31 @@ export const ShopPage = () => {
 
   return (
     <div className="row">
-      <div className="col-md-3">
-        SEARCH/FILTER
-        <SliderComponent
-          input={input}
-          renderProductFromSlider={renderProductFromSlider}
-        />
+      <div className="col-md-3 pl-3">
+        <h4 className="p-3">Search/Filter</h4>
+        <hr />
+        <Menu defaultOpenKeys={["sub1", "sub2"]} mode="inline" className="pl-2">
+          <SubMenu
+            key="sub1"
+            title={
+              <span className="d-flex h6">
+                <DollarOutlined className="align-self-center" />
+                <span>Price</span>
+              </span>
+            }
+          >
+            <Menu.ItemGroup key="g1">
+              <Menu.Item key="1">
+                <div className="p-3">
+                  <SliderComponent
+                    input={input}
+                    renderProductFromSlider={renderProductFromSlider}
+                  />
+                </div>
+              </Menu.Item>
+            </Menu.ItemGroup>
+          </SubMenu>
+        </Menu>
       </div>
       <div className="col-md-9 row pt-4">
         {products.length

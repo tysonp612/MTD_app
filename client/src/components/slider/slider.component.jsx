@@ -3,10 +3,8 @@ import { Slider } from "antd";
 
 export const SliderComponent = ({ input, renderProductFromSlider }) => {
   const { min, max, defaultValue } = input;
-  const [value, setValue] = useState([]);
 
   const handleChangeValue = (e) => {
-    setValue(e);
     renderProductFromSlider(e);
   };
 
