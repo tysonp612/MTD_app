@@ -8,6 +8,7 @@ import {
   getAllProductsByCount,
   productsCount,
 } from "./../../utils/products/products.utils";
+import { getCategories } from "./../../utils/category/category.utils";
 import { Pagination, Menu } from "antd";
 import { DollarOutlined } from "@ant-design/icons";
 const { SubMenu } = Menu;
@@ -17,6 +18,7 @@ export const ShopPage = () => {
   const [showPagination, setShowPagination] = useState(true);
   const [productsQuantity, setProductsQuantity] = useState(0);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [defaultProducts, setDefaultProducts] = useState([]);
   const query = useSelector((state) => state.query.query);
 
@@ -32,11 +34,13 @@ export const ShopPage = () => {
   }, [query]);
   useEffect(() => {
     renderProductFromSlider();
-  }, [input]);
+    renderProductFromCategory();
+  }, [products]);
   useEffect(() => {
     loadAllProducts();
     loadProductsCount();
     loadProductsByCount();
+    loadCategories();
   }, [page]);
   //METHOD
   const renderQueryProduct = () => {
@@ -62,6 +66,16 @@ export const ShopPage = () => {
       return setProducts(silderProducts);
     }
   };
+  const renderProductFromCategory = (id) => {
+    if (id) {
+      const categoryProducts = allProducts.filter(
+        (prod) => prod.category._id === id
+      );
+      console.log(categoryProducts);
+      setShowPagination(false);
+      return setProducts(categoryProducts);
+    }
+  };
   const loadProductsByCount = () => {
     getAllProductsByCount(docPerPages, page)
       .then((res) => {
@@ -84,7 +98,14 @@ export const ShopPage = () => {
       })
       .catch((err) => console.log(err));
   };
-
+  const loadCategories = () => {
+    getCategories()
+      .then((res) => {
+        console.log(res.data);
+        setCategories(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div className="row">
       <div className="col-md-3 pl-3">
@@ -111,6 +132,28 @@ export const ShopPage = () => {
               </Menu.Item>
             </Menu.ItemGroup>
           </SubMenu>
+          {categories && (
+            <SubMenu
+              key="sub2"
+              title={
+                <span className="d-flex h6">
+                  <DollarOutlined className="align-self-center" />
+                  <span>Categories</span>
+                </span>
+              }
+            >
+              <Menu.ItemGroup key="g2">
+                {categories.map((category) => (
+                  <Menu.Item
+                    key={category._id}
+                    onClick={(e) => renderProductFromCategory(e.key)}
+                  >
+                    {category.name}
+                  </Menu.Item>
+                ))}
+              </Menu.ItemGroup>
+            </SubMenu>
+          )}
         </Menu>
       </div>
       <div className="col-md-9 row pt-4">
