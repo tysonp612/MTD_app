@@ -22,7 +22,7 @@ export const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [averageRatingProducts, setAverageRatingProducts] = useState();
   const [categories, setCategories] = useState([]);
-  const [star, setStar] = useState(1);
+  const [star, setStar] = useState(0);
   const [defaultProducts, setDefaultProducts] = useState([]);
   const query = useSelector((state) => state.query.query);
 
@@ -67,6 +67,7 @@ export const ShopPage = () => {
   //Note
   const renderProductFromRating = (star) => {
     if (star && averageRatingProducts) {
+      setStar(star);
       //filter array of product fetched from db that equal star
       const productWithSameAvgRating = averageRatingProducts.filter(
         (prod) => Math.round(prod.avgRating) === star
@@ -75,7 +76,8 @@ export const ShopPage = () => {
       const avgRatingProducts = productWithSameAvgRating.map((aprod) => {
         return allProducts.find((prod) => prod.slug === aprod._id);
       });
-      setProducts(avgRatingProducts);
+      setShowPagination(false);
+      return setProducts(avgRatingProducts);
     }
   };
 
@@ -192,9 +194,9 @@ export const ShopPage = () => {
             }
           >
             <Menu.ItemGroup key="g1">
-              <Menu.Item key="1">
+              <Menu.Item key="1" className="text-center">
                 <StarRatings
-                  starDimension="20px"
+                  rating={star}
                   starSpacing="2px"
                   starRatedColor="red"
                   changeRating={(e) => renderProductFromRating(e)}
