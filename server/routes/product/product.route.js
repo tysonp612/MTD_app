@@ -44,4 +44,7 @@ router
 router
   .route("/products/search/filters")
   .post(productController.getProductsByFilters);
+router
+  .route("/products/search/average-rating")
+  .get(productController.getProductsByAveRating);
 module.exports = router;

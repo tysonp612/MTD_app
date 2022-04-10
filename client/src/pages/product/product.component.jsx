@@ -9,6 +9,7 @@ import { SingleProduct } from "./../../components/card/single-product-card.compo
 import { ProductCard } from "./../../components/card/regular.product-card.component";
 import { updateStarRating } from "./../../utils/products/products.utils";
 import { Pagination } from "antd";
+
 export const ProductPage = ({ match }) => {
   const [product, setProduct] = useState({});
   const [page, setPage] = useState(1);

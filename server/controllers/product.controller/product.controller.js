@@ -225,3 +225,19 @@ exports.getProductsByFilters = async (req, res) => {
     await handleQuery(req, res, query);
   }
 };
+
+exports.getProductsByAveRating = async (req, res) => {
+  try {
+    const test = await Product.aggregate([
+      { $unwind: "$ratings" },
+      {
+        $group: { _id: "$slug", avgRating: { $avg: "$ratings.star" } },
+      },
+    ]);
+
+    res.status(200).json(test);
+    console.log(test);
+  } catch (err) {
+    console.log(err);
+  }
+};

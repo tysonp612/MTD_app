@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
+// import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
 import { ProductCard } from "./../../components/card/regular.product-card.component";
 import { SliderComponent } from "./../../components/slider/slider.component";
 // import { MenuShop } from "./../../components/menu/menu.component";
 import {
   getAllProductsByCount,
   productsCount,
+  getProductsFromAverageRating,
 } from "./../../utils/products/products.utils";
 import { getCategories } from "./../../utils/category/category.utils";
 import { Pagination, Menu } from "antd";
+import StarRatings from "react-star-ratings";
 import { DollarOutlined } from "@ant-design/icons";
 const { SubMenu } = Menu;
 export const ShopPage = () => {
@@ -18,7 +20,9 @@ export const ShopPage = () => {
   const [showPagination, setShowPagination] = useState(true);
   const [productsQuantity, setProductsQuantity] = useState(0);
   const [products, setProducts] = useState([]);
+  const [averageRatingProducts, setAverageRatingProducts] = useState();
   const [categories, setCategories] = useState([]);
+  const [star, setStar] = useState(1);
   const [defaultProducts, setDefaultProducts] = useState([]);
   const query = useSelector((state) => state.query.query);
 
@@ -27,7 +31,7 @@ export const ShopPage = () => {
     max: 5000,
     defaultValue: [0, 0],
   };
-  const dispatch = useDispatch();
+
   const docPerPages = 9;
   useEffect(() => {
     renderQueryProduct();
@@ -41,6 +45,7 @@ export const ShopPage = () => {
     loadProductsCount();
     loadProductsByCount();
     loadCategories();
+    loadAverageRating();
   }, [page]);
   //METHOD
   const renderQueryProduct = () => {
@@ -57,6 +62,20 @@ export const ShopPage = () => {
       return setProducts(defaultProducts);
     }
   };
+
+  const renderProductFromRating = (star) => {
+    if (star && averageRatingProducts) {
+      const productWithSameAvgRating = averageRatingProducts.filter(
+        (prod) => prod.avgRating === star
+      );
+
+      const avgRatingProducts = allProducts.filter(
+        (prod) => productWithSameAvgRating[prod]
+      );
+      console.log(avgRatingProducts);
+    }
+  };
+
   const renderProductFromSlider = (value) => {
     if (value) {
       const silderProducts = allProducts.filter(
@@ -75,6 +94,13 @@ export const ShopPage = () => {
       setShowPagination(false);
       return setProducts(categoryProducts);
     }
+  };
+  const loadAverageRating = () => {
+    getProductsFromAverageRating()
+      .then((res) => {
+        setAverageRatingProducts(res.data);
+      })
+      .catch((err) => console.log(err));
   };
   const loadProductsByCount = () => {
     getAllProductsByCount(docPerPages, page)
@@ -101,7 +127,6 @@ export const ShopPage = () => {
   const loadCategories = () => {
     getCategories()
       .then((res) => {
-        console.log(res.data);
         setCategories(res.data);
       })
       .catch((err) => console.log(err));
@@ -154,6 +179,26 @@ export const ShopPage = () => {
               </Menu.ItemGroup>
             </SubMenu>
           )}
+          <SubMenu
+            key="sub3"
+            title={
+              <span className="d-flex h6">
+                <DollarOutlined className="align-self-center" />
+                <span>Rating</span>
+              </span>
+            }
+          >
+            <Menu.ItemGroup key="g1">
+              <Menu.Item key="1">
+                <StarRatings
+                  starDimension="20px"
+                  starSpacing="2px"
+                  starRatedColor="red"
+                  changeRating={(e) => renderProductFromRating(e)}
+                />
+              </Menu.Item>
+            </Menu.ItemGroup>
+          </SubMenu>
         </Menu>
       </div>
       <div className="col-md-9 row pt-4">

@@ -87,3 +87,8 @@ export const getProductsFromQuery = async (query) => {
     }
   );
 };
+export const getProductsFromAverageRating = async (query) => {
+  return await axios.get(
+    `${process.env.REACT_APP_API}/products/search/average-rating`
+  );
+};
