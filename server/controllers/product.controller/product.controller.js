@@ -225,7 +225,7 @@ exports.getProductsByFilters = async (req, res) => {
     await handleQuery(req, res, query);
   }
 };
-
+//Note
 exports.getProductsByAveRating = async (req, res) => {
   try {
     const test = await Product.aggregate([

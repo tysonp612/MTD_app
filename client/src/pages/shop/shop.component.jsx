@@ -39,6 +39,7 @@ export const ShopPage = () => {
   useEffect(() => {
     renderProductFromSlider();
     renderProductFromCategory();
+    renderProductFromRating();
   }, [products]);
   useEffect(() => {
     loadAllProducts();
@@ -63,16 +64,18 @@ export const ShopPage = () => {
     }
   };
 
+  //Note
   const renderProductFromRating = (star) => {
     if (star && averageRatingProducts) {
+      //filter array of product fetched from db that equal star
       const productWithSameAvgRating = averageRatingProducts.filter(
-        (prod) => prod.avgRating === star
+        (prod) => Math.round(prod.avgRating) === star
       );
 
-      const avgRatingProducts = allProducts.filter(
-        (prod) => productWithSameAvgRating[prod]
-      );
-      console.log(avgRatingProducts);
+      const avgRatingProducts = productWithSameAvgRating.map((aprod) => {
+        return allProducts.find((prod) => prod.slug === aprod._id);
+      });
+      setProducts(avgRatingProducts);
     }
   };
 
