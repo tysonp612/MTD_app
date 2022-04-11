@@ -33,6 +33,7 @@ export const ShopPage = () => {
     "Blue",
     "Dark Grey",
   ]);
+  const [shipping, setShipping] = useState(["Yes", "No"]);
   const query = useSelector((state) => state.query.query);
 
   const input = {
@@ -108,6 +109,15 @@ export const ShopPage = () => {
       const colorsProducts = allProducts.filter((prod) => prod.color === value);
       setShowPagination(false);
       return setProducts(colorsProducts);
+    }
+  };
+  const renderProductFromShipping = (value) => {
+    if (value) {
+      const shippingProducts = allProducts.filter(
+        (prod) => prod.shipping === value
+      );
+      setShowPagination(false);
+      return setProducts(shippingProducts);
     }
   };
   const renderProductFromCategory = (id) => {
@@ -268,13 +278,34 @@ export const ShopPage = () => {
           >
             {colors.map((color) => (
               <Menu.Item
-                key={-colors.indexOf(color)}
+                key={color}
                 className="pl-5"
                 onClick={(e) =>
                   renderProductFromColors(e.domEvent.target.outerText)
                 }
               >
                 {color}
+              </Menu.Item>
+            ))}
+          </SubMenu>
+          <SubMenu
+            key="sub6"
+            title={
+              <span className="d-flex h6">
+                <DollarOutlined className="align-self-center" />
+                <span>Shipping</span>
+              </span>
+            }
+          >
+            {shipping.map((ship) => (
+              <Menu.Item
+                key={ship}
+                className="pl-5"
+                onClick={(e) =>
+                  renderProductFromShipping(e.domEvent.target.outerText)
+                }
+              >
+                {ship}
               </Menu.Item>
             ))}
           </SubMenu>
