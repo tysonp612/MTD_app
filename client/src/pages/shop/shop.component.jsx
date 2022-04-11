@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-// import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
+import { useSelector } from "react-redux";
+
 import { ProductCard } from "./../../components/card/regular.product-card.component";
 import { SliderComponent } from "./../../components/slider/slider.component";
-// import { MenuShop } from "./../../components/menu/menu.component";
+
 import {
   getAllProductsByCount,
   productsCount,
   getProductsFromAverageRating,
 } from "./../../utils/products/products.utils";
+import { getSubCategories } from "./../../utils/sub-category/sub-category.utils";
 import { getCategories } from "./../../utils/category/category.utils";
-import { Pagination, Menu } from "antd";
+import { Pagination, Menu, Tag } from "antd";
 import StarRatings from "react-star-ratings";
 import { DollarOutlined } from "@ant-design/icons";
 const { SubMenu } = Menu;
@@ -22,6 +23,7 @@ export const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [averageRatingProducts, setAverageRatingProducts] = useState();
   const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [star, setStar] = useState(0);
   const [defaultProducts, setDefaultProducts] = useState([]);
   const query = useSelector((state) => state.query.query);
@@ -40,6 +42,7 @@ export const ShopPage = () => {
     renderProductFromSlider();
     renderProductFromCategory();
     renderProductFromRating();
+    renderProductFromSubCategory();
   }, [products]);
   useEffect(() => {
     loadAllProducts();
@@ -47,6 +50,7 @@ export const ShopPage = () => {
     loadProductsByCount();
     loadCategories();
     loadAverageRating();
+    loadSubCategories();
   }, [page]);
   //METHOD
   const renderQueryProduct = () => {
@@ -95,9 +99,18 @@ export const ShopPage = () => {
       const categoryProducts = allProducts.filter(
         (prod) => prod.category._id === id
       );
-      console.log(categoryProducts);
+
       setShowPagination(false);
       return setProducts(categoryProducts);
+    }
+  };
+  const renderProductFromSubCategory = (id) => {
+    if (id) {
+      const subCategoryProducts = allProducts.filter((prod) => {
+        return prod.subcategory.find((sub) => sub._id === id.key);
+      });
+      setShowPagination(false);
+      return setProducts(subCategoryProducts);
     }
   };
   const loadAverageRating = () => {
@@ -133,6 +146,13 @@ export const ShopPage = () => {
     getCategories()
       .then((res) => {
         setCategories(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const loadSubCategories = () => {
+    getSubCategories()
+      .then((res) => {
+        setSubCategories(res.data);
       })
       .catch((err) => console.log(err));
   };
@@ -193,8 +213,8 @@ export const ShopPage = () => {
               </span>
             }
           >
-            <Menu.ItemGroup key="g1">
-              <Menu.Item key="1" className="text-center">
+            <Menu.ItemGroup key="g3">
+              <Menu.Item key="3" className="text-center">
                 <StarRatings
                   rating={star}
                   starSpacing="2px"
@@ -203,6 +223,27 @@ export const ShopPage = () => {
                 />
               </Menu.Item>
             </Menu.ItemGroup>
+          </SubMenu>
+          <SubMenu
+            key="sub4"
+            title={
+              <span className="d-flex h6">
+                <DollarOutlined className="align-self-center" />
+                <span>Sub Categories</span>
+              </span>
+            }
+          >
+            {subCategories.map((sub) => (
+              <Menu.ItemGroup key={`g${sub._id}`} className="d-inline-block">
+                <Menu.Item
+                  key={sub._id}
+                  onClick={(e) => renderProductFromSubCategory(e)}
+                  className="p-0"
+                >
+                  <Tag className="p-2">{sub.name}</Tag>
+                </Menu.Item>
+              </Menu.ItemGroup>
+            ))}
           </SubMenu>
         </Menu>
       </div>
