@@ -13,7 +13,14 @@ import { getSubCategories } from "./../../utils/sub-category/sub-category.utils"
 import { getCategories } from "./../../utils/category/category.utils";
 import { Pagination, Menu, Tag, Radio } from "antd";
 import StarRatings from "react-star-ratings";
-import { DollarOutlined } from "@ant-design/icons";
+import {
+  DollarOutlined,
+  DownSquareOutlined,
+  StarOutlined,
+  TagsOutlined,
+  BgColorsOutlined,
+  DingdingOutlined,
+} from "@ant-design/icons";
 const { SubMenu } = Menu;
 export const ShopPage = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -197,23 +204,21 @@ export const ShopPage = () => {
               </span>
             }
           >
-            <Menu.ItemGroup key="g1">
-              <Menu.Item key="1">
-                <div className="p-3">
-                  <SliderComponent
-                    input={input}
-                    renderProductFromSlider={renderProductFromSlider}
-                  />
-                </div>
-              </Menu.Item>
-            </Menu.ItemGroup>
+            <Menu.Item key="1">
+              <div className="p-3">
+                <SliderComponent
+                  input={input}
+                  renderProductFromSlider={renderProductFromSlider}
+                />
+              </div>
+            </Menu.Item>
           </SubMenu>
           {categories && (
             <SubMenu
               key="sub2"
               title={
                 <span className="d-flex h6">
-                  <DollarOutlined className="align-self-center" />
+                  <DownSquareOutlined className="align-self-center" />
                   <span>Categories</span>
                 </span>
               }
@@ -232,14 +237,15 @@ export const ShopPage = () => {
             key="sub3"
             title={
               <span className="d-flex h6">
-                <DollarOutlined className="align-self-center" />
+                <StarOutlined className="align-self-center" />
                 <span>Rating</span>
               </span>
             }
           >
-            <Menu.Item key="3" className="text-center">
+            <Menu.Item key="3" className="p-5">
               <StarRatings
                 rating={star}
+                starDimension="35px"
                 starSpacing="2px"
                 starRatedColor="red"
                 changeRating={(e) => renderProductFromRating(e)}
@@ -250,7 +256,7 @@ export const ShopPage = () => {
             key="sub4"
             title={
               <span className="d-flex h6">
-                <DollarOutlined className="align-self-center" />
+                <TagsOutlined className="align-self-center" />
                 <span>Sub Categories</span>
               </span>
             }
@@ -271,7 +277,7 @@ export const ShopPage = () => {
             key="sub5"
             title={
               <span className="d-flex h6">
-                <DollarOutlined className="align-self-center" />
+                <BgColorsOutlined className="align-self-center" />
                 <span>Colors</span>
               </span>
             }
@@ -292,7 +298,7 @@ export const ShopPage = () => {
             key="sub6"
             title={
               <span className="d-flex h6">
-                <DollarOutlined className="align-self-center" />
+                <DingdingOutlined className="align-self-center" />
                 <span>Shipping</span>
               </span>
             }
