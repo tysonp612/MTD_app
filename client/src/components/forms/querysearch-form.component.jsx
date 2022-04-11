@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { SearchQueryActionTypes } from "./../../redux/reducers/search-query/search-query.types";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 export const QuerySearchForm = () => {
+  const [text, setText] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
   const handleInput = (e) => {
+    setText(e.target.value);
     dispatch({
       type: SearchQueryActionTypes.SEARCH_QUERY,
       payload: e.target.value,
@@ -13,7 +15,7 @@ export const QuerySearchForm = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push(`/shop`);
+    history.push(`/shop?${text}`);
   };
   return (
     <form onSubmit={(e) => handleSubmit(e)}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-
+import { QuerySearchForm } from "./../../components/forms/querysearch-form.component";
 import { ProductCard } from "./../../components/card/regular.product-card.component";
 import { SliderComponent } from "./../../components/slider/slider.component";
 
@@ -11,7 +11,7 @@ import {
 } from "./../../utils/products/products.utils";
 import { getSubCategories } from "./../../utils/sub-category/sub-category.utils";
 import { getCategories } from "./../../utils/category/category.utils";
-import { Pagination, Menu, Tag, Radio } from "antd";
+import { Pagination, Menu, Tag } from "antd";
 import StarRatings from "react-star-ratings";
 import {
   DollarOutlined,
@@ -41,8 +41,8 @@ export const ShopPage = () => {
     "Dark Grey",
   ]);
   const [shipping, setShipping] = useState(["Yes", "No"]);
-  const query = useSelector((state) => state.query.query);
 
+  const query = useSelector((state) => state.query.query);
   const input = {
     min: 0,
     max: 5000,
@@ -71,15 +71,16 @@ export const ShopPage = () => {
   }, []);
   //METHOD
   const renderQueryProduct = () => {
-    if (query) {
+    if (query && allProducts.length) {
       const queryProducts = allProducts.filter(
         (prod) =>
           prod.title.toLowerCase().includes(query.toLowerCase()) ||
           prod.description.toLowerCase().includes(query.toLowerCase())
       );
+      console.log(query, allProducts);
       setShowPagination(false);
       return setProducts(queryProducts);
-    } else {
+    } else if (query === "") {
       setShowPagination(true);
       return setProducts(defaultProducts);
     }
@@ -191,8 +192,12 @@ export const ShopPage = () => {
   };
   return (
     <div className="row">
-      <div className="col-md-3 pl-3">
+      <div className="col-md-3">
         <h4 className="p-3">Search/Filter</h4>
+        <div className="p-2">
+          <QuerySearchForm />
+        </div>
+
         <hr />
         <Menu defaultOpenKeys={["sub1", "sub2"]} mode="inline" className="pl-2">
           <SubMenu
@@ -318,13 +323,15 @@ export const ShopPage = () => {
         </Menu>
       </div>
       <div className="col-md-9 row pt-4">
-        {products.length
-          ? products.map((product) => (
-              <div className="col-md-4" key={product._id}>
-                <ProductCard product={product} />
-              </div>
-            ))
-          : "No product found"}
+        {products.length && allProducts.length ? (
+          products.map((product) => (
+            <div className="col-md-4" key={product._id}>
+              <ProductCard product={product} />
+            </div>
+          ))
+        ) : (
+          <h3 className="text-center">No product found</h3>
+        )}
         {products.length && showPagination ? (
           <Pagination
             className="text-center pt-3"

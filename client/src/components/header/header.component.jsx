@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { NavDropdown } from "react-bootstrap";
 //Firebase
@@ -93,9 +93,6 @@ const Header = () => {
         ) : (
           ""
         )}
-        <li className="nav-item">
-          <QuerySearchForm />
-        </li>
       </ul>
     </nav>
   );
