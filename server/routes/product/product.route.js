@@ -41,9 +41,9 @@ router
   .route("/products/related/:slug")
   .post(productController.getRelatedProducts);
 //search
-router
-  .route("/products/search/filters")
-  .post(productController.getProductsByFilters);
+// router
+//   .route("/products/search/filters")
+//   .post(productController.getProductsByFilters);
 router
   .route("/products/search/average-rating")
   .get(productController.getProductsByAveRating);

@@ -33,7 +33,9 @@ exports.getAllProductFromSubCategory = async (req, res) => {
   try {
     const { slug } = req.params;
     const subCategoryObj = await SubCategory.find({ slug });
+
     const subCategoryId = subCategoryObj[0]._id;
+    console.log(subCategoryObj, subCategoryId);
     const products = await Product.find({ subcategory: subCategoryId })
       .populate("category")
       .populate("subcategory");
@@ -206,25 +208,25 @@ exports.productStarRating = async (req, res) => {
   }
 };
 //SEARCH/FILTER
-const handleQuery = async (req, res, query) => {
-  try {
-    const products = await Product.find({ $text: { $search: query } })
-      .populate("category", "_id name")
-      .populate("subcategory", "_id name")
-      .populate("ratings.postedBy", "_id name");
-    res.status(200).json(products);
-  } catch (err) {
-    console.log(err);
-  }
-};
-exports.getProductsByFilters = async (req, res) => {
-  const { query } = req.body;
-  console.log(query);
-  if (query) {
-    console.log("query", query);
-    await handleQuery(req, res, query);
-  }
-};
+// const handleQuery = async (req, res, query) => {
+//   try {
+//     const products = await Product.find({ $text: { $search: query } })
+//       .populate("category", "_id name")
+//       .populate("subcategory", "_id name")
+//       .populate("ratings.postedBy", "_id name");
+//     res.status(200).json(products);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+// exports.getProductsByFilters = async (req, res) => {
+//   const { query } = req.body;
+//   console.log(query);
+//   if (query) {
+//     console.log("query", query);
+//     await handleQuery(req, res, query);
+//   }
+// };
 //Note
 exports.getProductsByAveRating = async (req, res) => {
   try {

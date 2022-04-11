@@ -11,7 +11,7 @@ import {
 } from "./../../utils/products/products.utils";
 import { getSubCategories } from "./../../utils/sub-category/sub-category.utils";
 import { getCategories } from "./../../utils/category/category.utils";
-import { Pagination, Menu, Tag } from "antd";
+import { Pagination, Menu, Tag, Radio } from "antd";
 import StarRatings from "react-star-ratings";
 import { DollarOutlined } from "@ant-design/icons";
 const { SubMenu } = Menu;
@@ -26,6 +26,13 @@ export const ShopPage = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [star, setStar] = useState(0);
   const [defaultProducts, setDefaultProducts] = useState([]);
+  const [colors, setColors] = useState([
+    "Black",
+    "Silver",
+    "White",
+    "Blue",
+    "Dark Grey",
+  ]);
   const query = useSelector((state) => state.query.query);
 
   const input = {
@@ -45,13 +52,15 @@ export const ShopPage = () => {
     renderProductFromSubCategory();
   }, [products]);
   useEffect(() => {
+    loadProductsByCount();
+  }, [page]);
+  useEffect(() => {
     loadAllProducts();
     loadProductsCount();
-    loadProductsByCount();
     loadCategories();
     loadAverageRating();
     loadSubCategories();
-  }, [page]);
+  }, []);
   //METHOD
   const renderQueryProduct = () => {
     if (query) {
@@ -92,6 +101,13 @@ export const ShopPage = () => {
       );
       setShowPagination(false);
       return setProducts(silderProducts);
+    }
+  };
+  const renderProductFromColors = (value) => {
+    if (value) {
+      const colorsProducts = allProducts.filter((prod) => prod.color === value);
+      setShowPagination(false);
+      return setProducts(colorsProducts);
     }
   };
   const renderProductFromCategory = (id) => {
@@ -192,16 +208,14 @@ export const ShopPage = () => {
                 </span>
               }
             >
-              <Menu.ItemGroup key="g2">
-                {categories.map((category) => (
-                  <Menu.Item
-                    key={category._id}
-                    onClick={(e) => renderProductFromCategory(e.key)}
-                  >
-                    {category.name}
-                  </Menu.Item>
-                ))}
-              </Menu.ItemGroup>
+              {categories.map((category) => (
+                <Menu.Item
+                  key={category._id}
+                  onClick={(e) => renderProductFromCategory(e.key)}
+                >
+                  {category.name}
+                </Menu.Item>
+              ))}
             </SubMenu>
           )}
           <SubMenu
@@ -213,16 +227,14 @@ export const ShopPage = () => {
               </span>
             }
           >
-            <Menu.ItemGroup key="g3">
-              <Menu.Item key="3" className="text-center">
-                <StarRatings
-                  rating={star}
-                  starSpacing="2px"
-                  starRatedColor="red"
-                  changeRating={(e) => renderProductFromRating(e)}
-                />
-              </Menu.Item>
-            </Menu.ItemGroup>
+            <Menu.Item key="3" className="text-center">
+              <StarRatings
+                rating={star}
+                starSpacing="2px"
+                starRatedColor="red"
+                changeRating={(e) => renderProductFromRating(e)}
+              />
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub4"
@@ -238,11 +250,32 @@ export const ShopPage = () => {
                 <Menu.Item
                   key={sub._id}
                   onClick={(e) => renderProductFromSubCategory(e)}
-                  className="p-0"
+                  className="p-2"
                 >
                   <Tag className="p-2">{sub.name}</Tag>
                 </Menu.Item>
               </Menu.ItemGroup>
+            ))}
+          </SubMenu>
+          <SubMenu
+            key="sub5"
+            title={
+              <span className="d-flex h6">
+                <DollarOutlined className="align-self-center" />
+                <span>Colors</span>
+              </span>
+            }
+          >
+            {colors.map((color) => (
+              <Menu.Item
+                key={-colors.indexOf(color)}
+                className="pl-5"
+                onClick={(e) =>
+                  renderProductFromColors(e.domEvent.target.outerText)
+                }
+              >
+                {color}
+              </Menu.Item>
             ))}
           </SubMenu>
         </Menu>
