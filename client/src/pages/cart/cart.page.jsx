@@ -7,8 +7,10 @@ export const CartPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     calculateSingleItemPrice();
+    calculateTotalPrice();
   }, [cartItems]);
   const [summaryDetail, setSummaryDetail] = useState();
+  const [totalPrice, setTotalPrice] = useState();
 
   const handleIncreaseCartItem = (item) => {
     dispatch({ type: "ADD_TO_CART", payload: item });
@@ -21,6 +23,18 @@ export const CartPage = () => {
   };
   const handleDeleteCartItem = (item) => {
     dispatch({ type: "DELETE_FROM_CART", payload: item });
+  };
+  const calculateTotalPrice = () => {
+    if (cartItems.length) {
+      const total = cartItems
+        .map((cartItem) => cartItem.cartQuantity * cartItem.price)
+        .reduce(
+          (accumulatedPrice, singleProductPrice) =>
+            accumulatedPrice + singleProductPrice,
+          0
+        );
+      return setTotalPrice(total);
+    }
   };
   const calculateSingleItemPrice = () => {
     if (cartItems.length) {
@@ -109,13 +123,19 @@ export const CartPage = () => {
           </table>
         </div>
         <div className="col-md-4">
-          <div className="mt-4">
-            <h4>Order Summary</h4>
+          <div className="mt-5">
+            <h4 className="p-2">Order Summary</h4>
             <hr />
             <h5>Products</h5>
             <hr />
             {summaryDetail &&
-              summaryDetail.map((detail) => <div>{detail}</div>)}
+              summaryDetail.map((detail) => (
+                <div key={`detail${summaryDetail.indexOf(detail)}`}>
+                  {detail}
+                </div>
+              ))}
+            <hr />
+            Total: ${totalPrice}
           </div>
         </div>
       </div>
