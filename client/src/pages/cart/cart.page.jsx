@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 export const CartPage = () => {
@@ -6,6 +7,9 @@ export const CartPage = () => {
   const dispatch = useDispatch();
   const handleIncrease = (item) => {
     dispatch({ type: "ADD_TO_CART", payload: item });
+    if (item.cartQuantity === item.quantity) {
+      toast.error(`Maximum available quantity: ${item.quantity}`);
+    }
   };
   const handleDecrease = (item) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: item });
