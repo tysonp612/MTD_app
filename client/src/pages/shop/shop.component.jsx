@@ -199,7 +199,7 @@ export const ShopPage = () => {
         </div>
 
         <hr />
-        <Menu defaultOpenKeys={["sub1", "sub2"]} mode="inline" className="pl-2">
+        <Menu mode="inline" className="pl-2">
           <SubMenu
             key="sub1"
             title={
@@ -348,3 +348,6 @@ export const ShopPage = () => {
     </div>
   );
 };
+
+//NOTE
+//NEED FILTER FOR BRANDS, NEED

@@ -1,3 +1,3 @@
 export const ProductsActionTypes = {
-  STORE_PRODUCTS: "STORE_PRODUCTS",
+  STORE_PRODUCTS_TO_CART: "STORE_PRODUCTS_TO_CART",
 };

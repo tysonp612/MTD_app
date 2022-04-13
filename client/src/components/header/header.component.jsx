@@ -4,7 +4,7 @@ import { NavDropdown } from "react-bootstrap";
 //Firebase
 import { signOutUser } from "../../firebase/firebase.utils";
 //Components
-import { QuerySearchForm } from "./../../components/forms/querysearch-form.component";
+
 //Redux
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";

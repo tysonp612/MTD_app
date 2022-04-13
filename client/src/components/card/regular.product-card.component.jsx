@@ -1,14 +1,22 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Card } from "antd";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { ShowAverage } from "./../rating/average-rating.component";
+import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
 import { Link } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
   const { title, description, images, slug, ratings } = product;
-
+  const dispatch = useDispatch();
   const { Meta } = Card;
+  const handleAddToCart = () => {
+    dispatch({
+      type: ProductsActionTypes.STORE_PRODUCTS_TO_CART,
+      payload: product,
+    });
+  };
   return (
     <>
       {ratings && ratings.length ? (
@@ -31,7 +39,7 @@ export const ProductCard = ({ product }) => {
           <Link to={`/product/${slug}`}>
             <EyeOutlined className="text-warning" />
           </Link>,
-          <ShoppingCartOutlined />,
+          <ShoppingCartOutlined onClick={handleAddToCart} />,
         ]}
       >
         <Meta
