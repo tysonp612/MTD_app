@@ -28,6 +28,7 @@ import { ProductPage } from "./pages/product/product.component";
 import { CategoriesPage } from "./pages/categories/categories.component";
 import { SubCategoriesPage } from "./pages/sub-categories/sub-categories.component";
 import { ShopPage } from "./pages/shop/shop.component";
+import { CartPage } from "./pages/cart/cart.page";
 //User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
@@ -81,6 +82,7 @@ const App = () => {
         <Route exact path="/category/:slug" component={CategoriesPage} />
         <Route exact path="/sub-category/:slug" component={SubCategoriesPage} />
         <Route exact path="/shop" component={ShopPage} />
+        <Route exact path="/cart" component={CartPage} />
 
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute exact path="/admin/products" component={AdminProducts} />

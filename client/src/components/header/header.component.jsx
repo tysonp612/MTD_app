@@ -73,6 +73,11 @@ const Header = () => {
             Shop
           </Link>
         </li>
+        <li className="nav-item">
+          <Link to="/cart" className="nav-link">
+            Cart
+          </Link>
+        </li>
       </ul>
       <ul className="col-md-6 nav-pills nav d-flex justify-content-end ">
         {redirectDashboard(loggedInUser)}
