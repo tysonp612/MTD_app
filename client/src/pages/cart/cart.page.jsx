@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
+import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 export const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
@@ -13,16 +14,16 @@ export const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState();
 
   const handleIncreaseCartItem = (item) => {
-    dispatch({ type: "ADD_TO_CART", payload: item });
+    dispatch({ type: CartActionTypes.ADD_TO_CART, payload: item });
     if (item.cartQuantity === item.quantity) {
       toast.error(`Maximum available quantity: ${item.quantity}`);
     }
   };
   const handleDecreaseCartItem = (item) => {
-    dispatch({ type: "REMOVE_FROM_CART", payload: item });
+    dispatch({ type: CartActionTypes.REMOVE_FROM_CART, payload: item });
   };
   const handleDeleteCartItem = (item) => {
-    dispatch({ type: "DELETE_FROM_CART", payload: item });
+    dispatch({ type: CartActionTypes.DELETE_FROM_CART, payload: item });
   };
   const calculateTotalPrice = () => {
     if (cartItems.length) {

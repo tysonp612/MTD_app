@@ -1,12 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Card, Tabs } from "antd";
 import { Link, useHistory, useParams } from "react-router-dom";
 import {
   HeartOutlined,
   ShoppingCartOutlined,
   StarOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
+import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -21,7 +23,9 @@ const { TabPane } = Tabs;
 
 export const SingleProduct = ({ star, handleStarRating, product }) => {
   const { images, title, description } = product;
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const history = useHistory();
   const param = useParams();
 
@@ -55,6 +59,37 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
         </div>
       );
     }
+  };
+  const checkItemInCart = () => {
+    const itemInCart = cartItems.find(
+      (cartItem) => cartItem._id === product._id
+    );
+    if (itemInCart) {
+      return (
+        <Link to={`/cart`}>
+          <CheckOutlined disabled={true} />
+          <br />
+          Item added to cart
+        </Link>
+      );
+    } else {
+      return (
+        <>
+          <ShoppingCartOutlined
+            onClick={handleAddToCart}
+            className="text-warning"
+          />
+          <br />
+          Add to cart
+        </>
+      );
+    }
+  };
+  const handleAddToCart = () => {
+    dispatch({
+      type: CartActionTypes.ADD_TO_CART,
+      payload: product,
+    });
   };
   const handleHistory = (e) => {
     e.preventDefault();
@@ -97,10 +132,7 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
 
         <Card
           actions={[
-            <>
-              <ShoppingCartOutlined className="text-warning" />
-              Add to Cart
-            </>,
+            <>{checkItemInCart()}</>,
             <Link to="/">
               <HeartOutlined className="text-danger" />
               <br />
