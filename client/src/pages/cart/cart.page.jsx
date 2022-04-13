@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 export const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
-  const handleIncrease = (item) => {
+  useEffect(() => {
+    calculateSingleItemPrice();
+  }, [cartItems]);
+  const [summaryDetail, setSummaryDetail] = useState();
+
+  const handleIncreaseCartItem = (item) => {
     dispatch({ type: "ADD_TO_CART", payload: item });
     if (item.cartQuantity === item.quantity) {
       toast.error(`Maximum available quantity: ${item.quantity}`);
     }
   };
-  const handleDecrease = (item) => {
+  const handleDecreaseCartItem = (item) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: item });
   };
-  const handleDelete = (item) => {
+  const handleDeleteCartItem = (item) => {
     dispatch({ type: "DELETE_FROM_CART", payload: item });
+  };
+  const calculateSingleItemPrice = () => {
+    if (cartItems.length) {
+      const format = cartItems.map((cartItem) => {
+        return `${cartItem.title} x ${cartItem.cartQuantity} = $${
+          cartItem.cartQuantity * cartItem.price
+        }`;
+      });
+      return setSummaryDetail(format);
+    }
   };
   return (
     <div className="container-fluid">
@@ -58,7 +73,7 @@ export const CartPage = () => {
                       <div className="d-flex align-items-center">
                         <div
                           onClick={() => {
-                            handleDecrease(item);
+                            handleDecreaseCartItem(item);
                           }}
                           style={{ cursor: "pointer" }}
                         >
@@ -67,7 +82,7 @@ export const CartPage = () => {
                         <div className="p-1">{item.cartQuantity}</div>
                         <div
                           onClick={() => {
-                            handleIncrease(item);
+                            handleIncreaseCartItem(item);
                           }}
                           style={{ cursor: "pointer" }}
                         >
@@ -76,13 +91,16 @@ export const CartPage = () => {
                       </div>
                     </td>
                     <td>{item.shipping}</td>
-                    <td
-                      onClick={() => {
-                        handleDelete(item);
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      X
+                    <td>
+                      <div
+                        className="text-center"
+                        onClick={() => {
+                          handleDeleteCartItem(item);
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        X
+                      </div>
                     </td>
                   </tr>
                 );
@@ -90,7 +108,16 @@ export const CartPage = () => {
             </tbody>
           </table>
         </div>
-        <div className="col-md-4">Order Summary/</div>
+        <div className="col-md-4">
+          <div className="mt-4">
+            <h4>Order Summary</h4>
+            <hr />
+            <h5>Products</h5>
+            <hr />
+            {summaryDetail &&
+              summaryDetail.map((detail) => <div>{detail}</div>)}
+          </div>
+        </div>
       </div>
     </div>
   );
