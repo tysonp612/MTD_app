@@ -1,8 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 export const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+  const handleIncrease = (item) => {
+    dispatch({ type: "ADD_TO_CART", payload: item });
+  };
+  const handleDecrease = (item) => {
+    dispatch({ type: "REMOVE_FROM_CART", payload: item });
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -37,7 +44,32 @@ export const CartPage = () => {
                       />
                     </th>
                     <td>{item.title}</td>
-                    <td>Otto</td>
+                    <td>${item.price}</td>
+                    <td>{item.brand}</td>
+                    <td>{item.color}</td>
+                    <td>
+                      <div className="d-flex align-items-center">
+                        <div
+                          onClick={() => {
+                            handleDecrease(item);
+                          }}
+                          style={{ cursor: "pointer" }}
+                        >
+                          &lt;
+                        </div>
+                        <div className="p-1">{item.cartQuantity}</div>
+                        <div
+                          onClick={() => {
+                            handleIncrease(item);
+                          }}
+                          style={{ cursor: "pointer" }}
+                        >
+                          &gt;
+                        </div>
+                      </div>
+                    </td>
+                    <td>{item.shipping}</td>
+                    <td>X</td>
                   </tr>
                 );
               })}

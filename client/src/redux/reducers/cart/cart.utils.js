@@ -14,3 +14,20 @@ export const addUniqueItemsToCart = (cartItems, cartItemToAdd) => {
     return [...cartItems, { ...cartItemToAdd, cartQuantity: 1 }];
   }
 };
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+  const existingCartItem = cartItems.find(
+    (item) => item._id.toString() === cartItemToRemove._id.toString()
+  );
+
+  if (existingCartItem.cartQuantity === 1) {
+    return cartItems.filter(
+      (cartItem) => cartItem._id !== cartItemToRemove._id
+    );
+  }
+  return cartItems.map((cartItem) =>
+    cartItem._id === cartItemToRemove._id
+      ? { ...cartItem, cartQuantity: cartItem.cartQuantity - 1 }
+      : cartItem
+  );
+};
