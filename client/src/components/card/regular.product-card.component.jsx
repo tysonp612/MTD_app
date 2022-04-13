@@ -4,7 +4,7 @@ import { Card } from "antd";
 import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { ShowAverage } from "./../rating/average-rating.component";
-import { ProductsActionTypes } from "./../../redux/reducers/products/products.types";
+import { CartActionTypes } from "../../redux/reducers/cart/cart.types";
 import { Link } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
@@ -13,7 +13,7 @@ export const ProductCard = ({ product }) => {
   const { Meta } = Card;
   const handleAddToCart = () => {
     dispatch({
-      type: ProductsActionTypes.STORE_PRODUCTS_TO_CART,
+      type: CartActionTypes.ADD_TO_CART,
       payload: product,
     });
   };
