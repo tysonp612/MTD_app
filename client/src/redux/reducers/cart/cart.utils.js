@@ -1,3 +1,4 @@
+//NOTEŒŒ
 export const addUniqueItemsToCart = (cartItems, cartItemToAdd) => {
   const existingCartItem = cartItems.find(
     (item) => item._id.toString() === cartItemToAdd._id.toString()
