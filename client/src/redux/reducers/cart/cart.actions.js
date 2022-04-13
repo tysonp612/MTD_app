@@ -12,3 +12,9 @@ export const removeFromCart = (item) => {
     payload: item,
   };
 };
+export const deleteFromCart = (item) => {
+  return {
+    type: CartActionTypes.DELETE_FROM_CART,
+    payload: item,
+  };
+};

@@ -14,6 +14,9 @@ export const CartPage = () => {
   const handleDecrease = (item) => {
     dispatch({ type: "REMOVE_FROM_CART", payload: item });
   };
+  const handleDelete = (item) => {
+    dispatch({ type: "DELETE_FROM_CART", payload: item });
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -73,7 +76,14 @@ export const CartPage = () => {
                       </div>
                     </td>
                     <td>{item.shipping}</td>
-                    <td>X</td>
+                    <td
+                      onClick={() => {
+                        handleDelete(item);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      X
+                    </td>
                   </tr>
                 );
               })}

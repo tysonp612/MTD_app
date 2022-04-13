@@ -1,7 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Card } from "antd";
-import { EyeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  ShoppingCartOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { ShowAverage } from "./../rating/average-rating.component";
 import { CartActionTypes } from "../../redux/reducers/cart/cart.types";
@@ -9,6 +13,7 @@ import { Link } from "react-router-dom";
 
 export const ProductCard = ({ product }) => {
   const { title, description, images, slug, ratings } = product;
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const { Meta } = Card;
   const handleAddToCart = () => {
@@ -16,6 +21,22 @@ export const ProductCard = ({ product }) => {
       type: CartActionTypes.ADD_TO_CART,
       payload: product,
     });
+  };
+  const checkItemInCart = () => {
+    const itemInCart = cartItems.find(
+      (cartItem) => cartItem._id === product._id
+    );
+    if (itemInCart) {
+      return (
+        <Link to={`/cart`}>
+          <CheckOutlined disabled={true} />
+          <br />
+          Item added to cart
+        </Link>
+      );
+    } else {
+      return <ShoppingCartOutlined onClick={handleAddToCart} />;
+    }
   };
   return (
     <>
@@ -39,7 +60,7 @@ export const ProductCard = ({ product }) => {
           <Link to={`/product/${slug}`}>
             <EyeOutlined className="text-warning" />
           </Link>,
-          <ShoppingCartOutlined onClick={handleAddToCart} />,
+          <>{checkItemInCart()}</>,
         ]}
       >
         <Meta
