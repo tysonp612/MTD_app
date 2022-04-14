@@ -25,3 +25,8 @@ export const changeProductColor = (item, color) => {
     payload: { item, color },
   };
 };
+export const toggleDrawer = () => {
+  return {
+    type: CartActionTypes.TOGGLE_DRAWER,
+  };
+};

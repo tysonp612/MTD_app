@@ -7,6 +7,7 @@ import {
 } from "./cart.utils";
 const INITIAL_STATE = {
   cartItems: [],
+  drawerVisible: false,
 };
 
 export const cartReducer = (state = INITIAL_STATE, action) => {
@@ -30,6 +31,11 @@ export const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: changeProductColor(state.cartItems, action.payload),
+      };
+    case CartActionTypes.TOGGLE_DRAWER:
+      return {
+        ...state,
+        drawerVisible: !state.drawerVisible,
       };
     default:
       return state;

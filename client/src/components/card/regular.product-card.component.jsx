@@ -21,6 +21,9 @@ export const ProductCard = ({ product }) => {
       type: CartActionTypes.ADD_TO_CART,
       payload: product,
     });
+    dispatch({
+      type: CartActionTypes.TOGGLE_DRAWER,
+    });
   };
   const checkItemInCart = () => {
     const itemInCart = cartItems.find(

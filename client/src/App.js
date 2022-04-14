@@ -2,10 +2,10 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; //in node_modules
 //React
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 //Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserActionTypes } from "./redux/reducers/user/user.types";
 //Firebase
 import { onAuthStateChanged } from "firebase/auth";
@@ -17,6 +17,7 @@ import { UserRoute } from "./components/routes/user.routes";
 import { AdminRoute } from "./components/routes/admin.routes";
 //Components
 import Home from "./pages/home/homepage.component";
+import DrawerComponent from "./components/drawer/drawer.component";
 import Header from "./components/header/header.component";
 //Authentication
 import Login from "./pages/login/login.component";
@@ -44,6 +45,7 @@ import { ProductUpdate } from "./pages/admin/admin.products/admin.product-update
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const unsubscribe = onAuthStateChanged(auth, async (user) => {
     if (user) {
       const idTokenResult = await user.getIdTokenResult();
@@ -68,9 +70,11 @@ const App = () => {
   useEffect(() => {
     return () => unsubscribe();
   }, [unsubscribe]);
+
   return (
     <div>
       <Header />
+      <DrawerComponent />
       <ToastContainer />
       <Switch>
         <Route exact path="/" component={Home} />

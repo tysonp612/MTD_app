@@ -90,6 +90,9 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
       type: CartActionTypes.ADD_TO_CART,
       payload: product,
     });
+    dispatch({
+      type: CartActionTypes.TOGGLE_DRAWER,
+    });
   };
   const handleHistory = (e) => {
     e.preventDefault();
