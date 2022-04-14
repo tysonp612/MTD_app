@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
+import { useHistory, Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 export const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const param = useParams();
   useEffect(() => {
     calculateSingleItemPrice();
     calculateTotalPrice();
@@ -32,6 +35,13 @@ export const CartPage = () => {
   };
   const handleDeleteCartItem = (item) => {
     dispatch({ type: CartActionTypes.DELETE_FROM_CART, payload: item });
+  };
+  const handleHistory = (e) => {
+    e.preventDefault();
+    history.push({
+      pathname: "/login",
+      state: { from: `/cart` },
+    });
   };
   const changeCartItemColor = (item, color) => {
     dispatch({
@@ -101,6 +111,7 @@ export const CartPage = () => {
                       <select
                         id="colors"
                         value={item.color}
+                        className="form-select form-select-sm"
                         onChange={(e) =>
                           changeCartItemColor(item, e.target.value)
                         }
@@ -165,6 +176,35 @@ export const CartPage = () => {
               ))}
             <hr />
             Total: ${totalPrice}
+            <hr />
+            {user && user.email ? (
+              <div className="d-flex  justify-content-center">
+                <Link className="btn btn-outline-primary m-3" to={"/checkout"}>
+                  GO TO CHECKOUT
+                </Link>
+                <Link
+                  className="btn btn-outline-primary m-3"
+                  to={"/cash-checkout"}
+                >
+                  PAY CASH ON DELIVERY
+                </Link>
+              </div>
+            ) : (
+              <div className="d-flex  justify-content-center">
+                <div
+                  onClick={(e) => handleHistory(e)}
+                  className="btn btn-outline-primary m-3 "
+                >
+                  LOGIN TO CHECKOUT
+                </div>
+                <div
+                  onClick={(e) => handleHistory(e)}
+                  className="btn btn-outline-primary m-3 "
+                >
+                  LOGIN TO PAY CASH ON DELIVERY
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
