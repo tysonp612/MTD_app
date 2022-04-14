@@ -3,6 +3,7 @@ import {
   addUniqueItemsToCart,
   removeItemFromCart,
   deleteItemFromCart,
+  changeProductColor,
 } from "./cart.utils";
 const INITIAL_STATE = {
   cartItems: [],
@@ -24,6 +25,11 @@ export const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: deleteItemFromCart(state.cartItems, action.payload),
+      };
+    case CartActionTypes.CHANGE_PRODUCT_COLOR:
+      return {
+        ...state,
+        cartItems: changeProductColor(state.cartItems, action.payload),
       };
     default:
       return state;

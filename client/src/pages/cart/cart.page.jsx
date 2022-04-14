@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
@@ -12,6 +13,13 @@ export const CartPage = () => {
   }, [cartItems]);
   const [summaryDetail, setSummaryDetail] = useState();
   const [totalPrice, setTotalPrice] = useState();
+  const [colors, setColors] = useState([
+    "Black",
+    "Silver",
+    "White",
+    "Blue",
+    "Dark Grey",
+  ]);
 
   const handleIncreaseCartItem = (item) => {
     dispatch({ type: CartActionTypes.ADD_TO_CART, payload: item });
@@ -24,6 +32,12 @@ export const CartPage = () => {
   };
   const handleDeleteCartItem = (item) => {
     dispatch({ type: CartActionTypes.DELETE_FROM_CART, payload: item });
+  };
+  const changeCartItemColor = (item, color) => {
+    dispatch({
+      type: CartActionTypes.CHANGE_PRODUCT_COLOR,
+      payload: { item, color },
+    });
   };
   const calculateTotalPrice = () => {
     if (cartItems.length) {
@@ -83,7 +97,21 @@ export const CartPage = () => {
                     <td>{item.title}</td>
                     <td>${item.price}</td>
                     <td>{item.brand}</td>
-                    <td>{item.color}</td>
+                    <td>
+                      <select
+                        id="colors"
+                        value={item.color}
+                        onChange={(e) =>
+                          changeCartItemColor(item, e.target.value)
+                        }
+                      >
+                        {colors.map((color) => (
+                          <option key={color} value={color}>
+                            {color}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
                     <td>
                       <div className="d-flex align-items-center">
                         <div

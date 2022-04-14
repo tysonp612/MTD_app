@@ -38,7 +38,20 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
       : cartItem
   );
 };
-
+//Note that we can pass object as payload
+export const changeProductColor = (cartItems, cartItemToChangeColor) => {
+  const { item, color } = cartItemToChangeColor;
+  const existingCartItem = cartItems.find(
+    (cartItem) => cartItem._id.toString() === item._id.toString()
+  );
+  if (existingCartItem) {
+    return cartItems.map((cartItem) => {
+      return cartItem._id === item._id
+        ? { ...cartItem, color: color }
+        : cartItem;
+    });
+  }
+};
 export const deleteItemFromCart = (cartItems, cartItemToDelete) => {
   return cartItems.filter((cartItem) => cartItem._id !== cartItemToDelete._id);
 };

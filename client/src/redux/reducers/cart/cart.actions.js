@@ -18,3 +18,10 @@ export const deleteFromCart = (item) => {
     payload: item,
   };
 };
+
+export const changeProductColor = (item, color) => {
+  return {
+    type: CartActionTypes.CHANGE_PRODUCT_COLOR,
+    payload: { item, color },
+  };
+};
