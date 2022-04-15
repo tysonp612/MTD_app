@@ -8,5 +8,5 @@ const router = express.Router();
 router
   .route("/user/addToCart")
   .put(authTokenCheck, userController.updateCartItems);
-
+router.route("/user/getCart").get(authTokenCheck, userController.getCart);
 module.exports = router;

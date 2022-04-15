@@ -9,3 +9,9 @@ export const updateCart = async (cart, authToken) => {
     { headers: { authToken } }
   );
 };
+
+export const getCart = async (authToken) => {
+  return await axios.get(`${process.env.REACT_APP_API}/user/getCart`, {
+    headers: { authToken },
+  });
+};

@@ -1,5 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getCart } from "./../../utils/user/user.utils";
 export const CheckoutPage = () => {
+  useEffect(() => {
+    loadCart();
+  }, []);
+  const user = useSelector((state) => state.user.currentUser);
+  const loadCart = () => {
+    getCart(user.token)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
   return (
     <div className="row">
       <div className="col-md-6">

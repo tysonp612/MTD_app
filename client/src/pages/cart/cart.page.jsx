@@ -20,13 +20,14 @@ export const CartPage = () => {
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const history = useHistory();
-  const param = useParams();
+
   useEffect(() => {
     calculateSingleItemPrice();
     calculateTotalPrice();
   }, [cartItems]);
 
   const saveCartToDatabase = () => {
+    //in this step,store and then get data from backend to avoid user changing data like price
     const authToken = user.token;
     updateCart(cartItems, authToken)
       .then((res) => history.push("/checkout"))

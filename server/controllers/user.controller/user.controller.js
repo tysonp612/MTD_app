@@ -40,3 +40,20 @@ exports.updateCartItems = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.getCart = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    const userId = user._id;
+    //Note populate
+    const cart = await Cart.findOne({ orderedBy: userId }).populate(
+      "products.product"
+    );
+    console.log(cart);
+    // const { products, cartTotal, totalAfterDiscount } = cart;
+    // res.json({ product, cartTotal, totalAfterDiscount });
+    res.status(200).json(cart);
+  } catch (err) {
+    console.log(err);
+  }
+};
