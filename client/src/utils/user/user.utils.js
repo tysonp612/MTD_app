@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const updateCart = async (cart, userId) => {
-  return await axios.put(`${process.env.REACT_APP_API}/user/addToCart`, {
-    cart: cart,
-    userId: userId,
-  });
+export const updateCart = async (cart, authToken) => {
+  return await axios.put(
+    `${process.env.REACT_APP_API}/user/addToCart`,
+    {
+      cart: cart,
+    },
+    { headers: { authToken } }
+  );
 };

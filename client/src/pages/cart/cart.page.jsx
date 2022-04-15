@@ -4,6 +4,7 @@ import { useHistory, Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
+import { updateCart } from "./../../utils/user/user.utils";
 export const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const user = useSelector((state) => state.user.currentUser);
@@ -14,6 +15,7 @@ export const CartPage = () => {
     calculateSingleItemPrice();
     calculateTotalPrice();
   }, [cartItems]);
+  const [okay, setOkay] = useState(false);
   const [summaryDetail, setSummaryDetail] = useState();
   const [totalPrice, setTotalPrice] = useState();
   const [colors, setColors] = useState([
@@ -23,7 +25,17 @@ export const CartPage = () => {
     "Blue",
     "Dark Grey",
   ]);
+  const saveCartToDatabase = () => {
+    const authToken = user.token;
 
+    updateCart(cartItems, authToken)
+      .then((res) => setOkay(true))
+      .catch((err) => console.log(err));
+
+    if (okay) {
+      history.push("/checkout");
+    }
+  };
   const handleIncreaseCartItem = (item) => {
     dispatch({ type: CartActionTypes.ADD_TO_CART, payload: item });
     if (item.cartQuantity === item.quantity) {
@@ -179,9 +191,12 @@ export const CartPage = () => {
             <hr />
             {user && user.email ? (
               <div className="d-flex  justify-content-center">
-                <Link className="btn btn-outline-primary m-3" to={"/checkout"}>
+                <div
+                  className="btn btn-outline-primary m-3"
+                  onClick={() => saveCartToDatabase()}
+                >
                   GO TO CHECKOUT
-                </Link>
+                </div>
                 <Link
                   className="btn btn-outline-primary m-3"
                   to={"/cash-checkout"}
