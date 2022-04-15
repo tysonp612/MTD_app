@@ -30,6 +30,7 @@ import { CategoriesPage } from "./pages/categories/categories.component";
 import { SubCategoriesPage } from "./pages/sub-categories/sub-categories.component";
 import { ShopPage } from "./pages/shop/shop.component";
 import { CartPage } from "./pages/cart/cart.page";
+import { CheckoutPage } from "./pages/check-out/check-out.page";
 //User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
@@ -105,6 +106,7 @@ const App = () => {
         <UserRoute exact path="/user/history" component={History} />
         <UserRoute exact path="/user/password" component={Password} />
         <UserRoute exact path="/user/wishlist" component={Wishlist} />
+        <UserRoute exact path="/checkout" component={CheckoutPage} />
       </Switch>
     </div>
   );
