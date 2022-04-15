@@ -1,6 +1,7 @@
 const User = require("./../../models/user.schema");
 const Cart = require("./../../models/cart.schema");
 const Product = require("./../../models/product.schema");
+const { response } = require("express");
 exports.updateCartItems = async (req, res) => {
   try {
     const { cart } = req.body;
@@ -45,14 +46,25 @@ exports.getCart = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.user.email });
     const userId = user._id;
-    //Note populate
+    //Note populate, second argument is to keep what we want
     const cart = await Cart.findOne({ orderedBy: userId }).populate(
-      "products.product"
+      "products.product",
+      "_id title price totalAfterDiscount"
     );
     console.log(cart);
-    // const { products, cartTotal, totalAfterDiscount } = cart;
-    // res.json({ product, cartTotal, totalAfterDiscount });
-    res.status(200).json(cart);
+    const { products, cartTotal, totalAfterDiscount } = cart;
+    res.status(200).json({ products, cartTotal, totalAfterDiscount });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.emptyCart = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.user.email });
+    const userId = user._id;
+    const cart = await Cart.findOneAndRemove({ orderedBy: userId });
+    res.status(200).json("cart emptied");
   } catch (err) {
     console.log(err);
   }

@@ -1,15 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { getCart } from "./../../utils/user/user.utils";
+import { useSelector, useDispatch } from "react-redux";
+import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
+import { getCart, emptyCart } from "./../../utils/user/user.utils";
+import { toast } from "react-toastify";
 export const CheckoutPage = () => {
+  const [products, setProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
     loadCart();
   }, []);
-  const user = useSelector((state) => state.user.currentUser);
+
   const loadCart = () => {
     getCart(user.token)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        setProducts(res.data.products);
+        setTotalPrice(res.data.cartTotal);
+      })
       .catch((err) => console.log(err));
+  };
+  const handleEmptyCart = () => {
+    //remove from backend
+    emptyCart(user.token)
+      .then((res) => {
+        setProducts([]);
+        setTotalPrice(0);
+      })
+      .catch((err) => console.log(err));
+    //remove from redux
+    dispatch({ type: CartActionTypes.EMPTY_CART });
+    toast.success("Cart is empty, please continue shopping");
   };
   return (
     <div className="row">
@@ -27,17 +48,31 @@ export const CheckoutPage = () => {
       <div className="col-md-6">
         <h4>Order Summary</h4>
         <hr />
-        <p>Products</p>
+        <p>Products: {products.length}</p>
         <hr />
-        <p>List of products</p>
+        {products.map((prod, i) => {
+          return (
+            <div key={i}>
+              <p>
+                {prod.product.title} ({prod.color}) x {prod.cartQuantity} = $
+                {prod.price}
+              </p>
+            </div>
+          );
+        })}
         <hr />
-        <p>Cart Total: x</p>
+        <p>Cart Total: ${totalPrice}</p>
         <div className="row">
           <div className="col-md-6">
             <button className="btn btn-primary">Place Order</button>
           </div>
           <div className="col-md-6">
-            <button className="btn btn-primary">Empty Cart</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleEmptyCart()}
+            >
+              Empty Cart
+            </button>
           </div>
         </div>
       </div>

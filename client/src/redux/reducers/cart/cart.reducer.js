@@ -37,6 +37,11 @@ export const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         drawerVisible: !state.drawerVisible,
       };
+    case CartActionTypes.EMPTY_CART:
+      return {
+        ...state,
+        cartItems: [],
+      };
     default:
       return state;
   }

@@ -30,3 +30,8 @@ export const toggleDrawer = () => {
     type: CartActionTypes.TOGGLE_DRAWER,
   };
 };
+export const emptyCart = () => {
+  return {
+    type: CartActionTypes.EMPTY_CART,
+  };
+};

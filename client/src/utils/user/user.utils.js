@@ -15,3 +15,8 @@ export const getCart = async (authToken) => {
     headers: { authToken },
   });
 };
+export const emptyCart = async (authToken) => {
+  return await axios.delete(`${process.env.REACT_APP_API}/user/emptyCart`, {
+    headers: { authToken },
+  });
+};
