@@ -35,7 +35,7 @@ const DrawerComponent = () => {
         {cartItems &&
           cartItems.map((cartItem) => {
             return (
-              <div>
+              <div key={cartItem._id}>
                 <div className="d-flex justify-content-around align-items-center">
                   <img
                     width="130"

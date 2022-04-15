@@ -5,17 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 import { updateCart } from "./../../utils/user/user.utils";
+
 export const CartPage = () => {
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const user = useSelector((state) => state.user.currentUser);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const param = useParams();
-  useEffect(() => {
-    calculateSingleItemPrice();
-    calculateTotalPrice();
-  }, [cartItems]);
-  const [okay, setOkay] = useState(false);
   const [summaryDetail, setSummaryDetail] = useState();
   const [totalPrice, setTotalPrice] = useState();
   const [colors, setColors] = useState([
@@ -25,16 +16,21 @@ export const CartPage = () => {
     "Blue",
     "Dark Grey",
   ]);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const param = useParams();
+  useEffect(() => {
+    calculateSingleItemPrice();
+    calculateTotalPrice();
+  }, [cartItems]);
+
   const saveCartToDatabase = () => {
     const authToken = user.token;
-
     updateCart(cartItems, authToken)
-      .then((res) => setOkay(true))
+      .then((res) => history.push("/checkout"))
       .catch((err) => console.log(err));
-
-    if (okay) {
-      history.push("/checkout");
-    }
   };
   const handleIncreaseCartItem = (item) => {
     dispatch({ type: CartActionTypes.ADD_TO_CART, payload: item });

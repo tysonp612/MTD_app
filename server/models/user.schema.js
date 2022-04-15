@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { ObjectId } = mongoose.Schema;
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -14,10 +14,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "subcriber",
     },
-    cart: {
-      type: Array,
-      default: [],
-    },
+    cart: [
+      {
+        product: { type: ObjectId, ref: "Product" },
+        cartQuantity: Number,
+        color: String,
+        price: Number,
+      },
+    ],
     address: {
       type: String,
     },
