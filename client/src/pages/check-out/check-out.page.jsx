@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
-import { getCart, emptyCart } from "./../../utils/user/user.utils";
+import {
+  getCart,
+  emptyCart,
+  updateAddress,
+} from "./../../utils/user/user.utils";
 import { toast } from "react-toastify";
+
 export const CheckoutPage = () => {
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [address, setAddress] = useState({
+    streetAddress: "",
+    postalCode: "",
+  });
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
@@ -18,6 +27,14 @@ export const CheckoutPage = () => {
         setProducts(res.data.products);
         setTotalPrice(res.data.cartTotal);
       })
+      .catch((err) => console.log(err));
+  };
+
+  const handleAddress = (e) => {
+    e.preventDefault();
+    const stringAddress = `${address.streetAddress},${address.postalCode}`;
+    updateAddress(user.token, stringAddress)
+      .then((res) => toast.success("User address updated"))
       .catch((err) => console.log(err));
   };
   const handleEmptyCart = () => {
@@ -34,12 +51,44 @@ export const CheckoutPage = () => {
   };
   return (
     <div className="row">
-      <div className="col-md-6">
+      <div className="col-md-6 ">
         <h4>Delivery Address</h4>
-        <br />
-        <br />
-        Text area
-        <button className="btn btn-primary mt-2">Save</button>
+        <form className="m-5 mb-3" onSubmit={handleAddress}>
+          <div className="form-group pb-4">
+            <label htmlFor="StreetAdress">Street Address</label>
+            <input
+              type="text"
+              className="form-control"
+              id="StreetAdress"
+              placeholder="Adress"
+              onChange={(e) =>
+                setAddress({ ...address, streetAddress: e.target.value })
+              }
+              value={address.streetAddress}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="PostalCode">Postal Code</label>
+            <input
+              type="text"
+              className="form-control"
+              id="PostalCode"
+              placeholder="Postal Code"
+              name="PostalCode"
+              onChange={(e) =>
+                setAddress({ ...address, postalCode: e.target.value })
+              }
+              value={address.postalCode}
+            />
+          </div>
+          <button
+            type="submit"
+            className="mt-4 btn btn-primary"
+            onSubmit={handleAddress}
+          >
+            Save
+          </button>
+        </form>
         <hr />
         <h4>Got Coupon?</h4>
         <br />

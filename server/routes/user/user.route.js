@@ -12,4 +12,8 @@ router.route("/user/getCart").get(authTokenCheck, userController.getCart);
 router
   .route("/user/emptyCart")
   .delete(authTokenCheck, userController.emptyCart);
+router
+  .route("/user/updateAddress")
+  .put(authTokenCheck, userController.updateAddress);
+
 module.exports = router;

@@ -20,3 +20,13 @@ export const emptyCart = async (authToken) => {
     headers: { authToken },
   });
 };
+
+export const updateAddress = async (authToken, address) => {
+  return await axios.put(
+    `${process.env.REACT_APP_API}/user/updateAddress`,
+    { address },
+    {
+      headers: { authToken },
+    }
+  );
+};
