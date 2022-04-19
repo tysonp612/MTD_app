@@ -15,6 +15,7 @@ export const CheckoutPage = () => {
     streetAddress: "",
     postalCode: "",
   });
+  const [addressSaved, setAddressSaved] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
@@ -34,7 +35,10 @@ export const CheckoutPage = () => {
     e.preventDefault();
     const stringAddress = `${address.streetAddress},${address.postalCode}`;
     updateAddress(user.token, stringAddress)
-      .then((res) => toast.success("User address updated"))
+      .then((res) => {
+        setAddressSaved(res.data);
+        toast.success("User address updated");
+      })
       .catch((err) => console.log(err));
   };
   const handleEmptyCart = () => {
@@ -113,7 +117,12 @@ export const CheckoutPage = () => {
         <p>Cart Total: ${totalPrice}</p>
         <div className="row">
           <div className="col-md-6">
-            <button className="btn btn-primary">Place Order</button>
+            <button
+              className="btn btn-primary"
+              disabled={!addressSaved || !products.length || !address}
+            >
+              Place Order
+            </button>
           </div>
           <div className="col-md-6">
             <button

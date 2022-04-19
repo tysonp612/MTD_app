@@ -77,7 +77,7 @@ exports.updateAddress = async (req, res) => {
       { address: address }
     );
     console.log(address);
-    res.status(200).json("address updated");
+    res.status(200).json(true);
   } catch (err) {
     console.log(err);
   }
