@@ -42,7 +42,7 @@ import { AdminSubCategory } from "./pages/admin/admin.sub-category/admin.sub-cat
 import { AdminProducts } from "./pages/admin/admin.products/admin.products";
 import { AdminShowProduct } from "./pages/admin/admin.products/admin.showproducts";
 import { ProductUpdate } from "./pages/admin/admin.products/admin.product-update";
-
+import { CouponPage } from "./pages/admin/admin.coupon/admin.coupon.component";
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -90,6 +90,7 @@ const App = () => {
         <Route exact path="/cart" component={CartPage} />
 
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+        <AdminRoute exact path="/admin/coupon" component={CouponPage} />
         <AdminRoute exact path="/admin/products" component={AdminProducts} />
         <AdminRoute
           exact
