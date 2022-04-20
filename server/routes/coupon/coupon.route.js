@@ -4,7 +4,7 @@ const couponController = require("./../../controllers/coupon.controller/coupon.c
 const {
   authTokenCheck,
   adminCheck,
-} = require("./../authentication/authentication.route");
+} = require("./../../middlewares/authentication.middleware/authentication.middleware");
 
 router
   .route("/create-coupon")
@@ -14,5 +14,5 @@ router
   .get(authTokenCheck, adminCheck, couponController.getAllCoupons);
 router
   .route("/delete-coupon")
-  .get(authTokenCheck, adminCheck, couponController.deleteCoupon);
+  .delete(authTokenCheck, adminCheck, couponController.deleteCoupon);
 module.exports = router;
