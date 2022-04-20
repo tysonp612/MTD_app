@@ -13,6 +13,6 @@ router
   .route("/get-coupons")
   .get(authTokenCheck, adminCheck, couponController.getAllCoupons);
 router
-  .route("/delete-coupon")
+  .route("/delete-coupon/:id")
   .delete(authTokenCheck, adminCheck, couponController.deleteCoupon);
 module.exports = router;
