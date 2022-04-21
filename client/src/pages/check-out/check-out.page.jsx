@@ -5,12 +5,14 @@ import {
   getCart,
   emptyCart,
   updateAddress,
+  applyCoupon,
 } from "./../../utils/user/user.utils";
 import { toast } from "react-toastify";
 
 export const CheckoutPage = () => {
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [coupon, setCoupon] = useState("");
   const [address, setAddress] = useState({
     streetAddress: "",
     postalCode: "",
@@ -52,6 +54,19 @@ export const CheckoutPage = () => {
     //remove from redux
     dispatch({ type: CartActionTypes.EMPTY_CART });
     toast.success("Cart is empty, please continue shopping");
+  };
+  const handleCoupon = (e) => {
+    e.preventDefault();
+    applyCoupon(user.token, coupon)
+      .then((res) => {
+        console.log(res);
+        if (typeof res.data === "string") {
+          toast.error(res.data);
+        } else {
+          toast.success("Apply coupon successfully");
+        }
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div className="row">
@@ -95,8 +110,28 @@ export const CheckoutPage = () => {
         </form>
         <hr />
         <h4>Got Coupon?</h4>
+        <form className="m-5 mb-3" onSubmit={handleCoupon}>
+          <div className="form-group pb-4">
+            <label htmlFor="coupon">Coupon</label>
+            <input
+              type="text"
+              className="form-control"
+              id="coupon"
+              onChange={(e) => setCoupon(e.target.value)}
+              value={coupon}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="mt-4 btn btn-primary"
+            disabled={coupon ? false : true}
+            onSubmit={handleCoupon}
+          >
+            Apply Coupon
+          </button>
+        </form>
         <br />
-        coupon input and apply button
       </div>
       <div className="col-md-6">
         <h4>Order Summary</h4>

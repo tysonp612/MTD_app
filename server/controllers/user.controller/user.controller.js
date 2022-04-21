@@ -1,6 +1,7 @@
 const User = require("./../../models/user.schema");
 const Cart = require("./../../models/cart.schema");
 const Product = require("./../../models/product.schema");
+const Coupon = require("./../../models/coupon.schema");
 const { response } = require("express");
 exports.updateCartItems = async (req, res) => {
   try {
@@ -78,6 +79,23 @@ exports.updateAddress = async (req, res) => {
     );
     console.log(address);
     res.status(200).json(true);
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.applyCoupon = async (req, res) => {
+  try {
+    const { coupon } = req.body;
+    console.log("COUPON:", coupon);
+    const checkCoupon = await Coupon.findOne({ name: coupon });
+    if (!checkCoupon) {
+      res.send("Coupon invalid");
+    }
+    const date = new Date();
+    if (checkCoupon.expiry < date) {
+      res.send("Coupon has expiried");
+    } else {
+    }
   } catch (err) {
     console.log(err);
   }

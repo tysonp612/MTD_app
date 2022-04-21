@@ -15,4 +15,5 @@ router
 router
   .route("/delete-coupon/:id")
   .delete(authTokenCheck, adminCheck, couponController.deleteCoupon);
+
 module.exports = router;

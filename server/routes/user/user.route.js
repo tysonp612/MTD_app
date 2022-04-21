@@ -15,5 +15,7 @@ router
 router
   .route("/user/updateAddress")
   .put(authTokenCheck, userController.updateAddress);
-
+router
+  .route("/user/applyCoupon")
+  .post(authTokenCheck, userController.applyCoupon);
 module.exports = router;
