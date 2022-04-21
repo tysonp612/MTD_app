@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 
 export const CheckoutPage = () => {
   const [products, setProducts] = useState([]);
+  const [discountedPrice, setDiscountedPrice] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const [coupon, setCoupon] = useState("");
   const [address, setAddress] = useState({
@@ -28,6 +29,7 @@ export const CheckoutPage = () => {
     getCart(user.token)
       .then((res) => {
         setProducts(res.data.products);
+        setDiscountedPrice(res.data.totalAfterDiscount);
         setTotalPrice(res.data.cartTotal);
       })
       .catch((err) => console.log(err));
@@ -49,6 +51,8 @@ export const CheckoutPage = () => {
       .then((res) => {
         setProducts([]);
         setTotalPrice(0);
+        setDiscountedPrice(0);
+        setCoupon("");
       })
       .catch((err) => console.log(err));
     //remove from redux
@@ -63,6 +67,7 @@ export const CheckoutPage = () => {
         if (typeof res.data === "string") {
           toast.error(res.data);
         } else {
+          setDiscountedPrice(res.data);
           toast.success("Apply coupon successfully");
         }
       })
@@ -104,6 +109,11 @@ export const CheckoutPage = () => {
             type="submit"
             className="mt-4 btn btn-primary"
             onSubmit={handleAddress}
+            disabled={
+              address.streetAddress.length > 0 && address.postalCode.length > 0
+                ? false
+                : true
+            }
           >
             Save
           </button>
@@ -126,7 +136,7 @@ export const CheckoutPage = () => {
             type="submit"
             className="mt-4 btn btn-primary"
             disabled={coupon ? false : true}
-            onSubmit={handleCoupon}
+            onClick={handleCoupon}
           >
             Apply Coupon
           </button>
@@ -142,14 +152,26 @@ export const CheckoutPage = () => {
           return (
             <div key={i}>
               <p>
-                {prod.product.title} ({prod.color}) x {prod.cartQuantity} = $
+                {prod.title} ({prod.color}) x {prod.cartQuantity} = $
                 {prod.price}
               </p>
             </div>
           );
         })}
         <hr />
-        <p>Cart Total: ${totalPrice}</p>
+        {discountedPrice > 0 ? (
+          <div>
+            <p style={{ textDecoration: "line-through" }}>
+              Total: ${totalPrice}
+            </p>
+            <p className="bg-success p-2">
+              Discount Applied: Total Payable: ${discountedPrice}
+            </p>
+          </div>
+        ) : (
+          <p>Cart Total: ${totalPrice}</p>
+        )}
+
         <div className="row">
           <div className="col-md-6">
             <button

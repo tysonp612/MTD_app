@@ -35,8 +35,6 @@ exports.updateCartItems = async (req, res) => {
       orderedBy,
     });
     await User.findByIdAndUpdate(userId, { cart: products });
-    console.log(newCartItems);
-
     res.status(200).json({ ok: true });
   } catch (err) {
     console.log(err);
@@ -52,7 +50,7 @@ exports.getCart = async (req, res) => {
       "products.product",
       "_id title price totalAfterDiscount"
     );
-    console.log(cart);
+
     const { products, cartTotal, totalAfterDiscount } = cart;
     res.status(200).json({ products, cartTotal, totalAfterDiscount });
   } catch (err) {
@@ -95,6 +93,25 @@ exports.applyCoupon = async (req, res) => {
     if (checkCoupon.expiry < date) {
       res.send("Coupon has expiried");
     } else {
+      const user = await User.findOne({ email: req.user.email });
+      const existingCartOfUser = await Cart.findOne({
+        orderedBy: user._id,
+      });
+      const couponId = await Coupon.findOne({ name: coupon });
+
+      const newPrice = (
+        existingCartOfUser.cartTotal -
+        (existingCartOfUser.cartTotal * checkCoupon.discount) / 100
+      ).toFixed(2);
+
+      const newCartWithDiscountedPrice = await Cart.findOneAndUpdate(
+        {
+          orderedBy: user._id,
+        },
+        { totalAfterDiscount: newPrice, coupon: couponId._id },
+        { new: true }
+      );
+      res.status(200).json(newCartWithDiscountedPrice.totalAfterDiscount);
     }
   } catch (err) {
     console.log(err);
