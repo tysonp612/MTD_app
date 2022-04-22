@@ -73,7 +73,7 @@ exports.getCart = async (req, res) => {
         { orderedBy: userId },
         { coupon: null, totalAfterDiscount: null },
         { new: true }
-      );
+      ).populate("products.product", "_id title price");
       const { products, cartTotal, totalAfterDiscount } = updatedCart;
       res.status(200).json({ products, cartTotal, totalAfterDiscount });
     } else {

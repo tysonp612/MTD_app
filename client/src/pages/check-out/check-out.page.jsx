@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 import {
   getCart,
@@ -64,7 +65,6 @@ export const CheckoutPage = () => {
     e.preventDefault();
     applyCoupon(user.token, coupon)
       .then((res) => {
-        console.log(res);
         if (typeof res.data === "string") {
           toast.error(res.data);
         } else {
@@ -175,12 +175,13 @@ export const CheckoutPage = () => {
 
         <div className="row">
           <div className="col-md-6">
-            <button
+            <Link
+              to={"/payment"}
               className="btn btn-primary"
               disabled={!addressSaved || !products.length || !address}
             >
               Place Order
-            </button>
+            </Link>
           </div>
           <div className="col-md-6">
             <button
