@@ -34,6 +34,7 @@ exports.updateCartItems = async (req, res) => {
     //make totalAfterDiscount
     let totalAfterDiscount;
     let coupon;
+
     if (couponBeingUsed) {
       const discountAmount = couponBeingUsed.discount;
       totalAfterDiscount = (
@@ -62,13 +63,22 @@ exports.getCart = async (req, res) => {
     const user = await User.findOne({ email: req.user.email });
     const userId = user._id;
     //Note populate, second argument is to keep what we want
-    const cart = await Cart.findOne({ orderedBy: userId }).populate(
-      "products.product",
-      "_id title price totalAfterDiscount"
-    );
-
-    const { products, cartTotal, totalAfterDiscount } = cart;
-    res.status(200).json({ products, cartTotal, totalAfterDiscount });
+    const cart = await Cart.findOne({ orderedBy: userId })
+      .populate("coupon", "expiry")
+      .populate("products.product", "_id title price");
+    const couponUsed = await Coupon.findById(cart.coupon);
+    const now = new Date();
+    if (!couponUsed || now > couponUsed.expiry) {
+      const updatedCart = await Cart.findOneAndUpdate(
+        { orderedBy: userId },
+        { coupon: null, totalAfterDiscount: null }
+      );
+      const { products, cartTotal, totalAfterDiscount } = updatedCart;
+      res.status(200).json({ products, cartTotal, totalAfterDiscount });
+    } else {
+      const { products, cartTotal, totalAfterDiscount, coupon } = cart;
+      res.status(200).json({ products, cartTotal, totalAfterDiscount, coupon });
+    }
   } catch (err) {
     console.log(err);
   }
