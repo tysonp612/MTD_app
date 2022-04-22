@@ -31,6 +31,7 @@ import { SubCategoriesPage } from "./pages/sub-categories/sub-categories.compone
 import { ShopPage } from "./pages/shop/shop.component";
 import { CartPage } from "./pages/cart/cart.page";
 import { CheckoutPage } from "./pages/check-out/check-out.page";
+import { PaymentPage } from "./pages/payment/payment.page";
 //User Pages
 import History from "./pages/user/user.history.component";
 import Password from "./pages/user/user.password.component";
@@ -108,6 +109,7 @@ const App = () => {
         <UserRoute exact path="/user/password" component={Password} />
         <UserRoute exact path="/user/wishlist" component={Wishlist} />
         <UserRoute exact path="/checkout" component={CheckoutPage} />
+        <UserRoute exact path="/payment" component={PaymentPage} />
       </Switch>
     </div>
   );
