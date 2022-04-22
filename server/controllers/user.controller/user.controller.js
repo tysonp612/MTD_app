@@ -9,9 +9,12 @@ exports.updateCartItems = async (req, res) => {
     const user = await User.findOne({ email: req.user.email });
     const userId = user._id.toString();
     const existingCartOfUser = await Cart.findOne({ orderedBy: user._id });
+    let couponBeingUsed;
     if (existingCartOfUser) {
+      couponBeingUsed = await Coupon.findById(existingCartOfUser.coupon);
       existingCartOfUser.remove();
     }
+    //make products array
     const products = [];
     cart.forEach((item) => {
       let obj = {};
@@ -22,17 +25,26 @@ exports.updateCartItems = async (req, res) => {
 
       return products.push(obj);
     });
-
+    //make cartTotal
     const cartTotal = products
       .map((item) => item.price)
       .reduce((a, b) => a + b, 0);
-
+    //make orderedBy
     const orderedBy = user._id;
+    //make totalAfterDiscount
+    const discountAmount = couponBeingUsed.discount;
+    console.log(discountAmount);
+    const totalAfterDiscount = (
+      cartTotal -
+      (cartTotal * discountAmount) / 100
+    ).toFixed(2);
 
     const newCartItems = await Cart.create({
       products,
+      coupon: couponBeingUsed._id,
       cartTotal,
       orderedBy,
+      totalAfterDiscount,
     });
     await User.findByIdAndUpdate(userId, { cart: products });
     res.status(200).json({ ok: true });
@@ -84,7 +96,7 @@ exports.updateAddress = async (req, res) => {
 exports.applyCoupon = async (req, res) => {
   try {
     const { coupon } = req.body;
-    console.log("COUPON:", coupon);
+
     const checkCoupon = await Coupon.findOne({ name: coupon });
     if (!checkCoupon) {
       res.send("Coupon invalid");
