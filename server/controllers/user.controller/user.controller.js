@@ -2,7 +2,7 @@ const User = require("./../../models/user.schema");
 const Cart = require("./../../models/cart.schema");
 const Product = require("./../../models/product.schema");
 const Coupon = require("./../../models/coupon.schema");
-const { response } = require("express");
+
 exports.updateCartItems = async (req, res) => {
   try {
     const { cart } = req.body;
@@ -71,7 +71,8 @@ exports.getCart = async (req, res) => {
     if (!couponUsed || now > couponUsed.expiry) {
       const updatedCart = await Cart.findOneAndUpdate(
         { orderedBy: userId },
-        { coupon: null, totalAfterDiscount: null }
+        { coupon: null, totalAfterDiscount: null },
+        { new: true }
       );
       const { products, cartTotal, totalAfterDiscount } = updatedCart;
       res.status(200).json({ products, cartTotal, totalAfterDiscount });

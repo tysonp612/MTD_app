@@ -13,6 +13,7 @@ export const CheckoutPage = () => {
   const [products, setProducts] = useState([]);
   const [discountedPrice, setDiscountedPrice] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
+
   const [coupon, setCoupon] = useState("");
   const [address, setAddress] = useState({
     streetAddress: "",
@@ -152,7 +153,7 @@ export const CheckoutPage = () => {
           return (
             <div key={i}>
               <p>
-                {prod.title} ({prod.color}) x {prod.cartQuantity} = $
+                {prod.product.title} ({prod.color}) x {prod.cartQuantity} = $
                 {prod.price}
               </p>
             </div>
