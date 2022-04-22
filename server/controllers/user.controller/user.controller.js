@@ -93,25 +93,33 @@ exports.applyCoupon = async (req, res) => {
     if (checkCoupon.expiry < date) {
       res.send("Coupon has expiried");
     } else {
+      //check if user has applied the coupon
       const user = await User.findOne({ email: req.user.email });
       const existingCartOfUser = await Cart.findOne({
         orderedBy: user._id,
       });
       const couponId = await Coupon.findOne({ name: coupon });
+      const checkCouponUsed = await User.findOne({ couponUsed: couponId });
+      if (checkCouponUsed) {
+        res.status(200).json("This coupon was applied to this account");
+      } else {
+        const addCouponToUser = await User.findByIdAndUpdate(user._id, {
+          $push: { couponUsed: couponId },
+        });
+        const newPrice = (
+          existingCartOfUser.cartTotal -
+          (existingCartOfUser.cartTotal * checkCoupon.discount) / 100
+        ).toFixed(2);
 
-      const newPrice = (
-        existingCartOfUser.cartTotal -
-        (existingCartOfUser.cartTotal * checkCoupon.discount) / 100
-      ).toFixed(2);
-
-      const newCartWithDiscountedPrice = await Cart.findOneAndUpdate(
-        {
-          orderedBy: user._id,
-        },
-        { totalAfterDiscount: newPrice, coupon: couponId._id },
-        { new: true }
-      );
-      res.status(200).json(newCartWithDiscountedPrice.totalAfterDiscount);
+        const newCartWithDiscountedPrice = await Cart.findOneAndUpdate(
+          {
+            orderedBy: user._id,
+          },
+          { totalAfterDiscount: newPrice, coupon: couponId._id },
+          { new: true }
+        );
+        res.status(200).json(newCartWithDiscountedPrice.totalAfterDiscount);
+      }
     }
   } catch (err) {
     console.log(err);

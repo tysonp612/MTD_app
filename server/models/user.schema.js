@@ -25,6 +25,12 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    couponUsed: [
+      {
+        type: ObjectId,
+        ref: "Coupon",
+      },
+    ],
     //   wishList: [{ type: ObjectID, ref:"Product" }]
   },
   //timestamps true will update time automatically so we dont have to create createdAt
