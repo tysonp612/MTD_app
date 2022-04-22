@@ -32,16 +32,20 @@ exports.updateCartItems = async (req, res) => {
     //make orderedBy
     const orderedBy = user._id;
     //make totalAfterDiscount
-    const discountAmount = couponBeingUsed.discount;
-    console.log(discountAmount);
-    const totalAfterDiscount = (
-      cartTotal -
-      (cartTotal * discountAmount) / 100
-    ).toFixed(2);
+    let totalAfterDiscount;
+    let coupon;
+    if (couponBeingUsed) {
+      const discountAmount = couponBeingUsed.discount;
+      totalAfterDiscount = (
+        cartTotal -
+        (cartTotal * discountAmount) / 100
+      ).toFixed(2);
+      coupon = couponBeingUsed._id;
+    }
 
     const newCartItems = await Cart.create({
       products,
-      coupon: couponBeingUsed._id,
+      coupon,
       cartTotal,
       orderedBy,
       totalAfterDiscount,
