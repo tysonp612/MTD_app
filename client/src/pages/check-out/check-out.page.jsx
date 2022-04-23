@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 import {
   getCart,
@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 
 export const CheckoutPage = () => {
   const [products, setProducts] = useState([]);
-  const [discountedPrice, setDiscountedPrice] = useState();
+  const [discountedPrice, setDiscountedPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const [coupon, setCoupon] = useState("");
@@ -23,6 +23,7 @@ export const CheckoutPage = () => {
   const [addressSaved, setAddressSaved] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
+  const history = useHistory();
   useEffect(() => {
     loadCart();
   }, []);
@@ -175,13 +176,13 @@ export const CheckoutPage = () => {
 
         <div className="row">
           <div className="col-md-6">
-            <Link
-              to={"/payment"}
+            <button
+              onClick={(e) => history.push("/payment")}
               className="btn btn-primary"
               disabled={!addressSaved || !products.length || !address}
             >
               Place Order
-            </Link>
+            </button>
           </div>
           <div className="col-md-6">
             <button

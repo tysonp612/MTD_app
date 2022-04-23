@@ -10,7 +10,7 @@ const { Meta } = Card;
 //load stripe outside of comp to avoid recreating stripe obj on every render
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 export const PaymentPage = () => {
-  const [discountedPrice, setDiscountedPrice] = useState();
+  const [discountedPrice, setDiscountedPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [coupon, setCoupon] = useState("");
   const user = useSelector((state) => state.user.currentUser);
@@ -62,7 +62,7 @@ export const PaymentPage = () => {
 
       <Elements stripe={stripePromise}>
         <div className="col-md-8 offset-md-2">
-          <StripeCheckout />
+          <StripeCheckout user={user} />
         </div>
       </Elements>
     </div>

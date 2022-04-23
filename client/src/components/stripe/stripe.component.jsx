@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
 import { createPaymentIntent } from "./../../utils/stripe/stripe";
 import "./stripe.scss";
-export const StripeCheckout = () => {
-  const user = useSelector((state) => state.user.currentUser);
+export const StripeCheckout = ({ user }) => {
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
