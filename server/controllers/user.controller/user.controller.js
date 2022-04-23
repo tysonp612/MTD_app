@@ -64,7 +64,7 @@ exports.getCart = async (req, res) => {
     const userId = user._id;
     //Note populate, second argument is to keep what we want
     const cart = await Cart.findOne({ orderedBy: userId })
-      .populate("coupon", "expiry")
+      .populate("coupon", "expiry name")
       .populate("products.product", "_id title price");
     const couponUsed = await Coupon.findById(cart.coupon);
     const now = new Date();

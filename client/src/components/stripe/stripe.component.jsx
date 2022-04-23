@@ -16,7 +16,6 @@ export const StripeCheckout = () => {
   useEffect(() => {
     //when comp mounted, make request to backend and get res of client secret key
     createPaymentIntent(user.token).then((res) => {
-      console.log("PAYMENT INTENT", res.data);
       setClientSecret(res.data.clientSecret);
     });
   }, []);

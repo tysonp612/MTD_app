@@ -9,7 +9,6 @@ exports.createPaymentIntent = async (req, res) => {
   const user = await User.findOne({ email: req.user.email });
   const cart = await Cart.findOne({ orderedBy: user._id });
   const coupon = await Coupon.findById(cart.coupon);
-  console.log(coupon);
   //2 get user cart total
   let totalAmountToPay;
   if (
@@ -21,11 +20,6 @@ exports.createPaymentIntent = async (req, res) => {
     totalAmountToPay = cart.totalAfterDiscount;
   } else {
     totalAmountToPay = cart.cartTotal;
-    const updatedCart = await Cart.findOneAndUpdate(
-      { orderedBy: user._id },
-      { coupon: null, totalAfterDiscount: null },
-      { new: true }
-    );
   }
   const paymentIntent = await stripe.paymentIntents.create({
     amount: totalAmountToPay * 100,
