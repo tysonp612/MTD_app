@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { createPaymentIntent } from "./../../utils/stripe/stripe";
 import "./stripe.scss";
 export const StripeCheckout = () => {
@@ -68,7 +69,8 @@ export const StripeCheckout = () => {
   return (
     <div>
       <p className={succeeded ? "result-message" : "result-message hidden"}>
-        Payment successful
+        Payment successful{" "}
+        <Link to={"/user/history"}>Click here to see your purchases</Link>
       </p>
       <form className="stripe-form" id="payment-form" onSubmit={handleSubmit}>
         <CardElement
