@@ -28,7 +28,6 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const history = useHistory();
   const param = useParams();
-
   const showUserRatingModal = () => {
     if (user) {
       return (
@@ -71,6 +70,14 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
           <br />
           Item added to cart
         </Link>
+      );
+    } else if (product.quantity === 0) {
+      return (
+        <>
+          <ShoppingCartOutlined disabled={true} className="text-warning" />
+          <br />
+          <p className="text-danger">Out of Stock</p>
+        </>
       );
     } else {
       return (

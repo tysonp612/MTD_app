@@ -37,6 +37,13 @@ export const ProductCard = ({ product }) => {
           Item added to cart
         </Link>
       );
+    } else if (product.quantity === 0) {
+      return (
+        <>
+          <ShoppingCartOutlined disabled={true} />
+          <p className="text-danger">Out of Stock</p>
+        </>
+      );
     } else {
       return <ShoppingCartOutlined onClick={handleAddToCart} />;
     }
