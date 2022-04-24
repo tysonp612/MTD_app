@@ -18,4 +18,5 @@ router
 router
   .route("/user/applyCoupon")
   .post(authTokenCheck, userController.applyCoupon);
+
 module.exports = router;

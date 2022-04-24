@@ -8,5 +8,5 @@ const router = express.Router();
 router
   .route("/order/createOrder")
   .post(authTokenCheck, orderController.createOrder);
-
+router.route("/order/getOrders").get(authTokenCheck, orderController.getOrders);
 module.exports = router;
