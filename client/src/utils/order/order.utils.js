@@ -9,3 +9,9 @@ export const createOrder = async (paymentIntent, authToken) => {
     }
   );
 };
+
+export const getOrders = async (authToken) => {
+  return await axios.get(`${process.env.REACT_APP_API}/order/getOrders`, {
+    headers: { authToken },
+  });
+};

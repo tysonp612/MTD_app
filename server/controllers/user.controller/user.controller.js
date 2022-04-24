@@ -126,7 +126,10 @@ exports.applyCoupon = async (req, res) => {
         orderedBy: user._id,
       });
       const couponId = await Coupon.findOne({ name: coupon });
-      const checkCouponUsed = await User.findOne({ couponUsed: couponId });
+      const checkCouponUsed = await User.findOne({
+        _id: user._id,
+        couponUsed: couponId,
+      });
       if (checkCouponUsed) {
         res.status(200).json("This coupon was applied to this account");
       } else {
