@@ -7,6 +7,6 @@ const router = express.Router();
 
 router
   .route("/order/createOrder")
-  .post(authTokenCheck, orderController.updateCartItems);
+  .post(authTokenCheck, orderController.createOrder);
 
 module.exports = router;

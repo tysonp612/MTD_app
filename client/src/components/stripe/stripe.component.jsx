@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-
+import { emptyCart } from "./../../utils/user/user.utils";
+import { createOrder } from "./../../utils/order/order.utils";
 import { Link } from "react-router-dom";
 import { createPaymentIntent } from "./../../utils/stripe/stripe";
 import "./stripe.scss";
@@ -12,6 +14,7 @@ export const StripeCheckout = ({ user }) => {
   const [clientSecret, setClientSecret] = useState("");
   const elements = useElements();
   const stripe = useStripe();
+  const dispatch = useDispatch();
   useEffect(() => {
     //when comp mounted, make request to backend and get res of client secret key
     createPaymentIntent(user.token).then((res) => {
@@ -51,8 +54,18 @@ export const StripeCheckout = ({ user }) => {
       setProcessing(false);
     } else {
       //get result after successful payment
+      console.log(payload);
       //create order and save in db for admin to process
-      //empty card from redux store and local storage
+      createOrder(payload.paymentIntent, user.token)
+        .then((res) => {
+          if (res.data.ok) {
+            //emptyCart
+            emptyCart(user.token);
+            dispatch({ type: "EMPTY_CART" });
+          }
+        })
+        .catch((err) => console.log(err));
+
       setError(null);
       setProcessing(false);
       setSucceeded(true);

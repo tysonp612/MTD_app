@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { StripeCheckout } from "./../../components/stripe/stripe.component";
-import { getCart } from "./../../utils/user/user.utils";
+import { getCart, emptyCart } from "./../../utils/user/user.utils";
 import { Card } from "antd";
 import { DollarOutlined, CheckOutlined } from "@ant-design/icons";
 const { Meta } = Card;
