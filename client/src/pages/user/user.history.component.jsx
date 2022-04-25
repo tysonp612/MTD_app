@@ -4,16 +4,9 @@ import { getOrders } from "./../../utils/order/order.utils";
 import { useSelector } from "react-redux";
 import { ShowPaymentInfo } from "../../components/card/show-payment-info.component.jsx";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { Invoice } from "./../../components/invoice/invoice.component";
 import { toast } from "react-toastify";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  PDFDownloadLink,
-  PDFViewer,
-} from "@react-pdf/renderer";
+import { StyleSheet, PDFDownloadLink } from "@react-pdf/renderer";
 const History = () => {
   const [orders, setOrders] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
@@ -34,18 +27,7 @@ const History = () => {
       <PDFDownloadLink
         fileName="invoice.pdf"
         className="btn btn-sm btnblock btn-outline-primary"
-        document={
-          <PDFViewer>
-            <Document>
-              <Page size="A4">
-                <View>
-                  <Text>Section 1</Text>
-                  <Text>Section 2</Text>
-                </View>
-              </Page>
-            </Document>
-          </PDFViewer>
-        }
+        document={<Invoice order={order} />}
       >
         Download PDF
       </PDFDownloadLink>
