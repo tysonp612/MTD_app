@@ -5,6 +5,15 @@ import { useSelector } from "react-redux";
 import { ShowPaymentInfo } from "../../components/card/show-payment-info.component.jsx";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  PDFDownloadLink,
+  PDFViewer,
+} from "@react-pdf/renderer";
 const History = () => {
   const [orders, setOrders] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
@@ -18,6 +27,18 @@ const History = () => {
         setOrders(res.data);
       })
       .catch((err) => console.log(err));
+  };
+  const showDownloadLink = (order) => {
+    <PDFViewer>
+      <Document>
+        <Page size="A4">
+          <View>
+            <Text>Section 1</Text>
+            <Text>Section 2</Text>
+          </View>
+        </Page>
+      </Document>
+    </PDFViewer>;
   };
   const showOrderInTable = (order) => {
     return (
@@ -64,9 +85,7 @@ const History = () => {
           <ShowPaymentInfo order={order} />
           {showOrderInTable(order)}
           <div className="row">
-            <div className="col">
-              <p>PDF Download</p>
-            </div>
+            <div className="col">{showDownloadLink(order)}</div>
           </div>
         </div>
       );
