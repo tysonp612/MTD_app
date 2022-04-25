@@ -29,16 +29,18 @@ const History = () => {
       .catch((err) => console.log(err));
   };
   const showDownloadLink = (order) => {
-    <PDFViewer>
-      <Document>
-        <Page size="A4">
-          <View>
-            <Text>Section 1</Text>
-            <Text>Section 2</Text>
-          </View>
-        </Page>
-      </Document>
-    </PDFViewer>;
+    return (
+      <PDFViewer>
+        <Document>
+          <Page size="A4">
+            <View>
+              <Text>Section 1</Text>
+              <Text>Section 2</Text>
+            </View>
+          </Page>
+        </Document>
+      </PDFViewer>
+    );
   };
   const showOrderInTable = (order) => {
     return (
