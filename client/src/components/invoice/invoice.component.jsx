@@ -19,13 +19,52 @@ export const Invoice = ({ order }) => {
   return (
     <Document>
       <Page size="A4" style={styles.body}>
-        <View>
-          <Text style={styles.header} fixed>
-            ~ {new Date().toLocaleString()} ~
+        <Text style={styles.header} fixed>
+          ~ {new Date().toLocaleString()} ~
+        </Text>
+        <Text style={styles.title}>Order Invoice</Text>
+        <Text style={styles.author}>My Tech Devices</Text>
+        <Text style={styles.subtitle}>Order Summary</Text>
+        <Table>
+          <TableHeader>
+            <TableCell>Title</TableCell>
+            <TableCell>Price</TableCell>
+            <TableCell>Quantity</TableCell>
+            <TableCell>Brand</TableCell>
+            <TableCell>Color</TableCell>
+          </TableHeader>
+        </Table>
+        <Table data={order.products}>
+          <TableBody>
+            <DataTableCell getContent={(content) => content.product.title} />
+            <DataTableCell
+              getContent={(content) => `$${content.product.price}`}
+            />
+            <DataTableCell getContent={(content) => content.cartQuantity} />
+            <DataTableCell getContent={(content) => content.product.brand} />
+            <DataTableCell getContent={(content) => content.color} />
+          </TableBody>
+        </Table>
+        <Text style={styles.text}>
+          <Text>
+            Date:{" "}
+            {new Date(order.paymentIntent.created * 1000).toLocaleString()}
           </Text>
-          <Text style={styles.author}>My Tech Devices</Text>
-          <Text style={styles.subtitle}>Order Summary</Text>
-        </View>
+        </Text>
+
+        <Text style={styles.text}>
+          <Text>Order Id: {order.paymentIntent.id}</Text>
+        </Text>
+        <Text style={styles.text}>
+          <Text>Order Status: {order.orderStatus}</Text>
+        </Text>
+        <Text style={styles.text}>
+          <Text>
+            Total Paid: ${(order.paymentIntent.amount / 100).toLocaleString()}
+          </Text>
+        </Text>
+
+        <Text style={styles.footer}>~ Thank you for shopping with us ~</Text>
       </Page>
     </Document>
   );
