@@ -29,17 +29,26 @@ const History = () => {
       .catch((err) => console.log(err));
   };
   const showDownloadLink = (order) => {
+    //NOTE https://stackoverflow.com/questions/63280109/how-to-update-webpack-config-for-a-react-project-created-using-create-react-app
     return (
-      <PDFViewer>
-        <Document>
-          <Page size="A4">
-            <View>
-              <Text>Section 1</Text>
-              <Text>Section 2</Text>
-            </View>
-          </Page>
-        </Document>
-      </PDFViewer>
+      <PDFDownloadLink
+        fileName="invoice.pdf"
+        className="btn btn-sm btnblock btn-outline-primary"
+        document={
+          <PDFViewer>
+            <Document>
+              <Page size="A4">
+                <View>
+                  <Text>Section 1</Text>
+                  <Text>Section 2</Text>
+                </View>
+              </Page>
+            </Document>
+          </PDFViewer>
+        }
+      >
+        Download PDF
+      </PDFDownloadLink>
     );
   };
   const showOrderInTable = (order) => {
