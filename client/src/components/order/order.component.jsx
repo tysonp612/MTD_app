@@ -1,6 +1,7 @@
 import React from "react";
 // import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design.icons";
 import { ShowPaymentInfo } from "./../card/show-payment-info.component";
+import { TableComponent } from "./../table/product-table.component";
 export const OrderComponent = ({ orders, handleStatusChange }) => {
   return (
     <>
@@ -26,6 +27,9 @@ export const OrderComponent = ({ orders, handleStatusChange }) => {
                     <option value="Completed">Completed</option>
                   </select>
                 </div>
+              </div>
+              <div className="row">
+                <TableComponent order={order} />
               </div>
             </div>
           </div>
