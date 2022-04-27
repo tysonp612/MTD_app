@@ -44,9 +44,13 @@ exports.adminUpdateOrders = async (req, res) => {
   try {
     const orderTargeted = req.body.orderId;
     const update = req.body.update;
-    const updatedOrder = await Order.findByIdAndUpdate(orderTargeted, {
-      orderStatus: update,
-    });
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderTargeted,
+      {
+        orderStatus: update,
+      },
+      { new: true }
+    );
     res.status(200).json("Order status updated!");
   } catch (err) {
     console.log(err);
@@ -55,7 +59,9 @@ exports.adminUpdateOrders = async (req, res) => {
 
 exports.adminGetAllOrders = async (req, res) => {
   try {
-    const allOrders = await Order.find();
+    const allOrders = await Order.find({})
+      .sort("-createdAt")
+      .populate("products.product");
     res.status(200).json(allOrders);
   } catch (err) {
     console.log(err);

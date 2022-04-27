@@ -27,6 +27,7 @@ export const ShowPaymentInfo = ({ order }) => {
           {new Date(order.paymentIntent.created * 1000).toLocaleDateString()}
           {" / "}
         </span>
+        <br />
         <span className="badge bg-primary text-white">
           Status: {order.orderStatus}
         </span>

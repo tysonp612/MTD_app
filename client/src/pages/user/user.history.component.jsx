@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 import { ShowPaymentInfo } from "../../components/card/show-payment-info.component.jsx";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Invoice } from "./../../components/invoice/invoice.component";
-import { toast } from "react-toastify";
-import { StyleSheet, PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 const History = () => {
   const [orders, setOrders] = useState([]);
   const user = useSelector((state) => state.user.currentUser);
