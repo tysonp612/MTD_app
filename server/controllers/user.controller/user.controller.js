@@ -179,7 +179,7 @@ exports.getAllWishList = async (req, res) => {
   try {
     const userWishList = await User.findOne({ email: req.user.email }).populate(
       "wishList",
-      "_id"
+      "_id title description images slug ratings"
     );
     res.status(200).json(userWishList);
   } catch (err) {
@@ -188,10 +188,10 @@ exports.getAllWishList = async (req, res) => {
 };
 exports.removeFromWishList = async (req, res) => {
   try {
-    const user = await User.find({ email: req.user.email });
-    const productId = req.params;
+    const user = await User.findOne({ email: req.user.email });
+    const { productId } = req.params;
     const newWishlist = await User.findByIdAndUpdate(
-      userId,
+      user._id,
       {
         $pull: { wishList: productId },
       },

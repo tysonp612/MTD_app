@@ -5,13 +5,18 @@ import {
   EyeOutlined,
   ShoppingCartOutlined,
   CheckOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import productsDefaultImages from "./../images/techdevices.jpeg";
 import { ShowAverage } from "./../rating/average-rating.component";
 import { CartActionTypes } from "../../redux/reducers/cart/cart.types";
 import { Link } from "react-router-dom";
 
-export const ProductCard = ({ product }) => {
+export const ProductCard = ({
+  product,
+  okay = false,
+  handleRemoveWishList,
+}) => {
   const { title, description, images, slug, ratings } = product;
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
@@ -56,28 +61,57 @@ export const ProductCard = ({ product }) => {
         <div className="text-center pb-3">No rating yet</div>
       )}
 
-      <Card
-        cover={
-          <img
-            style={{ height: "200px", objectFit: "cover" }}
-            className="p-1"
-            src={
-              images && images.length ? images[0].url : productsDefaultImages
-            }
+      {okay ? (
+        <Card
+          cover={
+            <img
+              style={{ height: "200px", objectFit: "cover" }}
+              className="p-1"
+              src={
+                images && images.length ? images[0].url : productsDefaultImages
+              }
+            />
+          }
+          actions={[
+            <Link to={`/product/${slug}`}>
+              <EyeOutlined className="text-warning" />
+            </Link>,
+            <>{checkItemInCart()}</>,
+            <DeleteOutlined
+              className="text-danger"
+              onClick={() => handleRemoveWishList(product._id)}
+            />,
+          ]}
+        >
+          <Meta
+            title={title}
+            description={`${description && description.substring(0, 40)}...`}
           />
-        }
-        actions={[
-          <Link to={`/product/${slug}`}>
-            <EyeOutlined className="text-warning" />
-          </Link>,
-          <>{checkItemInCart()}</>,
-        ]}
-      >
-        <Meta
-          title={title}
-          description={`${description && description.substring(0, 40)}...`}
-        />
-      </Card>
+        </Card>
+      ) : (
+        <Card
+          cover={
+            <img
+              style={{ height: "200px", objectFit: "cover" }}
+              className="p-1"
+              src={
+                images && images.length ? images[0].url : productsDefaultImages
+              }
+            />
+          }
+          actions={[
+            <Link to={`/product/${slug}`}>
+              <EyeOutlined className="text-warning" />
+            </Link>,
+            <>{checkItemInCart()}</>,
+          ]}
+        >
+          <Meta
+            title={title}
+            description={`${description && description.substring(0, 40)}...`}
+          />
+        </Card>
+      )}
     </>
   );
 };
