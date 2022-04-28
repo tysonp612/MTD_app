@@ -100,26 +100,39 @@ export const SingleProduct = ({
     }
   };
   const checkItemInWishlist = () => {
-    const itemInWishList = wishList.find((item) => item._id === product._id);
-    if (itemInWishList) {
+    if (!user) {
       return (
-        <Link to={`/user/wishlist`}>
-          <HeartFilled className="text-danger" />
-          <br />
-          Item added to wish list
-        </Link>
-      );
-    } else {
-      return (
-        <>
+        <Link to={`/login`}>
           <HeartOutlined
             className="text-danger"
             onClick={() => handleAddToWishList()}
           />
           <br />
-          Add to Wishlist
-        </>
+          Login to add product to Wishlist
+        </Link>
       );
+    } else {
+      const itemInWishList = wishList.find((item) => item._id === product._id);
+      if (itemInWishList) {
+        return (
+          <Link to={`/user/wishlist`}>
+            <HeartFilled className="text-danger" />
+            <br />
+            Go to Wishlist
+          </Link>
+        );
+      } else {
+        return (
+          <>
+            <HeartOutlined
+              className="text-danger"
+              onClick={() => handleAddToWishList()}
+            />
+            <br />
+            Add to Wishlist
+          </>
+        );
+      }
     }
   };
 
