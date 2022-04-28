@@ -11,14 +11,14 @@ export const OrderComponent = ({ orders, handleStatusChange }) => {
             <div className="btn btn-block bg-light">
               <ShowPaymentInfo order={order} />
               <div className="row">
-                <div className="col-md-4">Delivery Status</div>
-                <div className="col-md-8">
+                <div className="col-md-2">Delivery Status</div>
+                <div className="col-md-2">
                   <select
                     onChange={(e) =>
                       handleStatusChange(order._id, e.target.value)
                     }
                     className="form-control"
-                    dafaultValue={order.orderStatus}
+                    value={order.orderStatus}
                   >
                     <option value="Not Processed">Not Processed</option>
                     <option value="Processing">Processing</option>
@@ -27,10 +27,14 @@ export const OrderComponent = ({ orders, handleStatusChange }) => {
                     <option value="Completed">Completed</option>
                   </select>
                 </div>
+                <div className="col-md-4">
+                  Customer: {order.orderedBy.name} - Address:
+                  {order.orderedBy.address}
+                </div>
               </div>
-              <div className="row">
-                <TableComponent order={order} />
-              </div>
+            </div>
+            <div className="row">
+              <TableComponent order={order} />
             </div>
           </div>
         );

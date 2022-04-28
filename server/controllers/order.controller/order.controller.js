@@ -61,7 +61,8 @@ exports.adminGetAllOrders = async (req, res) => {
   try {
     const allOrders = await Order.find({})
       .sort("-createdAt")
-      .populate("products.product");
+      .populate("products.product")
+      .populate("orderedBy", "name address");
     res.status(200).json(allOrders);
   } catch (err) {
     console.log(err);

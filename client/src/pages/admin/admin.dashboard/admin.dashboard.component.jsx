@@ -37,7 +37,7 @@ export const AdminDashboard = () => {
         </div>
 
         <div className="col-md-10">
-          <h1>HIHIHIH</h1>
+          <h3>Admin Dashboard</h3>
 
           <OrderComponent
             orders={orders}
