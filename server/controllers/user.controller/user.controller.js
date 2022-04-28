@@ -2,7 +2,7 @@ const User = require("./../../models/user.schema");
 const Cart = require("./../../models/cart.schema");
 const Product = require("./../../models/product.schema");
 const Coupon = require("./../../models/coupon.schema");
-
+//CART
 exports.updateCartItems = async (req, res) => {
   try {
     const { cart } = req.body;
@@ -95,6 +95,7 @@ exports.emptyCart = async (req, res) => {
     console.log(err);
   }
 };
+//ADDRESS
 exports.updateAddress = async (req, res) => {
   try {
     const { address } = req.body;
@@ -108,6 +109,7 @@ exports.updateAddress = async (req, res) => {
     console.log(err);
   }
 };
+//COUPON
 exports.applyCoupon = async (req, res) => {
   try {
     const { coupon } = req.body;
@@ -151,6 +153,49 @@ exports.applyCoupon = async (req, res) => {
         res.status(200).json(newCartWithDiscountedPrice.totalAfterDiscount);
       }
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+//WISHLIST
+exports.addToWishList = async (req, res) => {
+  try {
+    const userId = await User.find({ email: req.user.email })._id;
+    const { product } = req.body.product;
+    const productId = await Product.findById(product)._id;
+    const addToWishList = await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { wishList: productId },
+      },
+      { new: true }
+    );
+    res.status(200).json("Added to wish list");
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.getAllWishList = async (req, res) => {
+  try {
+    const user = await User.find({ email: req.user.email });
+    const allWishListOfUser = user.wishList;
+    res.status(200).json(allWishListOfUser);
+  } catch (err) {
+    console.log(err);
+  }
+};
+exports.removeFromWishList = async (req, res) => {
+  try {
+    const user = await User.find({ email: req.user.email });
+    const productId = req.params;
+    const newWishlist = await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { wishList: productId },
+      },
+      { new: true }
+    );
+    res.status(200).json("product has been removed from wishlist");
   } catch (err) {
     console.log(err);
   }

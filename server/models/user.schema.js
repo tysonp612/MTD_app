@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
         ref: "Coupon",
       },
     ],
-    //   wishList: [{ type: ObjectID, ref:"Product" }]
+    wishList: [{ type: ObjectId, ref: "Product" }],
   },
   //timestamps true will update time automatically so we dont have to create createdAt
   { timestamps: true }

@@ -19,4 +19,13 @@ router
   .route("/user/applyCoupon")
   .post(authTokenCheck, userController.applyCoupon);
 
+router
+  .route("/user/add-wishlist")
+  .post(authTokenCheck, userController.addToWishList);
+router
+  .route("/user/get-wishlist")
+  .get(authTokenCheck, userController.getAllWishList);
+router
+  .route("/user/remove-wishlist/:productId")
+  .delete(authTokenCheck, userController.removeFromWishList);
 module.exports = router;
