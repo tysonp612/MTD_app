@@ -7,27 +7,34 @@ import {
   ShoppingCartOutlined,
   StarOutlined,
   CheckOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
 import techdevices from "./../images/techdevices.jpeg";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-
 import { ModalComponent } from "./../../components/modal/modal.component";
 import { ProductInfoCard } from "./../card/product-info-card.component";
 import { ShowAverage } from "./../rating/average-rating.component";
-
 import StarRatings from "react-star-ratings";
 
 const { TabPane } = Tabs;
 
-export const SingleProduct = ({ star, handleStarRating, product }) => {
+export const SingleProduct = ({
+  wishList,
+  user,
+  star,
+  handleStarRating,
+  product,
+  handleAddToWishList,
+}) => {
   const { images, title, description } = product;
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.currentUser);
+
   const cartItems = useSelector((state) => state.cart.cartItems);
   const history = useHistory();
   const param = useParams();
+
   const showUserRatingModal = () => {
     if (user) {
       return (
@@ -92,6 +99,30 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
       );
     }
   };
+  const checkItemInWishlist = () => {
+    const itemInWishList = wishList.find((item) => item._id === product._id);
+    if (itemInWishList) {
+      return (
+        <Link to={`/user/wishlist`}>
+          <HeartFilled className="text-danger" />
+          <br />
+          Item added to wish list
+        </Link>
+      );
+    } else {
+      return (
+        <>
+          <HeartOutlined
+            className="text-danger"
+            onClick={() => handleAddToWishList()}
+          />
+          <br />
+          Add to Wishlist
+        </>
+      );
+    }
+  };
+
   const handleAddToCart = () => {
     dispatch({
       type: CartActionTypes.ADD_TO_CART,
@@ -143,11 +174,7 @@ export const SingleProduct = ({ star, handleStarRating, product }) => {
         <Card
           actions={[
             <>{checkItemInCart()}</>,
-            <Link to="/">
-              <HeartOutlined className="text-danger" />
-              <br />
-              Add to Wishlist
-            </Link>,
+            checkItemInWishlist(),
             showUserRatingModal(),
           ]}
         >

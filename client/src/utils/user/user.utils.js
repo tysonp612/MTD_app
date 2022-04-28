@@ -39,3 +39,30 @@ export const applyCoupon = async (authToken, coupon) => {
     }
   );
 };
+
+export const addToWishList = async (authToken, productId) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/user/add-wishlist`,
+    { productId },
+    {
+      headers: { authToken },
+    }
+  );
+};
+export const getAllWishList = async (authToken) => {
+  return await axios.get(
+    `${process.env.REACT_APP_API}/user/get-wishlist`,
+
+    {
+      headers: { authToken },
+    }
+  );
+};
+export const removeFromWishList = async (authToken, productId) => {
+  return await axios.delete(
+    `${process.env.REACT_APP_API}/user/remove-wishlist/${productId}`,
+    {
+      headers: { authToken },
+    }
+  );
+};

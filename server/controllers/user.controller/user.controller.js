@@ -160,13 +160,13 @@ exports.applyCoupon = async (req, res) => {
 //WISHLIST
 exports.addToWishList = async (req, res) => {
   try {
-    const userId = await User.find({ email: req.user.email })._id;
-    const { product } = req.body.product;
-    const productId = await Product.findById(product)._id;
+    const userId = await User.findOne({ email: req.user.email });
+    const { productId } = req.body;
+    const id = await Product.findById(productId);
     const addToWishList = await User.findByIdAndUpdate(
-      userId,
+      userId._id,
       {
-        $push: { wishList: productId },
+        $push: { wishList: id._id },
       },
       { new: true }
     );
@@ -177,9 +177,11 @@ exports.addToWishList = async (req, res) => {
 };
 exports.getAllWishList = async (req, res) => {
   try {
-    const user = await User.find({ email: req.user.email });
-    const allWishListOfUser = user.wishList;
-    res.status(200).json(allWishListOfUser);
+    const userWishList = await User.findOne({ email: req.user.email }).populate(
+      "wishList",
+      "_id"
+    );
+    res.status(200).json(userWishList);
   } catch (err) {
     console.log(err);
   }
