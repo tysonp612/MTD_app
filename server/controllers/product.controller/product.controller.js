@@ -35,7 +35,7 @@ exports.getAllProductFromSubCategory = async (req, res) => {
     const subCategoryObj = await SubCategory.find({ slug });
 
     const subCategoryId = subCategoryObj[0]._id;
-    console.log(subCategoryObj, subCategoryId);
+
     const products = await Product.find({ subcategory: subCategoryId })
       .populate("category")
       .populate("subcategory");

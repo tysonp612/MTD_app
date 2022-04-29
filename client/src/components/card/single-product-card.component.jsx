@@ -158,12 +158,15 @@ export const SingleProduct = ({
         {images && images.length ? (
           <Carousel showArrows={true} infiniteLoop>
             {images.map((images) => {
-              return <img src={images.url} key={images.public_id} />;
+              return (
+                <img src={images.url} key={images.public_id} alt="Product" />
+              );
             })}
           </Carousel>
         ) : (
           <img
             src={techdevices}
+            alt="defalut product"
             style={{ height: "600px", width: "100%", objectFit: "contain" }}
           />
         )}

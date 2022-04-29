@@ -48,6 +48,13 @@ export const CheckoutPage = () => {
       })
       .catch((err) => console.log(err));
   };
+  const handlePlaceOrder = () => {
+    if (!addressSaved || !products.length || !address) {
+      toast.error("Address is required to place order!");
+    } else {
+      history.push("/payment");
+    }
+  };
   const handleEmptyCart = () => {
     //remove from backend
     emptyCart(user.token)
@@ -177,9 +184,8 @@ export const CheckoutPage = () => {
         <div className="row">
           <div className="col-md-6">
             <button
-              onClick={(e) => history.push("/payment")}
+              onClick={(e) => handlePlaceOrder()}
               className="btn btn-primary"
-              disabled={!addressSaved || !products.length || !address}
             >
               Place Order
             </button>

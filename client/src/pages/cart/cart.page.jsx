@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useHistory, Link, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import productsDefaultImages from "./../../components/images/techdevices.jpeg";
 import { CartActionTypes } from "./../../redux/reducers/cart/cart.types";
@@ -104,6 +104,7 @@ export const CartPage = () => {
                   <tr key={item._id}>
                     <th>
                       <img
+                        alt="product"
                         width="130"
                         height="130"
                         src={`${
@@ -194,12 +195,6 @@ export const CartPage = () => {
                 >
                   GO TO CHECKOUT
                 </div>
-                <Link
-                  className="btn btn-outline-primary m-3"
-                  to={"/cash-checkout"}
-                >
-                  PAY CASH ON DELIVERY
-                </Link>
               </div>
             ) : (
               <div className="d-flex  justify-content-center">

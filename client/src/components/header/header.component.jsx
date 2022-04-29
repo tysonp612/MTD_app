@@ -49,10 +49,10 @@ const Header = () => {
             <NavDropdown.Item eventKey="4.1" href="/admin/dashboard">
               Admin
             </NavDropdown.Item>
-            <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
-            <NavDropdown.Item eventKey="4.3">
-              Something else here
+            <NavDropdown.Item eventKey="4.2" href="/user/history">
+              User
             </NavDropdown.Item>
+
             <NavDropdown.Divider />
             <NavDropdown.Item eventKey="4.4" onClick={handleLogout}>
               Log Out

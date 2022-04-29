@@ -23,7 +23,6 @@ export const AdminShowProduct = () => {
     await productsCount()
       .then((res) => {
         setProductsQuantity(res.data);
-        console.log(productsQuantity);
       })
       .catch((err) => console.log(err));
   };

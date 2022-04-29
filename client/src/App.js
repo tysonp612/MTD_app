@@ -1,20 +1,22 @@
-//Toastify
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; //in node_modules
 //React
-import React, { useEffect, useState } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 //Redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { UserActionTypes } from "./redux/reducers/user/user.types";
 //Firebase
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/firebase.utils";
-//Server Utils
-import { createOrUpdateUser } from "./utils/authentication/authentication.utils";
+//Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; //in node_modules
 //Privet Routes
 import { UserRoute } from "./components/routes/user.routes";
 import { AdminRoute } from "./components/routes/admin.routes";
+
+//Server Utils
+import { createOrUpdateUser } from "./utils/authentication/authentication.utils";
+
 //Components
 import Home from "./pages/home/homepage.component";
 import DrawerComponent from "./components/drawer/drawer.component";
@@ -46,7 +48,6 @@ import { ProductUpdate } from "./pages/admin/admin.products/admin.product-update
 import { CouponPage } from "./pages/admin/admin.coupon/admin.coupon.component";
 const App = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const unsubscribe = onAuthStateChanged(auth, async (user) => {
     if (user) {
