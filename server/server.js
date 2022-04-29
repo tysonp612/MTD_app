@@ -35,6 +35,16 @@ fs.readdirSync("./routes").map((r) =>
   app.use(require(`./routes/${r}/${r}.route`))
 );
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("./../client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile("./../client/build/index.html");
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.sendFile("Api running");
+  });
+}
 //3 APP LISTENS TO PORT
 //port
 const port = process.env.PORT || 8000;
