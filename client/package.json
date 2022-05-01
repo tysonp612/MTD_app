@@ -65,6 +65,7 @@
     "react-toastify": "^8.2.0",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
+    "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
