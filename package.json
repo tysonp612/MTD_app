@@ -24,6 +24,7 @@
     "mongoose": "^6.2.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15",
+    "react-datepicker": "^4.7.0",
     "slugify": "^1.6.5",
     "stripe": "^8.219.0"
   }
