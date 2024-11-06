@@ -1,36 +1,38 @@
 const User = require("../../models/user.schema");
 
+//Controller to create or update user
 exports.createOrUpdateUser = async (req, res) => {
-  const { name, email, picture } = req.user;
-  try {
-    //if there is already user in db, update new with req.user from checkToken middleware
-    const user = await User.findOneAndUpdate(
-      { email },
-      { name, picture },
-      { new: true }
-    );
-    if (user) {
-      console.log("USER UPDATED", user);
-      res.status(200).json(user);
-    } else {
-      //if no user found, create new user with schema
-      const newUser = await new User({
-        email,
-        name: email.split("@")[0],
-        picture,
-      }).save();
-      console.log("USER CREATED", newUser);
-      res.status(200).json(newUser);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+	const { name, email, picture } = req.user;
+	try {
+		//Check if the user exists and update if found
+		let user = await User.findOneAndUpdate(
+			{ email },
+			{ name, picture },
+			{ new: true }
+		);
+		if (user) {
+			res.status(200).json(user);
+		}
+		//if no user, create a new user
+		user = await new User({
+			email,
+			name: email.split("@")[0],
+			picture,
+		});
+		await user.save();
+		//code 201 for successful creation
+		return res.status(201).json(newUser);
+	} catch (error) {
+		console.error("Error in create or update user");
+		return res.status(500).json({ message: "Server error, try again" });
+	}
 };
 
 exports.adminController = async (req, res) => {
-  try {
-    res.status(200).json(true);
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		return res.status(200).json(true);
+	} catch (err) {
+		console.error("Error in validating admin:", error);
+		return res.status(500).json({ message: "Server error. Please try again." });
+	}
 };
