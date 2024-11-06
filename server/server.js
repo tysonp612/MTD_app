@@ -1,55 +1,62 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
+const helmet = require("helmet");
 require("dotenv").config();
 
-//import routes
-const authRoutes = require("./routes/authentication/authentication.route");
-//1) CREATE APP FROM EXPRESS AND SET UP MONGOOSE CONFIG
-//app
+//initialize app
 const app = express();
-app.use(express.json());
-//as we connect, we got a promise back
-mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("DB connected"))
-  .catch((err) => console.log(`DB connection error ${err}`));
 
-//2 SETTING UP MIDDLEWARE
-//middleware
-// It simplifies the process of logging requests to your application. You might think of Morgan as a helper that generates request logs
-app.use(morgan("dev"));
-//helps communicate between front and back end, parse data under 2mb
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-//overcome CORS error
+//Connect to MongoDb
+const connectToDatabase = async () => {
+	try {
+		await mongoose.connect(process.env.DATABASE, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+		console.log("DB connected");
+	} catch (err) {
+		console.error("DB connection error", err);
+		process.exit(1);
+	}
+};
+connectToDatabase();
+
+//Middleware
+app.use(helmet()); //security headers
+app.use(morgan("dev")); //logger for debugging
+app.use(express.json()); //body parser for json
+app.use(express.urlencoded({ extended: true })); //body parser for url encoded
 app.use(cors());
 
-//this line below is for calling app.use for all the routes as the app starts, so we don;t have to call each route manually
-fs.readdirSync("./routes").map((r) =>
-  app.use("/api", require(`./routes/${r}/${r}.route`))
-);
-
-app.use(express.static(path.join(__dirname, "build")));
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+//Load routes
+const API_PREFIX = process.env.API_PREFIX || "/api";
+fs.readdirSync("./routes").forEach((route) => {
+	app.use(API_PREFIX, require(`./routes/${route}/${route}.route`));
 });
 
-//3 APP LISTENS TO PORT
-//port
+//Serve static files
+app.use(express.static(path.join(__dirname, "build")));
+app.get("/*", (req, res) => {
+	res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+//Global error handler
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	res.status(500).send({ message: "Server went wrong!" });
+});
+
+//Start server
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log("listen to server running "));
+app.listen(port, () => console.log(`Server running on port ${port}`));
 
-// const proxy = require("http-proxy-middleware");
-
-// module.exports = function (app) {
-//   // add other server routes to path array
-//   app.use(proxy(["/api"], { target: "http://localhost:5000" }));
-// };
+//Graceful shutdown
+process.on("SIGINT", async () => {
+	await mongoose.connection.close();
+	console.log("DB disconnected due to app termination");
+	process.exit(0);
+});
