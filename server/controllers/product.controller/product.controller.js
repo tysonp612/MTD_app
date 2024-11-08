@@ -5,207 +5,217 @@ const SubCategory = require("./../../models/sub-category.schema");
 const slugify = require("slugify");
 
 exports.createProduct = async (req, res) => {
-  try {
-    req.body.slug = slugify(req.body.title);
-    const product = await new Product(req.body).save();
-    res.status(200).json(product);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send("Create product failed");
-  }
+	try {
+		req.body.slug = slugify(req.body.title);
+		const product = await new Product(req.body).save();
+		res.status(200).json(product);
+	} catch (err) {
+		console.error("Error creating product:", err);
+		res.status(400).json({ error: "Failed to create product" });
+	}
 };
 
 exports.getAllProductFromCategory = async (req, res) => {
-  try {
-    const { slug } = req.params;
-    const categoryObj = await Category.find({ slug });
-    const categoryId = categoryObj[0]._id;
-    const products = await Product.find({ category: categoryId })
-      .populate("category")
-      .populate("subcategory");
-    res.status(200).json(products);
-  } catch (err) {
-    console.log(err);
-    res.status(404).send("No product found");
-  }
+	try {
+		const { slug } = req.params;
+
+		const category = await Category.findOne({ slug });
+		if (!category) return res.status(404).json({ error: "Category not found" });
+
+		const products = await Product.find({ category: category._id })
+			.populate("category")
+			.populate("subcategory");
+		res.status(200).json(products);
+	} catch (err) {
+		console.error("Error retrieving products by category:", err);
+		res.status(404).json({ error: "No products found" });
+	}
 };
 exports.getAllProductFromSubCategory = async (req, res) => {
-  try {
-    const { slug } = req.params;
-    const subCategoryObj = await SubCategory.find({ slug });
+	try {
+		const { slug } = req.params;
 
-    const subCategoryId = subCategoryObj[0]._id;
+		const subCategory = await SubCategory.findOne({ slug });
+		if (!subCategory)
+			return res.status(404).json({ error: "Subcategory not found" });
 
-    const products = await Product.find({ subcategory: subCategoryId })
-      .populate("category")
-      .populate("subcategory");
-    res.status(200).json(products);
-  } catch (err) {
-    console.log(err);
-    res.status(404).send("No product found");
-  }
+		const products = await Product.find({ subcategory: subCategory._id })
+			.populate("category")
+			.populate("subcategory");
+		res.status(200).json(products);
+	} catch (err) {
+		console.error("Error retrieving products by subcategory:", err);
+		res.status(404).json({ error: "No products found" });
+	}
 };
+//get all products with pagination
+//page: retrieve from params, defaults to 1
+//limit: retrieve from params, defaults to 10, setting the number of produts to show per page
 exports.getAllProductsWithPagination = async (req, res) => {
-  try {
-    const { page } = req.body;
-    const currentPage = page || 1;
-    const documentPerPage = +req.params.count;
+	try {
+		const page = req.body.page || 1;
+		const limit = parseInt(req.params.count) || 10;
 
-    const products = await Product.find()
-      .skip((currentPage - 1) * documentPerPage)
-      .limit(+req.params.count)
-      .populate("category")
-      .populate("subcategory")
-      .sort({ createdAt: -1 });
-    res.status(200).json(products);
-  } catch (err) {
-    console.log(err);
-    res.status(404).send("No product found");
-  }
+		//Calculates the number of products to skip based on the current page and limit.
+		//For example, if page = 2 and limit = 10, it skips (2 - 1) * 10 = 10 products, retrieving the next set of products for page 2.
+		const products = await Product.find()
+			.skip((page - 1) * limit)
+			.limit(limit)
+			.populate("category")
+			.populate("subcategory")
+			.sort({ createdAt: -1 });
+
+		res.status(200).json(products);
+	} catch (err) {
+		console.error("Error retrieving paginated products:", err);
+		res.status(404).json({ error: "No products found" });
+	}
 };
 //Note this
 exports.getRelatedProducts = async (req, res) => {
-  try {
-    const { page, categoryId } = req.body;
-    const currentPage = page || 1;
-    const documentPerPage = 3;
-    const { slug } = req.params;
+	try {
+		const { page, categoryId } = req.body;
+		const currentPage = page || 1;
+		const documentPerPage = 3;
+		const { slug } = req.params;
 
-    const allRelatedProducts = await Product.find({ category: categoryId })
-      .skip((currentPage - 1) * documentPerPage)
-      .populate("category")
-      .populate("subcategory")
-      .limit(documentPerPage);
+		const allRelatedProducts = await Product.find({ category: categoryId })
+			.skip((currentPage - 1) * documentPerPage)
+			.populate("category")
+			.populate("subcategory")
+			.limit(documentPerPage);
 
-    const relatedProducts = allRelatedProducts.filter(
-      (product) => product.slug !== slug
-    );
+		const relatedProducts = allRelatedProducts.filter(
+			(product) => product.slug !== slug
+		);
 
-    res.status(200).json(relatedProducts);
-  } catch (err) {
-    console.log(err);
-  }
+		res.status(200).json(relatedProducts);
+	} catch (err) {
+		console.error("Error retrieving related products:", err);
+		res.status(500).json({ error: "Failed to retrieve related products" });
+	}
 };
+
 exports.productsCountRelated = async (req, res) => {
-  try {
-    const { categoryId } = req.body;
-    let totalProducts = await Product.find({
-      category: categoryId,
-    });
-    let productQuantity = totalProducts.length;
-    res.status(200).json(productQuantity - 1);
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		const { categoryId } = req.body;
+		const totalProducts = await Product.countDocuments({
+			category: categoryId,
+		});
+		res.status(200).json(totalProducts);
+	} catch (err) {
+		console.error("Error counting products by category:", err);
+		res.status(500).json({ error: "Failed to count products" });
+	}
 };
+
 exports.getSortedProducts = async (req, res) => {
-  //WITH PAGINATION
-  try {
-    const { sortBy, order, page } = req.body;
-    const currentPage = page || 1;
-    const documentPerPage = 3;
-    const products = await Product.find()
-      .skip((currentPage - 1) * documentPerPage)
-      .populate("category")
-      .populate("subcategory")
-      .sort([[sortBy, order]])
-      .limit(documentPerPage);
-    res.status(200).json(products);
-  } catch (err) {
-    console.log(err);
-  }
+	//WITH PAGINATION
+	try {
+		const { sortBy, order, page } = req.body;
+		const currentPage = page || 1;
+		const documentPerPage = 3;
+		const products = await Product.find()
+			.skip((currentPage - 1) * documentPerPage)
+			.populate("category")
+			.populate("subcategory")
+			.sort([[sortBy, order]])
+			.limit(documentPerPage);
+		res.status(200).json(products);
+	} catch (err) {
+		console.error("Error retrieving sorted products:", err);
+		res.status(500).json({ error: "Failed to retrieve sorted products" });
+	}
 };
 exports.getOneProduct = async (req, res) => {
-  try {
-    const slug = req.params.slug;
-    const product = await Product.findOne({ slug: slug })
-      .populate("category")
-      .populate("subcategory");
-    res.status(200).json(product);
-  } catch (err) {
-    console.log(err);
-    res.status(404).send("No product found");
-  }
+	try {
+		const slug = req.params.slug;
+		const product = await Product.findOne({ slug: slug })
+			.populate("category")
+			.populate("subcategory");
+		if (!product) return res.status(404).json({ error: "Product not found" });
+		res.status(200).json(product);
+	} catch (err) {
+		console.error("Error retrieving product:", err);
+		res.status(500).json({ error: "Failed to retrieve product" });
+	}
 };
 
 exports.updateProduct = async (req, res) => {
-  try {
-    const slug = req.params.slug;
-    const product = await Product.findOneAndUpdate(
-      { slug: slug },
-      req.body.values,
-      {
-        new: true,
-      }
-    );
-    res.status(200).json(product);
-  } catch (err) {
-    console.log(err);
-    res.status(404).send("Update failed");
-  }
+	try {
+		const slug = req.params.slug;
+		const product = await Product.findOneAndUpdate(
+			{ slug: slug },
+			req.body.values,
+			{
+				new: true,
+			}
+		);
+		if (!product) return res.status(404).json({ error: "Product not found" });
+
+		res.status(200).json(product);
+	} catch (err) {
+		console.error("Error updating product:", err);
+		res.status(500).json({ error: "Failed to update product" });
+	}
 };
 exports.productsCount = async (req, res) => {
-  try {
-    let total = await Product.find().estimatedDocumentCount();
-    res.status(200).json(total);
-  } catch (err) {
-    console.log(err);
-  }
+	try {
+		let total = await Product.find().estimatedDocumentCount();
+		res.status(200).json(total);
+	} catch (err) {
+		console.error("Error counting products:", err);
+		res.status(500).json({ error: "Failed to count products" });
+	}
 };
 
 exports.deleteProduct = async (req, res) => {
-  try {
-    const slug = req.params.slug;
-    await Product.findOneAndDelete({ slug: slug });
-    res.status(200).json(null);
-  } catch (err) {
-    console.log(err);
-    res.status(400).send("Delete product failed");
-  }
+	try {
+		const slug = req.params.slug;
+		await Product.findOneAndDelete({ slug: slug });
+		if (!product) return res.status(404).json({ error: "Product not found" });
+
+		res.status(200).json({ message: "Product deleted successfully" });
+	} catch (err) {
+		console.error("Error deleting product:", err);
+		res.status(500).json({ error: "Failed to delete product" });
+	}
 };
 exports.productStarRating = async (req, res) => {
-  try {
-    const id = req.params.productId;
-    const product = await Product.findById(id);
-    const user = await User.findOne({ email: req.user.email });
-    const { star } = req.body;
+	try {
+		const { productId } = req.params;
+		const { star } = req.body;
+		const product = await Product.findById(productId);
+		const user = await User.findOne({ email: req.user.email });
+		if (!product) return res.status(404).json({ error: "Product not found" });
 
-    //Who is updating?
-    //because ratings is an array, we will first find if there is any rating object inside that array which have the postedBy matches the user.id
-    let ratingObject = product.ratings.find(
-      (obj) =>
-        obj.postedBy.valueOf().toString() === user._id.valueOf().toString()
-    );
+		//find object inside that array which have the postedBy matches the user.id
+		let ratingObject = product.ratings.find(
+			(obj) =>
+				obj.postedBy.valueOf().toString() === user._id.valueOf().toString()
+		);
 
-    if (ratingObject === undefined) {
-      let ratingAdded = await Product.findByIdAndUpdate(
-        id,
-        { $push: { ratings: { star: star, postedBy: user._id } } },
-        { new: true }
-      );
-      res.status(200);
-    } else {
-      let newRating = await Product.updateOne(
-        { _id: id, "ratings.postedBy": user._id },
-        // { ratings: { $elemMatch: ratingObject } },
+		if (!ratingObject) {
+			await Product.findByIdAndUpdate(
+				productId,
+				{ $push: { ratings: { star, postedBy: user._id } } },
+				{ new: true }
+			);
+		} else {
+			await Product.updateOne(
+				{ _id: productId, "ratings.postedBy": user._id },
+				{ $set: { "ratings.$.star": star } },
+				{ new: true }
+			);
+		}
 
-        // if (rating) {
-        // // Update user's rating
-        //  rating.star = star;
-        //  product = await product.save({ validateBeforeSave: true });
-        //  res.status(200).json({product});
-        // ......
-        {
-          $set: { "ratings.$.star": star },
-        },
-        { new: true }
-      );
-      res.status(200);
-    }
-    //Check if currently logged in user have already added rating to this product
-  } catch (err) {
-    console.log(err);
-  }
+		res.status(200).json({ message: "Rating submitted successfully" });
+
+		//Check if currently logged in user have already added rating to this product
+	} catch (err) {
+		console.error("Error rating product:", err);
+		res.status(500).json({ error: "Failed to submit rating" });
+	}
 };
 //SEARCH/FILTER
 // const handleQuery = async (req, res, query) => {
@@ -229,16 +239,17 @@ exports.productStarRating = async (req, res) => {
 // };
 //Note
 exports.getProductsByAveRating = async (req, res) => {
-  try {
-    const test = await Product.aggregate([
-      { $unwind: "$ratings" },
-      {
-        $group: { _id: "$slug", avgRating: { $avg: "$ratings.star" } },
-      },
-    ]);
+	try {
+		const ratings = await Product.aggregate([
+			{ $unwind: "$ratings" },
+			{
+				$group: { _id: "$slug", avgRating: { $avg: "$ratings.star" } },
+			},
+		]);
 
-    res.status(200).json(test);
-  } catch (err) {
-    console.log(err);
-  }
+		res.status(200).json(ratings);
+	} catch (err) {
+		console.error("Error retrieving average ratings:", err);
+		res.status(500).json({ error: "Failed to retrieve ratings" });
+	}
 };
