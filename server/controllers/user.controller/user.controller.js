@@ -85,14 +85,13 @@ exports.getCart = async (req, res) => {
 		}
 
 		//Note populate, second argument is to keep what we want
-		const cart = await Cart.findOne({ orderedBy: userId })
+		const cart = await Cart.findOne({ orderedBy: user._id })
 			.populate("coupon", "expiry name discount")
 			.populate("products.product", "_id title price");
 
 		if (!cart) {
 			return res.status(404).json({ error: "Cart not found" });
 		}
-
 		const totalAfterDiscount = cart.totalAfterDiscount;
 		//If there is coupon, check if it is valid
 		if (cart.coupon) {
@@ -150,11 +149,12 @@ exports.updateAddress = async (req, res) => {
 			{ address: address },
 			{ new: true }
 		);
+		console.log(updatedUser);
 		if (!updatedUser) {
 			return res.status(404).json({ error: "User not found" });
 		}
 
-		res.status(200).json(true, { message: "Address updated" });
+		res.status(200).json({ message: "Address updated" });
 	} catch (err) {
 		console.error("Error updating address:", err);
 		res.status(500).json({ error: "An internal server error occurred" });

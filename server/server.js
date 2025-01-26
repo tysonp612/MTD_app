@@ -13,6 +13,7 @@ const app = express();
 //Connect to MongoDb
 const connectToDatabase = async () => {
 	try {
+		mongoose.set("strictQuery", false);
 		await mongoose.connect(process.env.DATABASE, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,

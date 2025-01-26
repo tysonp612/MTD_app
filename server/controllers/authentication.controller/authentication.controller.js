@@ -11,7 +11,7 @@ exports.createOrUpdateUser = async (req, res) => {
 			{ new: true }
 		);
 		if (user) {
-			res.status(200).json(user);
+			return res.status(200).json(user);
 		}
 		//if no user, create a new user
 		user = await new User({

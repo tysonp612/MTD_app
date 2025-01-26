@@ -47,73 +47,73 @@ import { AdminShowProduct } from "./pages/admin/admin.products/admin.showproduct
 import { ProductUpdate } from "./pages/admin/admin.products/admin.product-update";
 import { CouponPage } from "./pages/admin/admin.coupon/admin.coupon.component";
 const App = () => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const idTokenResult = await user.getIdTokenResult();
-      createOrUpdateUser(idTokenResult.token)
-        .then((res) => {
-          dispatch({
-            type: UserActionTypes.LOGGED_IN_USER,
-            payload: {
-              name: res.data.name,
-              email: res.data.email,
-              token: idTokenResult.token,
-              role: res.data.role,
-              _id: res.data._id,
-            },
-          });
-          // roleBasedRedirect(res.data.role, history);
-        })
-        .catch((error) => console.log(error));
-    }
-  });
-  //get current user and store to redux user
-  useEffect(() => {
-    return () => unsubscribe();
-  }, [unsubscribe]);
+	const unsubscribe = onAuthStateChanged(auth, async (user) => {
+		if (user) {
+			const idTokenResult = await user.getIdTokenResult();
+			createOrUpdateUser(idTokenResult.token)
+				.then((res) => {
+					dispatch({
+						type: UserActionTypes.LOGGED_IN_USER,
+						payload: {
+							name: res.data.name,
+							email: res.data.email,
+							token: idTokenResult.token,
+							role: res.data.role,
+							_id: res.data._id,
+						},
+					});
+					// roleBasedRedirect(res.data.role, history);
+				})
+				.catch((error) => console.log(error));
+		}
+	});
+	//get current user and store to redux user
+	useEffect(() => {
+		return () => unsubscribe();
+	}, [unsubscribe]);
 
-  return (
-    <div>
-      <Header />
-      <DrawerComponent />
-      <ToastContainer />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/register/complete" component={CompleteRegister} />
-        <Route exact path="/forgot/password" component={ForgotPassword} />
-        <Route exact path="/product/:slug" component={ProductPage} />
-        <Route exact path="/category/:slug" component={CategoriesPage} />
-        <Route exact path="/sub-category/:slug" component={SubCategoriesPage} />
-        <Route exact path="/shop" component={ShopPage} />
-        <Route exact path="/cart" component={CartPage} />
+	return (
+		<div>
+			<Header />
+			<DrawerComponent />
+			<ToastContainer />
+			<Switch>
+				<Route exact path="/" component={Home} />
+				<Route exact path="/login" component={Login} />
+				<Route exact path="/register" component={Register} />
+				<Route exact path="/register/complete" component={CompleteRegister} />
+				<Route exact path="/forgot/password" component={ForgotPassword} />
+				<Route exact path="/product/:slug" component={ProductPage} />
+				<Route exact path="/category/:slug" component={CategoriesPage} />
+				<Route exact path="/sub-category/:slug" component={SubCategoriesPage} />
+				<Route exact path="/shop" component={ShopPage} />
+				<Route exact path="/cart" component={CartPage} />
 
-        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
-        <AdminRoute exact path="/admin/coupon" component={CouponPage} />
-        <AdminRoute exact path="/admin/products" component={AdminProducts} />
-        <AdminRoute
-          exact
-          path="/admin/showproducts"
-          component={AdminShowProduct}
-        />
-        <AdminRoute
-          exact
-          path="/admin/product/:slug"
-          component={ProductUpdate}
-        />
-        <AdminRoute exact path="/admin/category" component={AdminCategory} />
-        <AdminRoute exact path="/admin/sub" component={AdminSubCategory} />
-        <UserRoute exact path="/user/history" component={History} />
-        <UserRoute exact path="/user/password" component={Password} />
-        <UserRoute exact path="/user/wishlist" component={Wishlist} />
-        <UserRoute exact path="/checkout" component={CheckoutPage} />
-        <UserRoute exact path="/payment" component={PaymentPage} />
-      </Switch>
-    </div>
-  );
+				<AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+				<AdminRoute exact path="/admin/coupon" component={CouponPage} />
+				<AdminRoute exact path="/admin/products" component={AdminProducts} />
+				<AdminRoute
+					exact
+					path="/admin/showproducts"
+					component={AdminShowProduct}
+				/>
+				<AdminRoute
+					exact
+					path="/admin/product/:slug"
+					component={ProductUpdate}
+				/>
+				<AdminRoute exact path="/admin/category" component={AdminCategory} />
+				<AdminRoute exact path="/admin/sub" component={AdminSubCategory} />
+				<UserRoute exact path="/user/history" component={History} />
+				<UserRoute exact path="/user/password" component={Password} />
+				<UserRoute exact path="/user/wishlist" component={Wishlist} />
+				<UserRoute exact path="/checkout" component={CheckoutPage} />
+				<UserRoute exact path="/payment" component={PaymentPage} />
+			</Switch>
+		</div>
+	);
 };
 
 export default App;
